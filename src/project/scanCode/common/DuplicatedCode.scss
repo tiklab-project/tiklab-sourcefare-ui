@@ -1,0 +1,12 @@
+.duplicated-code{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  .code-line-text{
+    padding: 5px 0 !important;
+    overflow-x: hidden;
+  }
+  .code-line-num{
+    color: #94979a;
+  }
+}

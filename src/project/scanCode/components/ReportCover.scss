@@ -1,0 +1,40 @@
+.cover{
+  margin-bottom: 15px;
+  gap: 15px;
+
+  .cover-bread{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px ;
+
+    font-size: 15px;
+    color: #777777;
+    font-weight: 400;
+    .bread-item{
+      word-break: break-all;
+      &:not(:last-child){
+        margin-right: 5px;
+      }
+      &:nth-child(odd):hover{
+        cursor: pointer;
+        text-decoration: underline;
+        color: #0d66e4;
+      }
+    }
+  }
+}
+
+.cover-nav{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.opt-cover-nav{
+  cursor: pointer;
+  &:hover{
+    color: #0d66e4;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

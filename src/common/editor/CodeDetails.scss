@@ -1,0 +1,49 @@
+
+.code-line{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  .code-line-text{
+    padding: 5px 0 !important;
+    overflow-x: hidden;
+  }
+  .code-line-num{
+    color: #94979a;
+  }
+}
+
+.code-line-error{
+  scroll-margin-top: 100px;
+  border: 1px solid #e6e7eb;
+  border-radius: 4px 4px 0 0;
+  align-items: center;
+  display: flex;
+  font-weight: 500;
+  padding: 10px;
+  margin: 15px;
+  background-color: #EBECF0;
+  gap: 20px;
+  .code-line-text{
+    flex: 1;
+  }
+  .error-line{
+    font-size: small;
+    font-weight: bolder;
+  }
+
+  .line-error-leve-1{
+    color: red;
+  }
+  .line-error-leve-2{
+    color: #df5000;;
+  }
+  .line-error-leve-3{
+    color: #1890ff;;
+  }
+
+
+}
+
+.hljs {
+  background-color: #ffffff; /* 背景色 */
+}

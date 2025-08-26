@@ -1,0 +1,115 @@
+.scan-config{
+ .scan-config-top{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+ }
+  .scan-config-head{
+    color: #999999;
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .config-body-deploy{
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    .config-body-deploy-nav{
+      display: flex;
+      gap: 10px;
+      .config-body-deploy-nav-title{
+        font-size: 12px;
+        color: #777;
+        font-weight: 700;
+        width: 90px;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .config-body-head{
+    margin: 10px 0;
+    font-weight: var(--tiklab-font-weight-bold);
+    font-size: 13px;
+  }
+
+  .config-body-record{
+    margin-top: 30px;
+
+    .config-body-record-style{
+      display: flex;
+      gap: 1rem;
+    }
+    .config-body-record-border{
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+      max-width: 308px;
+      background: #f7f7f7;
+      border-radius: 3px;
+      padding: 16px;
+      cursor: pointer;
+      .body-record-border-flex{
+        display: flex;
+      }
+      .body-record-border-text-top{
+        padding-top: 30px;
+        justify-content: space-between;
+        margin:0 10px;
+      }
+      .body-record-border-text{
+        flex: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        font-weight: 600;
+      }
+      .body-record-border-desc {
+        display: flex;
+        font-style: inherit;
+        margin-top: 7px;
+        line-height: 1.45455;
+        .title-color{
+          color: #6b778c;
+        }
+        .desc-text{
+          margin-left: 5px;
+        }
+        .desc-text-success{
+          padding-left: 10px;
+          color: green;
+        }
+        .desc-text-fail{
+          padding-left: 10px;
+          color: red;
+        }
+      }
+    }
+    .config-border-width-20{
+      width: 20%;
+    }
+    .config-border-width-25{
+      width: 25%;
+    }
+  }
+}
+
+.icon-text{
+  display: flex;
+  gap: 5px;
+  align-content: center;
+}
+
+.config-page-width{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 20px 50px;
+  /*   min-width: 700px;*/
+  .ant-col{
+    min-width: 720px;
+  }
+}

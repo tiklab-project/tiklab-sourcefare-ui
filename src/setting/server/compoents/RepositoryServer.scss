@@ -1,0 +1,72 @@
+.host-info{
+  .host-info-up{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .host-info-table{
+    padding-top: var(--data-top-20);
+  }
+
+  .icon-text-use{
+    display: flex;
+    align-items:center;
+    gap: 5px;
+  }
+
+  .host-info-table-action{
+    display: flex;
+    gap: 15px;
+  }
+}
+
+
+
+.host-info-add-modal{
+  .host-info-add-up{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: var(--tiklab-font-weight-bold);
+    padding: var(--tiklab-padding) var(--tiklab-padding) var(--tiklab-padding-item);
+  }
+  .host-info-add-content{
+    padding: 0 var(--tiklab-padding);
+    overflow:auto;
+  }
+}
+
+.tab-style{
+  display: flex;
+   margin-top: 15px;
+  .choose-tab-nav{
+    color: #0063FF;
+    border-bottom:2px solid #0063FF;
+  }
+  .tab-nav{
+    font-size: var(--tiklab-font-14);;
+    cursor: pointer;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 10px;
+  }
+}
+.scheme-table-icon-no{
+  color: #cccccc;
+}
+.scan-evn-type-icon{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  .env-icon-image{
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.scan-evn-action-icon{
+  display: flex;
+  gap: 15px;
+}

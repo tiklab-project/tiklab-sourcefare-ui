@@ -1,0 +1,29 @@
+.scan-statistics{
+  height: 100%;
+  display: flex;
+
+  .scan-statistics-top{
+    margin-top: 10px;
+    .scan-statistics-tab-nav{
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+  }
+}
+
+.scan-issue-width{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 20px 30px;
+  .ant-col{
+    min-width: 800px;
+  }
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  position: relative;
+  background-color: #f7f7f7;
+  border: none;
+  border-radius: 2px;
+}

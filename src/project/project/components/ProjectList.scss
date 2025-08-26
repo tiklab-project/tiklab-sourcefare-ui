@@ -1,0 +1,94 @@
+.project{
+    padding: var(--tiklab-padding-item);
+    height: var(--content-height-100);
+    overflow: auto;
+    .project-head-style{
+        display: flex;
+        justify-content: space-between;
+        .add-button{
+            padding: 5px;
+            margin-left: 7px;
+            border: 1px solid #d9d9d9;
+            background-color: var(--tiklab-blue);
+            color: #EBECF0;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+    }
+    .project-search{
+        padding: 15px 0;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .project-table{
+        margin-top: 5px;
+        .project-table-nav{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+            &:hover{
+                color: #1890ff;
+            }
+        }
+        .icon-text-use{
+            display: flex;
+            align-items:center;
+            gap: 5px;
+            .icon-text-size{
+                font-size: large;
+                cursor: pointer;
+                color: #d7d7d7;
+            }
+        }
+
+
+        .project-tables-set{
+            display: flex;
+            align-items:center;
+            gap: 10px;
+            .icon-text-size{
+                font-size: 20px;
+                cursor: pointer;
+                color: #d7d7d7;
+            }
+            .icon-text-collect{
+                font-size: 20px;
+                cursor: pointer;
+                color: #40a9ff;
+            }
+        }
+
+        .project-table-nav-result{
+            display: inline-block;
+           /* color: var(--tiklab-blue);*/
+           /* padding: 3px 10px;
+            background: #eeeff9;
+            border-radius: 30px;*/
+            margin-left: 10px;
+            .project-table-nav-result-success{
+                color: #4cbb17;
+                font-size: 14px;
+            }
+            .project-table-nav-result-fail{
+                color: #ff4d4f;
+                font-size: 14px;
+            }
+        }
+    }
+
+
+}
+.project-nav{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.project-nav-desc{
+   color: #999999;
+}

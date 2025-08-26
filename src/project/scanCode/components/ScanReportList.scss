@@ -1,0 +1,101 @@
+.scan-report{
+  .scan-report-top{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+    }
+
+  .scan-report-no-code{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    .no-code-style{
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+      .no-code-style-button{
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+
+  .scan-report-search{
+    padding: 10px 0;
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+
+    .scan-report-search-text{
+      display: flex;
+      color: #94979a;
+      background-color: #f7f7f7;
+      align-items: center;
+      gap: 10px;
+      padding: 3px 10px;
+      .scan-report-search-icon{
+        cursor: pointer;
+      }
+    }
+
+    .scan-report-search-right{
+      display: flex;
+      gap: 15px;
+    }
+  }
+  .scan-report-tab{
+      margin-top: var(--gittok-data-top-20);
+    }
+
+  .scan-report-table-nav{
+    cursor: pointer;
+    &:hover{
+      color: #1890ff;
+    }
+  }
+
+  .scan-report-result-num{
+      display: flex;
+      gap: 5px;
+    .scan-report-num-server{
+      color: red;
+    }
+    .scan-report-num-notice{
+      color: #df5000;
+    }
+    .scan-report-num-suggest{
+      color: #1890ff;
+    }
+  }
+  .scan-result-success{
+    color: #23b066;
+  }
+  .scan-result-fail{
+    color: #e84738
+  }
+  .scan-result-exec-fail{
+    color: #9b9b9b;
+  }
+
+
+  .scan-report-table-info{
+      display: flex;
+      gap: 10px;
+  }
+
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    position: relative;
+    background-color: #f7f7f7;
+    border: none;
+    border-radius: 2px;
+  }
+}
+
+.icon-text{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+

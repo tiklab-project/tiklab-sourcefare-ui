@@ -1,0 +1,81 @@
+.xcode-btn{
+    display: inline-block;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    cursor: pointer;
+    padding: 4px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    color: #42526E;
+    background: #efefef;
+}
+
+.xcode-btn-text-size{
+    font-weight: 500;
+}
+
+
+.xcode-btn-primary{
+    background: var(--tiklab-blue);
+    border-color: var(--tiklab-blue);
+    color: #ffffff;
+}
+
+.xcode-btn-disabled{
+    color: rgba(0,0,0,.25);
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+    cursor:not-allowed;
+}
+
+.xcode-btn-small{
+    background: transparent;
+    border-color: transparent;
+    padding: 0;
+    font-size: var(--tiklab-font-13);
+}
+
+.xcode-btn-dangerous{
+    color: #fff;
+    background: #ff0000;
+    border-color: #ff0000;;
+}
+
+.xcode-btn-common{
+    background: #f4f4f4;
+    border-color: #f4f4f4;
+}
+.xcode-btn-commonMsg{
+    background: #fafafa;
+    border: 1px #e5e5e5 solid;
+}
+
+.xcode-btn-link{
+    color: var(--tiklab-blue);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.xcode-btn-text {
+    color: rgba(0,0,0,.85);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    padding-top: 5px;
+    &:hover{
+        background: #f4f4f4;
+    }
+}
+
+.xcode-btn-mar{
+    margin-right: 15px;
+}
+
+.xcode-btn-icon{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    font-size: var(--tiklab-icon-size-16);
+}

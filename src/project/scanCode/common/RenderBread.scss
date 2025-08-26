@@ -1,0 +1,11 @@
+.bread-item{
+  word-break: break-all;
+  &:not(:last-child){
+    margin-right: 5px;
+  }
+  &:nth-child(odd):hover{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #0d66e4;
+  }
+}

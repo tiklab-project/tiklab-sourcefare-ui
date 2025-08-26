@@ -1,0 +1,33 @@
+.scheme{
+  .scheme-up{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .scheme-table{
+    margin-top:  var(--data-top-20);
+    .scheme-table-name{
+      cursor: pointer;
+      &:hover{
+        color: #1890ff;
+      }
+    }
+    .scheme-table-language{
+      width: 80px;
+      background: #F4F4F4;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 13px;
+      padding: 3px 0;
+    }
+    .scheme-table-exec{
+      padding: 3px 25px;
+    }
+    .scheme-table-icon-no{
+      color: #cccccc;
+    }
+
+  }
+}

@@ -1,0 +1,108 @@
+
+.req-drawer{
+  height: calc(100% - 1px);
+  width: 100%;
+  overflow: hidden;
+  /*min-width: 800px;*/
+  .req-drawer-head{
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    .req-drawer-head-style{
+      margin: 0 15px;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+    }
+
+    .scan-drawer-hades-desc{
+        display: flex;
+
+        gap: 15px;
+        margin-top: 10px;
+      .scan-drawer-hades-desc-nav{
+        display: flex;
+        gap: 10px;
+     /*   &:not(:last-child){
+          margin-right: 15px;
+          padding-right: 15px;
+          border-right: 1px solid #d9d9d9;
+        }*/
+      }
+
+
+      .scan-drawer-hades-desc-title{
+        color: #999999;
+      }
+    }
+    .req-drawer-head-style-desc{
+      margin: 0 15px;
+      display: flex;
+      gap: 10px;
+      .req-drawer-head-style-desc-nav{
+        color: #999999;
+      }
+    }
+    .reqDrawer-bottom-text {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+   /*   color: #1890ff;*/
+      margin-top: 10px;
+      height: 30px;
+      padding: 5px 7px;
+      margin-left: 7px;
+      border-radius: 6px;
+      background-color: var(--tiklab-blue);
+      color: #EBECF0;
+    }
+  }
+  .req-drawer-body{
+    /*height: calc(100% - 110px);*/
+    height: calc(100% - 80px);
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0 0 24px;
+    min-width: 720px;
+    background-color: #fafbfc;
+    /*overflow-x: auto;*/
+    .req-drawer-body-tabs {
+      flex: 1;
+      overflow: auto;
+      border-radius: 4px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+
+
+    }
+  }
+
+  .req-drawer-bottom {
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-items: end;
+    .reqDrawer-bottom-text {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      cursor: pointer;
+      color: #1890ff;
+    }
+  }
+}
+
+.req-drawer-style .ant-drawer-body{
+  padding:0 !important;
+}
+
+.scan-drawer-hole-red{
+  color: red;
+}
+.scan-drawer-hole-dired{
+  color:#df5000;
+}
+.scan-drawer-hole-blue{
+  color:#1890ff;
+}

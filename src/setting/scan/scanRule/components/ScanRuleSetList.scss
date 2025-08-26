@@ -1,0 +1,25 @@
+.scanRule{
+  .scanRule-up{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+   .scanRule-search{
+     margin-top: 15px;
+    }
+  .scanRule-table{
+    padding-top: var(--data-top-20);
+  }
+  .scanRule-tables-nav{
+    width: 50px;
+    padding: 3px 0;
+    background: #F4F4F4;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 13px;
+    /* width: -moz-fit-content;
+     width: fit-content;*/
+    color: #2b333e;
+  }
+}

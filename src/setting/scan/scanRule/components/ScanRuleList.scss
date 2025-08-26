@@ -1,0 +1,30 @@
+.ruleDetails{
+  .ruleDetails-up{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ruleDetails-table{
+    padding-top: var(--data-top-20);
+  }
+  .rule-search-style{
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    .input-icon{
+      font-size: var(--tiklab-input-icon-15);
+    }
+  }
+
+  .text-red{
+    color: red;
+  }
+  .text-yellow{
+    color: #df5000;
+  }
+  .text-blue{
+    color: #3967FF;
+  }
+
+}

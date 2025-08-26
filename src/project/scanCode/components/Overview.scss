@@ -1,0 +1,173 @@
+.overview{
+  .overview-border{
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
+    gap: 30px;
+    .overview-rpy-border{
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+      background: #f7f7f7;
+      border-radius: 3px;
+      padding: 16px 0;
+      width: 34%;
+     /* border-right: 1px solid #f0f0f0;*/
+      .overview-rpy-desc{
+        margin-top: 5px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .overview-rpy-num{
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .relyOn-num{
+        cursor: pointer;
+      }
+
+      .overview-hole-desc{
+        margin-top: 5px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .overview-hole-num{
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .overview-access{
+        color: #999999;
+        margin-left: 20px;
+        margin-top: 5px;
+        display: flex;
+        gap: 5px;
+      }
+
+
+      .overview-prob-border{
+        display: flex;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: bold;
+        justify-content: center;
+        margin-top: 5px;
+        .overview-prob-num{
+          font-size: 18px;
+          font-weight: bold;
+          margin-top: 10px;
+          display: flex;
+          justify-content: center;
+          cursor: pointer;
+        }
+
+      }
+    }
+
+    .overview-hole-border{
+      display: flex;
+    /*  border: 1px solid #e3e9ed;*/
+      background-color: #fbfbfb;
+      width: 50%;
+      height: 120px;
+
+      .hole-border-left{
+        width: 22%;
+      }
+
+
+      .overview-hole-desc{
+        margin-top: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .overview-hole-num{
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .overview-access{
+        color: #999999;
+        text-align: center;
+        margin-top: 5px;
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .hole-border-right{
+        width: 50%;
+      }
+    }
+  }
+
+  .overview-statistics{
+    display: flex;
+    width: 100%;
+    gap:15px;
+    padding-top: 50px;
+    .overview-statistics-border{
+      width: 50%;
+     /* width: 80vw; // 占视口宽度的 80%*/
+    }
+
+    .overview-statistics-not-date{
+        justify-content: center;
+    }
+
+    .metricStat-border-style{
+      width: 100%;
+    }
+    .overview-statistics-metricStat{
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      margin-top: 10px;
+      .metricStat-border{
+        width: 33%;
+        padding: 15px;
+        background-color: #fbfbfb;
+        .metricStat-border-size{
+          font-size: 18px;
+          font-weight: bold;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  .overview-statistics-title{
+    font-size: 21px;
+    font-weight:500
+  }
+  .overview-no{
+    margin-top: 20px;
+  }
+}
+
+.result-success{
+  color:#4cbb17;
+
+}
+
+.result-fails{
+  color: #df5000;
+}
+
+
+
+.overview-hole-red{
+  color: red;
+}
+.overview-hole-dired{
+  color:#df5000;
+}
+.overview-hole-blue{
+  color:#1890ff;
+}

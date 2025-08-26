@@ -1,0 +1,132 @@
+.more-menu {
+  position: relative;
+
+  .project-title {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    .project-text {
+      margin: 0 10px;
+      .type {
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+
+    span {
+      width: 100px;
+      height: 100%;
+      overflow: hidden;
+
+      i {
+        margin-right: 10px;
+      }
+    }
+
+    .project-aside-icon {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  .project-title-icon {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 10px 22px;
+    .project-aside-icon {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  .title {
+    border-bottom: 1px solid #f0f2f5;
+  }
+
+  .more-menu-botton {
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    text-align: center;
+  }
+  .more-menu-box {
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+    width: 200px;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+    .more-menu-head {
+      height: 40px;
+      line-height: 40px;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 0 20px;
+      border-bottom: 1px solid #F0F0F0;
+    }
+
+    /*.more-menu-nav:hover {
+      background-color: var(--tiklab-gray-300);
+    }*/
+    .more-menu-nav {
+      height: 40px;
+      display: flex;
+      line-height: 40px;
+      width: 100%;
+      align-items: center;
+      padding-left: 15px;
+      cursor: pointer;
+      gap: 10px;
+      color: #002140;
+      i {
+        margin-right: 10px;
+      }
+    }
+
+    .more-menu-select {
+      background-color: var(--tiklab-gray-400);
+      border-left: 3px solid var(--tiklab-blue);
+    }
+
+    .more-menu-nav:hover {
+      background-color: var(--tiklab-gray-300);
+    }
+  }
+  .more-menu-name {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+  }
+
+  .more-menu-selectName {
+    background-color: var(--tiklab-gray-400);
+  }
+
+  .more-menu-aside-item {
+    padding: 8px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    .open-nav-more{
+      display: flex;
+      gap: var(--nav-icone-text-space);
+    }
+    .close-nav-more{
+      display: flex;
+      margin-left: 7px;
+    }
+  }
+
+  .menu-show {
+    display: block;
+  }
+  .menu-hidden {
+    display: none;
+  }
+}

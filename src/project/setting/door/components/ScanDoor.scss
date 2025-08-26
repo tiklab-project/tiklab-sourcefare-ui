@@ -1,0 +1,49 @@
+.scan-door{
+
+  .scan-door-body {
+    margin-top: 20px;
+    display: flex;
+  /*  gap: 10px;*/
+    flex-direction: column;
+    .scan-door-body-title{
+      display: flex;
+      border-bottom: 1px solid #f0f2f5;
+      .body-title-nav{
+        width: 25%;
+        padding: 8px;
+        font-size: 13px;
+        color: #777;
+        font-weight: 600;
+      }
+    }
+
+    .scan-door-body-data{
+      .door-body-data-row {
+        display: flex;
+        .door-body-data-nav{
+          width: 25%;
+          height: 40px;
+          margin: 0 8px;
+          display: flex;
+          align-items: center;
+          .door-body-data-nav-num{
+            width: 40px;
+          }
+        }
+        .door-body-data-nav-cursor{
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+.scan-door-width{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 20px 50px;
+  /*   min-width: 700px;*/
+  .ant-col{
+    min-width: 720px;
+  }
+}

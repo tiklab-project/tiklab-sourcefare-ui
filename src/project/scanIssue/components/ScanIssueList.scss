@@ -1,0 +1,73 @@
+.scan-issue{
+    height: 100%;
+    display: flex;
+    .scan-req-top{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 10px;
+    }
+    .scan-req-search{
+        padding: 15px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .scan-req-search-right{
+            display: flex;
+            gap: 15px;
+        }
+    }
+    .scan-req-tab{
+
+    }
+
+    .scanDetails-hole-red{
+        color: red;
+    }
+    .scanDetails-hole-dired{
+        color:#df5000;
+    }
+    .scanDetails-hole-blue{
+        color:#1890ff;
+    }
+
+
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+        position: relative;
+        background-color: #f7f7f7;
+        border: none;
+        border-radius: 2px;
+    }
+}
+
+.scan-issue-text{
+   cursor: pointer;
+    &:hover{
+        color: #1890ff;
+    }
+}
+.scan-issue-page-width{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 20px 30px;
+    .ant-col{
+        min-width: 800px;
+    }
+}
+.scan-req-state{
+    width: 60px;
+    padding: 3px 0;
+    background-color: #BBFADA;
+    border-radius: 4px;
+    text-align: center;
+    color: #08934D;
+}
+.scan-req-state-no{
+    width: 60px;
+    padding: 3px 0;
+    background-color: #FFE0B3;
+    border-radius: 4px;
+    text-align: center;
+    color: #F0890A;
+}

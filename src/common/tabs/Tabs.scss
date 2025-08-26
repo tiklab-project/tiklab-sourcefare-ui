@@ -1,0 +1,29 @@
+.xcode-tabs{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 40px;
+    line-height: 40px;
+    font-size: var(--tiklab-font-13);
+}
+
+.xcode-tab{
+    display: flex;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 20px;
+    gap: 5px;
+    &:hover{
+        color: var(--tiklab-blue);
+    }
+
+    .xcode-tab-num{
+        font-size: 12px;
+    }
+}
+
+.xcode-active-tab{
+    color: var(--tiklab-blue);
+    border-bottom: 2px solid var(--tiklab-blue);
+}

@@ -1,0 +1,36 @@
+.scan-req{
+  margin-bottom: 15px;
+  display: flex;
+  gap: 15px;
+
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    position: relative;
+    background-color: #f7f7f7;
+    border: none;
+    border-radius: 2px;
+  }
+
+
+}
+.scan-req-state{
+  width: 60px;
+  padding: 3px 0;
+  background-color: #BBFADA;
+  border-radius: 4px;
+  text-align: center;
+  color: #08934D;
+}
+.scan-req-state-no{
+  width: 60px;
+  padding: 3px 0;
+  background-color: #FFE0B3;
+  border-radius: 4px;
+  text-align: center;
+  color: #F0890A;
+}
+.scan-req-name{
+  cursor: pointer;
+  &:hover{
+    color: #1890ff;
+  }
+}
