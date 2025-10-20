@@ -21,8 +21,9 @@ const RuleInfo = (props) => {
                 <div className='rule-info-nav-title'>问题等级</div>
                 <div>{
                     schemeRule?.problemLevel===1&&<div className='text-red'>严重</div>||
-                    schemeRule?.problemLevel===2&&<div className='text-yellow'>警告</div> ||
-                    schemeRule?.problemLevel===3&&<div className='text-blue'>建议</div>
+                    schemeRule?.problemLevel===2&&<div className='text-yellow'>错误</div> ||
+                    schemeRule?.problemLevel===3&&<div className='text-blue'>警告</div>||
+                    schemeRule?.problemLevel===4&&<div className='text-green'>提示</div>
                 }</div>
             </div>
            {/* <div className='rule-info-nav-style'>

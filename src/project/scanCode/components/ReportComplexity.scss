@@ -1,12 +1,62 @@
 .complexity{
-  margin-bottom: 15px;
-  gap: 15px;
-  .complexity-bread{
-    display: flex;
-    flex-wrap: wrap;
-    padding-bottom: 10px ;
-    font-size: 15px;
-    color: #777777;
-    font-weight: 400;
+  display: flex;
+  width: 100%;
+
+  .complexity-data{
+    padding: 20px 0;
+    .complexity-bread {
+      display: flex;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+      font-size: 15px;
+      color: #777777;
+      font-weight: 400;
+
+      .complexity-bread-icon {
+        cursor: pointer;
+        padding-right: 5px;
+      }
+    }
+
+    .complexity-data-info{
+      display: flex;
+      background-color: #f7f7f7;
+      border-radius: 4px;
+      padding: 15px;
+      margin: 10px 0 15px 0;
+      .complexity-data-nav{
+        /*    display: flex;*/
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+       /* width: 33%;*/
+        width: 50%;
+        align-items: center;
+        .complexity-data-nav-num{
+          font-size: 15px;
+        }
+      }
+    }
   }
+
+  .complexity-code-details{
+    border-top: 1px solid #f0f0f0;
+    padding: 20px 0;
+    background-color: #ffffff;
+  }
+}
+.complexity-page-width{
+  width: 100%;;
+  height: calc(100vh - 105px);
+  overflow: auto;
+  padding: 0 10px 10px 10px;
+  .ant-col{
+    min-width: 720px;
+  }
+}
+.complexity-num{
+  color: #df5000;
+}
+.complexity-line-num{
+  color: #1890ff;
 }

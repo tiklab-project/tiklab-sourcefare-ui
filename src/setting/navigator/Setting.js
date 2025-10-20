@@ -82,14 +82,12 @@ const Setting = props =>{
                  title: '扫描配置',
                  icon: <FileDoneOutlined />,
                 children: [
+
                        {
                            id:'/setting/scheme',
                            title: '扫描方案',
                        },
-                       {
-                           id:'/setting/scanEnv',
-                           title:'扫描环境',
-                       },
+
                     {
                         id:'/setting/scanRuleSet',
                         title:'扫描规则集',
@@ -101,10 +99,10 @@ const Setting = props =>{
                 title: '集成开放',
                 icon: <LayoutOutlined />,
                 children: [
-                    /*{
-                        id:'/setting/systemInt',
-                        title:'系统集成',
-                    },*/
+                    {
+                        id:'/setting/tool',
+                        title: '工具集成',
+                    },
                     {
                         id:'/setting/server',
                         title: '服务集成',
@@ -121,11 +119,6 @@ const Setting = props =>{
                 title:'Security',
                 icon:<SafetyCertificateOutlined/>,
                 children: [
-                    {
-                        id:'/setting/myLog',
-                        title:'Operation Log',
-                        purviewCode:'log',
-                    },
                     {
                         id:'/setting/backupRecovery',
                         title:'备份与恢复',

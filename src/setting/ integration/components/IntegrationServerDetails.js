@@ -1,29 +1,30 @@
 /**
- * @name: RepositoryServerList
+ * @name: IntegrationServerList
  * @author: limingliang
  * @date: 2025-5-22 10:30
- * @description：主机信息
+ * @description：仓库服务
  * @update: 2025-5-22 10:30
  */
 import React, {useState,useEffect} from "react";
-import "./RepositoryServer.scss"
 import {EditOutlined, StopOutlined} from "@ant-design/icons";
 
 import {observer} from "mobx-react";
 import {Col, Select, Table} from "antd";
-
-import {Breadcrumb} from "../../../ui";
+import "./IntegrationDetails.scss"
 import Btn from "../../../common/btn/Btn";
 import EmptyText from "../../../common/emptyText/EmptyText";
-import RepositoryServerEditPop from "./RepositoryServerEditPop";
+import IntegrationServerPop from "./IntegrationServerPop";
 import Page from "../../../common/page/Page";
 import UserIcon from "../../../common/project/UserIcon";
 import DeleteExec from "../../../common/delete/DeleteExec";
 import repositoryServerStore from "../store/RepositoryServerStore";
+import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
+import {PrivilegeButton} from 'tiklab-privilege-ui';
+const IntegrationServerDetails = (props) => {
+    const {match:{params}}=props
+    const {findRepositoryServerPage,deleteRepositoryServer,repoFresh} = repositoryServerStore
 
-const RepositoryServerList = (props) => {
-    const {findRepositoryServerPage,deleteRepositoryServer,fresh} = repositoryServerStore
-
+    const [secondName]=useState("仓库服务")
 
     //主机信息list
     const [hostList,setHostList]=useState([])
@@ -38,7 +39,7 @@ const RepositoryServerList = (props) => {
 
     useEffect(()=>{
         findHostInfo(currentPage)
-    },[fresh])
+    },[repoFresh])
 
 
     //条件查询主机信息列表
@@ -72,7 +73,8 @@ const RepositoryServerList = (props) => {
 
     }
 
-    const columns = [
+    //仓库
+    const repColumns = [
         {
             title: '名称',
             dataIndex: 'name',
@@ -112,12 +114,22 @@ const RepositoryServerList = (props) => {
             key: 'action',
             render:(text,record)=>(
                 <div className='host-info-table-action' >
-                    <EditOutlined onClick={()=>openEditPop(record)}/>
+                    <PrivilegeButton code={"service_integration_update"} key={'service_integration_update'}>
+                        <EditOutlined onClick={()=>openEditPop(record)}/>
+                    </PrivilegeButton>
 
-                    <DeleteExec value={record} deleteData={deleteRepositoryServer} title={"确认删除"}/>
+                    <PrivilegeButton code={"service_integration_delete"} key={'service_integration_delete'}>
+                        <DeleteExec value={record} deleteData={deleteRepositoryServer} title={"确认删除"}/>
+                    </PrivilegeButton>
                 </div>)
         }
     ]
+
+
+
+    const goBack = () => {
+        props.history.push(`/setting/server`)
+    }
 
     return(
         <div className=' drop-down sourcewair-page-width host-info'>
@@ -128,23 +140,25 @@ const RepositoryServerList = (props) => {
                  xxl={{ span: "18", offset: "3" }}
             >
                 <div className='host-info-up'>
-                    <Breadcrumb firstItem={'服务集成'}/>
-                    <Btn
-                        type={'primary'}
-                        title={'添加服务'}
-                        onClick={()=> setAddVisible(true)}
-                    />
+                    <Breadcrumb firstItem={'服务集成'} secondItem={secondName} goBack={goBack}/>
+                    <PrivilegeButton code={"service_integration_add"} key={'service_integration_add'}>
+                        <Btn
+                            type={'primary'}
+                            title={'添加服务'}
+                            onClick={()=> setAddVisible(true)}
+                        />
+                    </PrivilegeButton>
                 </div>
 
                 <div className='host-info-table'>
                     {
                         <Table
                             bordered={false}
-                            columns={columns}
+                            columns={repColumns}
                             dataSource={hostList}
                             rowKey={record=>record.id}
                             pagination={false}
-                            locale={{emptyText: <EmptyText title={'暂无主机'}/>}}
+                            locale={{emptyText: <EmptyText title={'没有查询到数据'}/>}}
                         />
                     }
                     <Page pageCurrent={currentPage}
@@ -155,12 +169,13 @@ const RepositoryServerList = (props) => {
                     />
                 </div>
             </Col>
-            <RepositoryServerEditPop visible={addVisible}
-                                     setVisible={setAddVisible}
-                                     serverData={serverData}
-                                     setServerData={setServerData}
+            <IntegrationServerPop visible={addVisible}
+                                  setVisible={setAddVisible}
+                                  serverData={serverData}
+                                  setServerData={setServerData}
             />
+
         </div>
     )
 }
-export default observer(RepositoryServerList)
+export default observer(IntegrationServerDetails)

@@ -66,7 +66,7 @@ const  IssueChart = (props) => {
     }
 
     const levelData = ['严重问题', '警告问题', '建议问题']
-    const typesData = ['安全', '可靠性', '可维护性']
+    const typesData = ['安全', '功能', '规范']
 
     const levelSeries=[
         {
@@ -97,16 +97,16 @@ const  IssueChart = (props) => {
             data: issueData.security
         },
         {
-            name: '可靠性',
+            name: '功能',
             type: 'line',
             stack: 'Total',
-            data: issueData.reliability
+            data: issueData.function
         },
         {
-            name: '可维护性',
+            name: '规范',
             type: 'line',
             stack: 'Total',
-            data: issueData.maintain
+            data: issueData.norm
         }
     ]
 

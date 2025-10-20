@@ -31,3 +31,11 @@
 
   }
 }
+.table-nav-style{
+  padding: 5px 20px;
+  text-align: center;
+  &:hover{
+    cursor: pointer;
+    background-color:#f5f5f5 ;
+  }
+}

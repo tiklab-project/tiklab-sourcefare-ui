@@ -10,7 +10,7 @@ import React,{useState,useEffect,Fragment} from 'react';
 import "./ScanReportDetails.scss"
 import {inject, observer} from "mobx-react";
 import scanRecordStore from "../store/ScanRecordStore"
-import {Table, message, Empty, Tooltip, Popconfirm, Col} from "antd";
+import {Table, message, Empty, Tooltip, Popconfirm, Col, Row} from "antd";
 import codeScanStore from "../store/CodeScanStore";
 import ScanLogDrawer from "../common/ScanLogDrawer";
 import ScanSetting from "./ScanSetting";
@@ -22,12 +22,15 @@ import ScanDoorStore from "../../setting/door/store/ScanDoorStore";
 import ScanCode from "./ScanCode";
 import ReportContent from "./ReportContent";
 import OverviewStore from "../store/OverviewStore";
+import IssueList from "./IssueList";
+import MetricContent from "./MetricContent";
+import CodeStore from "../store/CodeStore";
+import {FileDoneOutlined, FileTextOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 const ScanReportDetails= (props) => {
     const {projectStore,match:{params}} = props;
     const {findScanRecord,findScanRecordLogList,refresh}=scanRecordStore
     const {findRecordInstancePageByPlay}=InstanceStore
     const {findScanDoorByProjectId}=ScanDoorStore
-
     const {codeScanExec}=codeScanStore
     const {findProject,findProjectRepByProjectId} = projectStore
     const {findProjectCoverStat,findScanRecordStat,findMetricStat}=OverviewStore
@@ -44,7 +47,7 @@ const ScanReportDetails= (props) => {
 
     const [logVisible,setLogVisible]=useState(false)  //日志抽屉状态
 
-    const [logRecordLog,setRecordLog]=useState(null)  //打开日志的扫描记录
+    const [logRecordLogList,setRecordLogList]=useState([])  //打开日志的扫描记录
 
     const [scanRecordStat,setScanRecordStat]=useState('')
     const [scanCoverStat,setScanCoverStat]=useState(null)  //扫描覆盖率统计
@@ -108,10 +111,7 @@ const ScanReportDetails= (props) => {
             if (res.code===0){
                 setScanRecordStat(res.data)
             }
-        })
-    }
-
-
+        })}
 
 
     const goBack = () => {
@@ -119,7 +119,6 @@ const ScanReportDetails= (props) => {
     }
 
     const excMultiScan = () => {
-
         message.info("开始执行扫描")
 
         //setLogVisible(true)
@@ -132,7 +131,6 @@ const ScanReportDetails= (props) => {
             }
         })
     }
-
 
 
     //切换tab
@@ -157,10 +155,9 @@ const ScanReportDetails= (props) => {
         setLogVisible(true)
         findScanRecordLogList({scanRecordId:params.recordId}).then(res=>{
             if (res.code===0&&res.data){
-               setRecordLog(res.data[0])
+               setRecordLogList(res.data)
             }
         })
-
     }
 
 
@@ -168,38 +165,60 @@ const ScanReportDetails= (props) => {
     return(
         <div className='scanRecord'>
             <div className='scanRecord-header'>
-                <div className='scanRecord-top'>
-                    <div className='canRecord-header-left'>
-                        <div className='canRecord-header-left-title'>
-                            <Breadcrumb firstItem={`扫描报告`} secondItem={params?.recordId} goBack={goBack}/>
-                        </div>
-                        <div className='scanRecord-header-tab'>
-                            <div className='scan-tab-style'>
-                                <div className={`${tableType==='overview'&&' choose-scanRecord-type'}`} onClick={()=>cuteTab("overview")}>概览</div>
-                                <div className={`${tableType==='report'&&' choose-scanRecord-type'}`} onClick={()=>cuteTab("report")}>
-                                    报告
-                                </div>
-                                <div className={`${tableType==='code'&&' choose-scanRecord-type'}`} onClick={()=>cuteTab("code")}>代码</div>
+                <Row >
+                    <Col span={8}>
+                        <div className='canRecord-header-left'>
+                            <div className='canRecord-header-left-title'>
+                                <Breadcrumb firstItem={`扫描历史`} secondItem={params?.recordId} goBack={goBack}/>
                             </div>
                         </div>
-                    </div>
-                    <div className='scan-play-style'>
-
-                        <div className='scan-but-style'>
-                            <Btn   title={'日志'} onClick={openLog}/>
+                    </Col>
+                    <Col span={8} >
+                        <div className='scan-tab-style'>
+                            <div className={`${tableType==='overview'&&' choose-scanRecord-type'}`} onClick={()=>cuteTab("overview")}>
+                                概览
+                            </div>
+                            <div className={`${tableType==='issue'&&' choose-scanRecord-type'}`} onClick={()=>cuteTab("issue")}>
+                                问题
+                            </div>
+                            <div className={`${tableType==='metric'&&' choose-scanRecord-type'}`} onClick={()=>cuteTab("metric")}>
+                                度量
+                            </div>
+                            <div className={`${tableType==='code'&&' choose-scanRecord-type'}`} onClick={()=>cuteTab("code")}>
+                                代码
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
+                    </Col>
+                    <Col span={8}>
+                        <div className='scan-play-style' onClick={openLog}>
+                            <FileTextOutlined />
+                            日志
+
+                           {/* <FileDoneOutlined />*/}
+                           {/* <div className='scan-but-style'>
+                                <Btn   title={'日志'} onClick={openLog}/>
+                            </div>*/}
+                        </div>
+                    </Col>
+                </Row>
+            </div>
             {
-                tableType === 'report' ?
-                <ReportContent {...props}
+                tableType === 'metric' &&
+                <MetricContent {...props}
                                recordId={params?.recordId}
                                projectData={projectData}
                                scanRecord={scanRecord}
                                probNum={probNum}
-                />:
+                />||
+                tableType === 'code' &&
+                <ScanCode {...props}
+                          projectId={params?.id}
+                          recordId={params?.recordId}
+                          projectData={projectData}
+                          findProject={findProject}
+                />||
+                ( tableType === 'overview' ||tableType === 'issue' )&&
                 <div className='sourcefare  scan-report-page-width'>
                     <Col sm={{ span: "24" }}
                          md={{ span: "24" }}
@@ -207,25 +226,19 @@ const ScanReportDetails= (props) => {
                          xl={{ span: "20", offset: "2" }}
                          xxl={{ span: "18", offset: "3" }}
                     >
-                        <div className='scan-data-style'>
+                        <div className='scanRecord-data-top'>
+
                             {
                                 tableType === 'overview' &&
-                                <div className='tab-top'>
-                                    <Overview scanRecordStat={scanRecordStat}
-                                              scanCoverStat={scanCoverStat}
-                                              metricStat={metricStat}
-                                              scanDoor={scanDoor}
-                                    />
-                                </div>||
-                                tableType === 'code' &&
-                                <div className='tab-top'>
-                                    <ScanCode {...props}
-                                              projectId={params?.id}
-                                              recordId={params?.recordId}
-                                              projectData={projectData}
-                                              findProject={findProject}
-                                    />
-                                </div>
+                                <Overview scanRecordStat={scanRecordStat}
+                                          scanCoverStat={scanCoverStat}
+                                          metricStat={metricStat}
+                                          scanDoor={scanDoor}
+                                />||
+                                tableType === 'issue' &&
+                                <IssueList projectId={projectData?.id}
+                                           scanRecord={scanRecord}
+                                />
                             }
                         </div>
                     </Col>
@@ -234,7 +247,7 @@ const ScanReportDetails= (props) => {
             <ScanLogDrawer visible={logVisible}
                            setVisible={setLogVisible}
                            scanRecord={scanRecord}
-                           logRecordLog={logRecordLog}
+                           logList={logRecordLogList}
             />
         </div>
 

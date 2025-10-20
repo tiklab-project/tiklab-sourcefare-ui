@@ -26,7 +26,7 @@ const  ProblemLevel = (props) => {
         let myChart = echarts.init(dom);
         let option = {
              title: {
-                 text: '问题严重等级分布'
+                 text: '问题等级分布'
              },
             tooltip: {
                 trigger: 'axis'
@@ -40,12 +40,12 @@ const  ProblemLevel = (props) => {
             },
             yAxis: {
                 type: 'category',
-                data: ['严重问题', '警告问题', '建议问题']
+                data: ['严重问题', '错误问题','警告问题', '建议问题']
             },
             series: [
                 {
                     type: 'bar',
-                    data: [scanRecordStat?.severityTrouble, scanRecordStat?.noticeTrouble, scanRecordStat?.suggestTrouble]
+                    data: [scanRecordStat?.severityTrouble,scanRecordStat?.errorTrouble, scanRecordStat?.noticeTrouble, scanRecordStat?.suggestTrouble]
                 },
             ]
         }

@@ -37,6 +37,34 @@
     height: calc(100% - 83px);
     display: flex;
     flex-direction: row;
+
+    .scan-log-left{
+      width: 200px;
+      min-width: 200px;
+      padding: 10px;
+      height: 100%;
+      overflow-y: auto;
+      background: #f7f7f7;
+      .scan-log-left-li{
+        display: flex;
+        padding: 7px 10px;
+        cursor: pointer;
+        .left-li-title{
+          flex: 1;
+        }
+        .left-li-time{
+          color: #999999;
+        }
+      }
+      .opt-lft-li{
+        background: var(--tiklab-gray-400);
+      }
+    }
+
+    .scan-log-no{
+      flex: 1;
+    }
+
     .scan-detail-log{
       flex: 1;
       overflow: auto;

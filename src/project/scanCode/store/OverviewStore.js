@@ -36,10 +36,8 @@ export class OverviewStore  {
         const param=new FormData()
         param.append("recordId",id)
         const res = await Axios.post("/overview/findScanRecordStat",param)
-        if (res.code!==0){
-            if (!res.msg.startsWith('ticket')){
-                message.error("查询报错，"+res.msg)
-            }
+        if (res.code!==0&&!res.msg.concat("ticket")){
+            message.error("查询报错，"+res.msg)
         }
         return res
     }
@@ -55,10 +53,8 @@ export class OverviewStore  {
         param.append("projectId",projectId)
         param.append("recordId",recordId)
         const res = await Axios.post("/overview/findMetricStat",param)
-        if (res.code!==0){
-            if (!res.msg.startsWith('ticket')){
-                message.error("查询报错，"+res.msg)
-            }
+        if (res.code!==0&&!res.msg.concat("ticket")){
+            message.error("查询报错，"+res.msg)
         }
         return res
     }

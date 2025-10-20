@@ -11,28 +11,30 @@ import {Col, Form, Select} from 'antd';
 import "./ScanConfig.scss"
 import serverGitPukStore from "../../../scanCode/store/ServerGitPukStore";
 import scanSchemeStore from "../../../scanCode/store/ScanSchemeStore";
-import RepositoryServerStore from "../../../../setting/server/store/RepositoryServerStore";
-import scanEnvStore from "../../../../setting/scan/scanEnv/store/ScanEnvStore";
+import RepositoryServerStore from "../../../../setting/ integration/store/RepositoryServerStore";
+import scanEnvStore from "../../../../setting/ integration/store/ScanEnvStore";
 import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
 import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
 import Btn from "../../../../common/btn/Btn";
-
-const scanWayList=[{value:"server",desc:"服务端扫描"},{value:"client",desc:"客户端扫描"}]
+import {PrivilegeProjectButton} from 'tiklab-privilege-ui';
+const scanWayList=[{value:"server",desc:"服务端扫描(Git)"},{value:"serverUpload",desc:"服务端扫描(包上传)"},{value:"client",desc:"客户端扫描"}]
 const ScanConfig = (props) => {
 
     const {match:{params},projectStore}=props
 
     const {findProject,findProjectRepByProjectId,updateProjectRep,updateProject
-        ,findProjectEnvList,updateProjectEnv,refresh}=projectStore
+        ,findProjectEnvList,updateProjectEnv,createProjectEnv,refresh}=projectStore
 
     const [form] = Form.useForm();
 
     const {findRepositoryList,findRepositoryBranchList}=serverGitPukStore
-    const {findAllScanScheme,scanSchemeList} = scanSchemeStore
+    const {findAllScanScheme} = scanSchemeStore
     const {findAllRepositoryServer}=RepositoryServerStore
     const {findAllDeployEnv}=scanEnvStore
 
+
+    const [scanSchemeList,setScanSchemeList]=useState([])
     const [projectData,setProjectData]=useState(null)
     const [scanConfigData,setScanConfigData]=useState(null)
 
@@ -52,30 +54,42 @@ const ScanConfig = (props) => {
     //扫描方案
     const [schemeData,setSchemeData]=useState(null)
     const [language,setLanguage]=useState(null)
-
     //环境
     const [envList,setEnvList]=useState([])
     const [execEnv,setExecEnv]=useState(null)
+
+    const [jdkEnvList,setJdkEnvList]=useState([])
     const [jdkEnv,setJdkEnv]=useState(null)
+
+    const [jdkPythonList,setPythonList]=useState([])
+    const [pythonEnv,setPythonEnv]=useState(null)
 
     const [envId,setEnvId]=useState(null)
     const [jdkId,setJdkId]=useState(null)
+    const [pythonId,setPythonId]=useState(null)
 
 
-    const [jdkEnvList,setJdkEnvList]=useState([])
+    const [envText,setEnvVersionText]=useState(null)
+
+
 
     //覆盖率测试
     const [cover,setCover]=useState(null)
+    //复杂度测试
+    const [complexity,setComplexity]=useState(null)
 
     const [updateState,setUpdateState]=useState(false)
+
+
 
     useEffect(async () => {
         findProject(params.id).then(res=>{
             setProjectData(res.data)
             form.setFieldsValue({
                 scanWay:res.data?.scanWay,
-                scanSchemeId:res.data.scanScheme.id,
+                scanSchemeId:res.data.scanScheme?.id,
                 cover:res.data?.cover,
+                complexity:res.data?.complexity,
             })
 
 
@@ -91,18 +105,51 @@ const ScanConfig = (props) => {
             //覆盖率
             setCover(res.data?.cover)
 
+            //重复度
+            setComplexity(res.data?.complexity)
             //扫描方式
             setScanWay(res.data?.scanWay)
+
+
+            const language=res.data.scanScheme?.language.toLowerCase();
+            switch (language){
+                case "java":
+                    setEnvVersionText("maven版本")
+                    break
+                case "jdk":
+                    setEnvVersionText("jdk版本")
+                    break
+                case "javascript":
+                    setEnvVersionText("node版本")
+                    break
+                case "python":
+                    setEnvVersionText("python版本")
+                    break
+                case "go":
+                    setEnvVersionText("go版本")
+                    break
+            }
+
+            //查询扫描方案
+            findAllScanScheme().then(res=>{
+                if (res.code===0){
+                   const param=res.data.filter(a=>a.language.toLowerCase()===language)
+                    setScanSchemeList(param)
+                }
+            })
         })
 
         //查询所有扫描环境
         findAllDeployEnv().then(res=>{
             if (res.code===0&&res.data){
-                const data=res.data.filter(a=>a.envType!=='jdk');
+                const data=res.data.filter(a=>a.envType!=='exec');
                 setEnvList(data)
 
                 const jdkData=res.data.filter(a=>a.envType==='jdk');
                 setJdkEnvList(jdkData)
+
+                const pythonData=res.data.filter(a=>a.envType==='python');
+                setPythonList(pythonData)
             }
         })
 
@@ -117,6 +164,7 @@ const ScanConfig = (props) => {
                     })
                 }
 
+                //初始jdk版本
                 const jdk=res.data.filter(a=>"jdk"===a.type)
                 if (jdk.length){
                     setJdkEnv(jdk[0])
@@ -124,6 +172,16 @@ const ScanConfig = (props) => {
                         jdkEnv:jdk[0]?.deployEnv.id
                     })
                 }
+
+                //初始python版本
+                const python=res.data.filter(a=>"python"===a.type)
+                if (python.length){
+                    setPythonEnv(python[0])
+                    form.setFieldsValue({
+                        python:python[0]?.deployEnv.id
+                    })
+                }
+
             }
         })
 
@@ -138,15 +196,14 @@ const ScanConfig = (props) => {
                 })
                 setRepServer(res.data?.repositoryServer)
                 setRepository({
-                    id:res.data.repositoryCode,
-                    houseWebUrl:res.data.repositoryAddress,
-                    name:res.data.repositoryName
+                    id:res.data?.repositoryCode,
+                    houseWebUrl:res.data?.repositoryAddress,
+                    name:res.data?.repositoryName
                 })
             }
         })
 
-        //查询扫描方案
-        findAllScanScheme()
+
 
     }, [refresh]);
 
@@ -156,10 +213,11 @@ const ScanConfig = (props) => {
     const onclick = () => {
         form.validateFields().then((values) => {
             //扫描方案不相等 修改
-            if (values.scanSchemeId!==projectData.scanScheme.id||projectData.cover!==cover){
+            if (values.scanSchemeId!==projectData.scanScheme?.id||projectData.cover!==cover||projectData.complexity!==complexity){
                 updateProject({...projectData,
                     scanScheme:{id:values.scanSchemeId},
-                    cover:cover
+                    cover:cover,
+                    complexity:complexity,
                 })
             }
             if (values?.branch!==scanConfigData?.branch||
@@ -179,17 +237,38 @@ const ScanConfig = (props) => {
                     }
                 })
             }
-
             //扫描环境不同修改项目扫描环境
             if (execEnv.deployEnv.id!==envId){
                 updateProjectEnv({...execEnv,deployEnv:{id:envId}})
             }
-            if (values.cover===1&&jdkEnv.deployEnv.id!==jdkId){
 
-                updateProjectEnv({...jdkEnv,deployEnv:{id:jdkId}})
+            //添加覆盖率
+            if (values.cover===1){
+                if (!jdkEnv){
+                    createProjectEnv({
+                        projectId:params.id,
+                        type:"jdk",
+                        deployEnv:{id:jdkId}
+                    })
+                }
+                if (jdkEnv?.deployEnv.id!==jdkId){
+                    updateProjectEnv({...jdkEnv,deployEnv:{id:jdkId}})
+                }
             }
 
-            cancel()
+            //添加复杂度
+            if (values.complexity===1){
+                if (!pythonEnv){
+                    createProjectEnv({
+                        projectId:params.id,
+                        type:"python",
+                        deployEnv:{id:pythonId}
+                    })
+                }
+                if (pythonEnv?.deployEnv.id!==pythonId){
+                    updateProjectEnv({...pythonEnv,deployEnv:{id:pythonId}})
+                }
+            }
         })
     }
 
@@ -209,7 +288,7 @@ const ScanConfig = (props) => {
             form.setFieldsValue({
                 repository:scanConfigData?.repositoryName,
                 branch:scanConfigData?.branch,
-                scanSchemeId:projectData.scanScheme.id
+                scanSchemeId:projectData.scanScheme?.id
             })
         }
         const serverList=repServerList.filter(a=>a.id===value)
@@ -226,7 +305,7 @@ const ScanConfig = (props) => {
         }else {
             form.setFieldsValue({
                 branch:scanConfigData?.branch,
-                scanSchemeId:projectData.scanScheme.id
+                scanSchemeId:projectData.scanScheme?.id
             })
         }
 
@@ -279,10 +358,17 @@ const ScanConfig = (props) => {
     const optJdkEnv = (value) => {
         setJdkId(value)
     }
+    //修改python环境
+    const optPythonEnv = (value) => {
+        setPythonId(value)
+    }
 
     //是否添加覆盖率测试
     const optCover = (value) => {
         setCover(value)
+    }
+    const optComplexity = (value) => {
+        setComplexity(value)
     }
 
     const setOpenOrClose = () => {
@@ -364,7 +450,7 @@ const ScanConfig = (props) => {
                                         {
                                             (repositoryList&&repositoryList.length)&&repositoryList.map(item=>{
                                                     return(
-                                                        <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                                                        <Select.Option key={item.id} value={item.id}>{item.pathWithSpace}</Select.Option>
                                                     )
                                                 }
                                             )
@@ -409,28 +495,47 @@ const ScanConfig = (props) => {
                             </Select>
                         </Form.Item>
                         {
-                            scanWay==="server"||scanWay==="serverUpload"&&
+                            ( scanWay==="server"||scanWay==="serverUpload")&&
                             <>
-                                <Form.Item
-                                    label={'扫描环境'}
-                                    name={'execEnv'}
-                                    value={envId}
-                                >
-                                    <Select     allowClear
-                                                placeholder={"请选择"}
-                                                onChange={optEnv}
+                                {
+                                    (schemeData?.language==='Java'||schemeData?.language==='JavaScript'||schemeData?.language==='Python')&&
+                                    <Form.Item
+                                        label={envText}
+                                        name={'execEnv'}
+                                        value={envId}
                                     >
-                                        {
-                                            envList.length&&envList.map(item=>{
-                                                    return(
-                                                        <Select.Option key={item.id} value={item.id}>{item.envName}</Select.Option>
-                                                    )
-                                                }
-                                            )
-                                        }
-                                    </Select>
-                                </Form.Item>
-
+                                        <Select     allowClear
+                                                    placeholder={"请选择"}
+                                                    onChange={optEnv}
+                                        >
+                                            {
+                                                envList.length&&envList.map(item=>{
+                                                        return(
+                                                            <Select.Option key={item.id} value={item.id}>{item.envName}</Select.Option>
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        </Select>
+                                    </Form.Item>
+                                }
+                                {
+                                    (schemeData?.language==="JavaScript"||schemeData?.language==="Python"
+                                        ||schemeData?.language==="c++"
+                                        ||schemeData?.language==="c#")&&
+                                    <Form.Item
+                                        label={'是否开启复杂度测试'}
+                                        name={'complexity'}
+                                    >
+                                        <Select
+                                            onChange={optComplexity}
+                                            options={[
+                                                { value: 0, label: '否' },
+                                                { value: 1, label: '是' },
+                                            ]}
+                                        />
+                                    </Form.Item>
+                                }
                                 {
                                     schemeData?.language==='Java'&&
                                     <Form.Item
@@ -485,11 +590,14 @@ const ScanConfig = (props) => {
                         {
                             updateState?
                                 <Btn  title={'加载中'} type={'primary'}/>:
-                                <Btn
-                                    type={'primary'}
-                                    title={'确定'}
-                                    onClick={onclick}
-                                />
+                                <PrivilegeProjectButton code={"project_scan_config_update"} domainId={params.id}>
+                                    <Btn
+                                        type={'primary'}
+                                        title={'确定'}
+                                        onClick={onclick}
+                                    />
+                                </PrivilegeProjectButton>
+
                         }
 
                     </div>

@@ -37,14 +37,15 @@ const ScanRuleListDrawer = (props) => {
                         <div>{
                             problemLevel===1&&<div className='text-red'>严重</div>||
                             problemLevel===2&&<div className='text-yellow'>警告</div> ||
-                            problemLevel===3&&<div className='text-blue'>建议</div>
+                            problemLevel===3&&<div className='text-blue'>建议</div>||
+                            problemLevel===4&&<div className='text-green'>建议</div>
                         }</div>
                     </div>
                     <div className='ruleDrawer-nav-style'>
                         <div className='ruleDrawer-nav-title'>类型</div>
                         <div>{
-                            scanRule.ruleType==='maintain'&&<div>可维护性</div>||
-                            scanRule.ruleType==='reliability'&&<div>可靠性</div>||
+                            scanRule.ruleType==='function'&&<div>功能</div>||
+                            scanRule.ruleType==='norm'&&<div>规范</div>||
                             scanRule.ruleType==='security'&&<div>安全</div>
                         }</div>
                     </div>

@@ -58,7 +58,7 @@ export class InstanceStore  {
     @action
     findScanRecordInstancePage=async (param)=>{
         const res = await Axios.post("/recordInstance/findScanRecordInstancePage",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(res.msg)
             return
         }
@@ -72,7 +72,7 @@ export class InstanceStore  {
     @action
     findProjectInstancePage=async (param)=>{
         const res = await Axios.post("/recordInstance/findProjectInstancePage",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(res.msg)
             return
         }
@@ -85,7 +85,7 @@ export class InstanceStore  {
     @action
     findProjectInstanceNum=async (param)=>{
         const res = await Axios.post("/recordInstance/findProjectInstanceNum",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(res.msg)
             return
         }
@@ -99,7 +99,7 @@ export class InstanceStore  {
     @action
     createRecordInstanceCond=async (param)=>{
         const res = await Axios.post("/recordInstanceCond/createRecordInstanceCond",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(res.msg)
             return
         }
@@ -113,13 +113,23 @@ export class InstanceStore  {
     @action
     findRecordInstanceCondList=async (param)=>{
         const res = await Axios.post("/recordInstanceCond/findRecordInstanceCondList",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(res.msg)
         }
         return res
     }
 
-
+    /**
+     * 条件查询问题类型数量
+     * @param  recordId
+     */
+    @action
+    findIssueTypeStatisticCount=async (recordId)=>{
+        const param=new FormData()
+        param.append('recordId',recordId)
+        const res = await Axios.post("/issueStatistic/findIssueTypeStatisticCount",param)
+        return res
+    }
 
 
 }

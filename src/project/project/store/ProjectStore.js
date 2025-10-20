@@ -153,7 +153,7 @@ export class ProjectStore{
         const param=new FormData()
         param.append("projectId",id)
         const res = await Axios.post("/projectRep/findProjectRepByProjectId",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket")){
             message.error("查询报错，"+res.msg)
         }
         return res
@@ -180,12 +180,24 @@ export class ProjectStore{
         const param=new FormData()
         param.append("projectId",id)
         const res = await Axios.post("/projectRep/findProjectRepByProjectId",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket")){
             message.error("查询报错，"+res.msg)
         }
         return res
     }
 
+    /**
+     *条件查询
+     * @param  param
+     */
+    @action
+    findProjectList=async (param)=>{
+        const res = await Axios.post("/projectRep/findProjectList",param)
+        if (res.code!==0&&!res.msg.concat("ticket")){
+            message.error("查询报错，"+res.msg)
+        }
+        return res
+    }
 
 
     /**
@@ -195,7 +207,7 @@ export class ProjectStore{
     @action
     findProjectEnvList=async (param)=>{
         const res = await Axios.post("/projectEnv/findProjectEnvList",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket")){
             message.error("查询报错，"+res.msg)
         }
         return res
@@ -213,7 +225,19 @@ export class ProjectStore{
         }
         return res
     }
-
+    /**
+     *创建项目环境
+     * @param  param
+     */
+    @action
+    createProjectEnv=async (param)=>{
+        const res = await Axios.post("/projectEnv/createProjectEnv",param)
+        if (res.code===0){
+            this.refresh=!this.refresh
+            message.success("更新成功")
+        }
+        return res
+    }
 
 }
 

@@ -11,11 +11,11 @@ import { Table} from "antd";
 import Page from "../../../../common/page/Page";
 import EmptyText from "../../../../common/emptyText/EmptyText";
 import {SpinLoading} from "../../../../common/loading/Loading";
+import "./SchemeDetails"
 const ScanSchemePlay = (props) => {
-    const {scanSchemeId}=props
+    const {scanSchemeId,findProjectPage}=props
 
-
-    const [scanPlayList,setScanPlayList]=useState([])
+    const [scanProjectList,setProjectList]=useState([])
     const [currentPage,setCurrentPage]=useState(1)
     const [totalPage,setTotalPage]=useState()
     const [pageSize]=useState(15)
@@ -23,21 +23,40 @@ const ScanSchemePlay = (props) => {
     const [load,setLoad]=useState(false)
 
     useEffect(()=>{
-       // getScanPlayPage(currentPage);
+        getScanPlayPage(currentPage);
     },[scanSchemeId])
 
     const columns = [
         {
-            title: '计划名称',
-            dataIndex: 'playName',
-            key: 'schemeName',
+            title: '项目名称',
+            dataIndex: 'name',
+            key: 'name',
             width:'30%',
             ellipsis:true,
-            render:(text,record)=><div className='text-color' onClick={()=>gotScanPlay(record)}>{text}</div>
+            render:(text,record)=><div className='text-color' onClick={()=>gotScanProject(record)}>{text}</div>
+        },
+        {
+            title: '扫描方式',
+            dataIndex: 'scanWay',
+            key: 'scanWay',
+            width:'20%',
+            ellipsis:true,
+            render:(text,record)=>{
+                return(
+                    <div>
+                        {
+                            record?.scanWay==='client'&& <div>{"客户端"}</div>||
+                            record?.scanWay==='server'&& <div>{"服务端(Git)"}</div>||
+                            record?.scanWay==='serverUpload'&& <div>{"服务端(包上传)"}</div>
+                        }
+
+                    </div>
+                )
+            }
         },
         {
             title: '关联操作人',
-            dataIndex: 'userName',
+            dataIndex: ['user','name'],
             key: 'userName',
             width:'20%',
             ellipsis:true,
@@ -53,17 +72,20 @@ const ScanSchemePlay = (props) => {
         }
     ]
     //跳转扫描计划
-    const gotScanPlay = (value) => {
+    const gotScanProject = (value) => {
+        props.history.push(`/project/${value.id}/report`)
 
-        props.history.push(`/repository/${value.repository.address}/scanRecord/${value.id}`)
     }
     //分页查询关联的扫描计划
     const getScanPlayPage= (currentPage) => {
         setLoad(true)
-        findScanPlayPage({scanSchemeId:scanSchemeId,pageParam:{currentPage:currentPage, pageSize:pageSize}}).then(res=>{
+        findProjectPage({scanSchemeId:scanSchemeId,
+            findType: "viewable",
+            pageParam:{currentPage:currentPage, pageSize:pageSize}}
+        ).then(res=>{
             setLoad(false)
             if (res.code===0){
-                setScanPlayList(res.data.dataList)
+                setProjectList(res.data.dataList)
                 setTotalPage(res.data.totalPage)
             }
         })
@@ -80,7 +102,7 @@ const ScanSchemePlay = (props) => {
                 className="sourcefare"
                 bordered={false}
                 columns={columns}
-                dataSource={scanPlayList}
+                dataSource={scanProjectList}
                 rowKey={record=>record.id}
                 pagination={false}
                 locale={{emptyText: load ?

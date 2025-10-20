@@ -34,7 +34,7 @@ const Survey = AsyncComponent(() => import('./project/survey/components/Survey')
 
 
 /*
-* 扫描报告
+* 扫描历史
 * */
 const ScanReport = AsyncComponent(() => import('./project/scanCode/components/ScanReportList'));
 const ScanReportData = AsyncComponent(() => import('./project/scanCode/components/ScanReportDetails'));
@@ -77,15 +77,21 @@ const MessageNoticeTrue=AsyncComponent(()=>import('./setting/message/MessageNoti
 const BackupRecoveryContent=AsyncComponent(()=>import('./setting/backups/BackupRecoveryContent'))
 
 
+
+
 /*系统设置*/
-const ServerInfoList=AsyncComponent(()=>import('./setting/server/compoents/RepositoryServerList'))
+
+const IntegrationServer=AsyncComponent(()=>import('./setting/ integration/components/IntegrationServer'))
+const IntegrationServerDetails=AsyncComponent(()=>import('./setting/ integration/components/IntegrationServerDetails'))
+const IntegrationTool=AsyncComponent(()=>import('./setting/ integration/components/IntegrationTool'))
+const IntegrationToolDetail=AsyncComponent(()=>import('./setting/ integration/components/IntegrationToolDetail'))
+const ServerInfoList=AsyncComponent(()=>import('./setting/ integration/components/IntegrationServerDetails'))
 /*扫描配置*/
 const ScanConfig = AsyncComponent(() => import('./project/setting/config/components/ScanConfig'));
 
 
 
 //扫描方案
-const ScanEnvironment=AsyncComponent(()=>import('./setting/scan/scanEnv/components/ScanEnvironment'))
 const ScanScheme=AsyncComponent(()=>import('./setting/scan/scanScheme/components/SchemeList'))
 const SchemeDetails=AsyncComponent(()=>import('./setting/scan/scanScheme/components/SchemeDetails'))
 const ScanRuleSetList=AsyncComponent(()=>import('./setting/scan/scanRule/components/ScanRuleSetList'))
@@ -95,7 +101,6 @@ const ScanRuleList=AsyncComponent(()=>import('./setting/scan/scanRule/components
 
 
 // security
-const MyLog=AsyncComponent(()=>import("./setting/security/MyLog"))
 const LogTemplate=AsyncComponent(()=>import("./setting/security/LogTemplate"))
 const LogType=AsyncComponent(()=>import("./setting/security/LogType"))
 
@@ -124,9 +129,8 @@ const ProjectFeature=AsyncComponent(()=>import('./setting/element/ProjectFeature
 
 
 //集成与开放
-const OpenApi =AsyncComponent(()=>import('./setting/integration/openApi/OpenApi'))
-const OpenApiDoc =AsyncComponent(()=>import('./setting/integration/openApi/OpenApiDoc'))
-const SystemInt =AsyncComponent(()=>import('./setting/integration/systemInt/components/SystemInt'))
+const OpenApi =AsyncComponent(()=>import('./setting/openApi/OpenApi'))
+const OpenApiDoc =AsyncComponent(()=>import('./setting/openApi/OpenApiDoc'))
 
 const routers = [
     {
@@ -315,10 +319,6 @@ const routers = [
                         component: TodoType,
                     },
                     {
-                        path:'/setting/myLog',
-                        component: MyLog,
-                    },
-                    {
                         path:'/setting/logTemplate',
                         component: LogTemplate,
                     },{
@@ -374,14 +374,24 @@ const routers = [
                     },
 
                     {
-                        path:'/setting/server',
+                        path:'/setting/tool',
                         exact: true,
-                        component: ServerInfoList,
+                        component: IntegrationTool,
                     },
                     {
-                        path:'/setting/scanEnv',
+                        path:'/setting/tool/:type',
                         exact: true,
-                        component: ScanEnvironment,
+                        component: IntegrationToolDetail,
+                    },
+                    {
+                        path:'/setting/server',
+                        exact: true,
+                        component: IntegrationServer,
+                    },
+                    {
+                        path:'/setting/server/:type',
+                        exact: true,
+                        component:  IntegrationServerDetails,
                     },
                     {
                         path:'/setting/scheme',
@@ -427,11 +437,6 @@ const routers = [
                         path: "/setting/openApi",
                         component: OpenApi,
                         key:'OpenApi',
-                    },
-                    {
-                        path: "/setting/systemInt",
-                        component: SystemInt,
-                        key:'SystemInt',
                     },
                     {
                         exact: true,

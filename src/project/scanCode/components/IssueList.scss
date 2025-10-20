@@ -1,13 +1,20 @@
-.scan-req{
-  margin-bottom: 15px;
-  display: flex;
-  gap: 15px;
+.issue{
 
+  .issue-search{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    .issue-search-right{
+      display: flex;
+      gap: 15px;
+    }
+  }
   .ant-select:not(.ant-select-customize-input) .ant-select-selector {
     position: relative;
-    background-color: #f7f7f7;
+    background-color: #efefef;
     border: none;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 
 
@@ -15,22 +22,34 @@
 .scan-req-state{
   width: 60px;
   padding: 3px 0;
-  background-color: #BBFADA;
+  /*background-color: #BBFADA;*/
   border-radius: 4px;
   text-align: center;
-  color: #08934D;
+  color: #22863a;
 }
 .scan-req-state-no{
   width: 60px;
   padding: 3px 0;
-  background-color: #FFE0B3;
+
   border-radius: 4px;
   text-align: center;
-  color: #F0890A;
+  color: #ee9900;
 }
 .scan-req-name{
   cursor: pointer;
   &:hover{
     color: #1890ff;
   }
+}
+.issue-text-red{
+  color: red;
+}
+.issue-text-yellow{
+  color: #df5000;
+}
+.issue-text-blue{
+  color: #3967FF;
+}
+.issue-text-green{
+  color: #02ba8b;
 }

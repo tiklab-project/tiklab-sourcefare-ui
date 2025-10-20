@@ -3,49 +3,47 @@
 
   .scanRecord-header{
 
-    .scanRecord-top{
+    /*justify-content: space-between;*/
+    /* padding: 0 30px;*/
+    border-bottom: 1px solid #f0f0f0;
+    padding: 20px 30px 0 10px;
+
+    .canRecord-header-left{
       display: flex;
-      justify-content: space-between;
-     /* padding: 0 30px;*/
-      border-bottom: 1px solid #f0f0f0;
-      padding: 20px 30px 0 30px;
-      .canRecord-header-left{
-        display: flex;
-        justify-content: space-between;
-        gap: 100px;
-        .canRecord-header-left-title{
-          height: 40px;
-        }
+      /*  justify-content: space-between;*/
+      gap: 100px;
+      .canRecord-header-left-title{
+        height: 40px;
+      }
+    }
+    .scan-tab-style{
+      display: flex;
+      gap: 20px;
+      font-size: 16px;
+      font-weight: normal;
+      cursor: pointer;
+      justify-content: center;
+      .choose-scanRecord-type{
+        color: #0063FF;
+        border-bottom:2px solid #0063FF;
+        height: 40px;
       }
 
-      .scanRecord-header-tab{
-
-        .scan-tab-style{
-          display: flex;
-          gap: 20px;
-          font-size: 16px;
-          font-weight: normal;
-          margin-left: 8px;
-          padding: 0 30px;
-          cursor: pointer;
-
-          .choose-scanRecord-type{
-            color: #0063FF;
-            border-bottom:2px solid #0063FF;
-            height: 40px;
-          }
-
-          .scan-tab-style-num{
-            color: #9b9b9b;
-            margin-left: 5px;
-            font-size: 13px;
-          }
-        }
+      .scan-tab-style-num{
+        color: #9b9b9b;
+        margin-left: 5px;
+        font-size: 13px;
       }
     }
 
     .scan-play-style{
-      height: 40px;
+      justify-content: end;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 15px;
+      font-weight: normal;
+      cursor: pointer;
       .scan-play-text{
         margin-left: 8px;
         font-size: 18px;
@@ -74,6 +72,11 @@
       }
     }
   }
+
+  .scanRecord-data-top{
+    margin-top: 20px;
+  }
+
   .scan-data-style {
     .scan-tab-style{
       display: flex;
@@ -105,9 +108,7 @@
         color: #999999;
       }
     }
-    .tab-top{
-      margin-top: 20px;
-    }
+
     .scan-data-desc{
       margin-top: 20px;
       margin-left: 8px;

@@ -25,21 +25,38 @@ const Statistics = (props) => {
     const [type,setType]=useState()
     const {issueStat,duplicatedStat,complexityStat,coverStat}=StatisticsStore
     const [title,setTitle]=useState("问题")
-
+    const [secondValue,setSecondValue]=useState(null)
 
     const addTreeNav = (value) => {
         setTreeNav(value)
         switch (value){
             case 'issue':
                 setTitle("问题")
+                setSecondValue(null)
+                break
+            case 'function':
+                setTitle("问题")
+                setSecondValue("功能")
+                break
+            case 'security':
+                setTitle("问题")
+                setSecondValue("安全")
+                break
+
+            case 'norm':
+                setTitle("问题")
+                setSecondValue("规范")
                 break
             case "duplicated":
                 setTitle("重复率")
+                setSecondValue(null)
                 break
             case "complexity":
                 setTitle("复杂度")
+                setSecondValue(null)
                 break
             case "cover":
+                setSecondValue(null)
                 setTitle("覆盖率")
         }
     }
@@ -50,7 +67,7 @@ const Statistics = (props) => {
                          treeNav={treeNav}
                          setTreeNav={addTreeNav}
                          setType={setType}
-                         findType={"statistics"}
+
             />
             <div className='sourcefare  scan-issue-width'>
                 <Col sm={{ span: "24" }}
@@ -59,9 +76,9 @@ const Statistics = (props) => {
                      xl={{ span: "22", offset: "1" }}
                      xxl={{ span: "20", offset: "2" }}
                 >
-                    <Breadcrumb firstItem={title} />
+                    <Breadcrumb firstItem={title}  secondItem={secondValue}/>
                     {
-                        (treeNav==="issue"||treeNav==="security"||treeNav==="reliability"||treeNav==="maintain")&&
+                        (treeNav==="issue"||treeNav==="security"||treeNav==="norm"||treeNav==="function")&&
                         <IssueStatistics projectId={params.id}
                                          issueStat={issueStat}
                                          treeNav={treeNav}

@@ -7,13 +7,23 @@
   .left-tree-navs{
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    padding:0 20px;
+
+    .left-tree-navs-title{
+      padding-left: 20px;
+      height: 40px;
+      display: flex;
+      line-height: 40px;
+      width: 100%;
+      align-items: center;
+      font-weight: 600;
+      border-bottom: 1px solid #E8E8E8;
+    }
     .left-tree-nav{
       /*padding: 10px 30px;*/
+      padding:6px 20px;
       display: flex;
       cursor: pointer;
-      padding: 6px;
+
       justify-content: space-between;
       align-items: center;
       .left-tree-nav-icon{
@@ -33,7 +43,7 @@
     }
 
     .left-tree-child-nav{
-      padding: 6px 5px 6px 25px;
+      padding: 6px 5px 6px 37px;
       cursor: pointer;
       &:hover{
         background-color: #f0f3fa;

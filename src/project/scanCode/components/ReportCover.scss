@@ -1,6 +1,7 @@
 .cover{
   margin-bottom: 15px;
   gap: 15px;
+  padding:  20px 30px;
 
   .cover-bread{
     display: flex;
@@ -22,6 +23,12 @@
       }
     }
   }
+
+
+  .cover-bread-icon {
+    cursor: pointer;
+    padding-right: 5px;
+  }
 }
 
 .cover-nav{
@@ -36,5 +43,15 @@
     color: #0d66e4;
     cursor: pointer;
     text-decoration: underline;
+  }
+}
+
+.cover-page-width{
+  width: 100%;
+  height: calc(100vh - 130px);
+  overflow: auto;
+  padding: 20px 30px;
+  .ant-col{
+    min-width: 900px;
   }
 }

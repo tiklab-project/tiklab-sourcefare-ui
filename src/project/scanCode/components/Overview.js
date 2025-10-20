@@ -28,7 +28,7 @@ const Overview = (props) => {
                                         scanRecordStat?.scanResult==='success'&&
                                             <div className='overview-rpy-num relyOn-num'>{"通过"}</div>||
                                         scanRecordStat?.scanResult==='fail'&&
-                                            <div className='overview-rpy-num relyOn-num'>{"不通过"}</div>||
+                                            <div className='overview-rpy-num relyOn-num'>{"未通过"}</div>||
                                         scanRecordStat?.scanResult==='execFail'&&
                                         <div className='overview-rpy-num relyOn-num'>{"运行失败"}</div>
                                     }
@@ -37,11 +37,23 @@ const Overview = (props) => {
                                     <div className='overview-hole-desc'>严重问题</div>
                                     <div className='overview-hole-num overview-hole-red'>{scanRecordStat?.severityTrouble}</div>
                                     <div className='overview-access'>
-                                        <div> 门禁阈值</div>
+                                        <div>门禁</div>
                                         {
                                             scanDoor?.severityState===1?
                                                 <div>{scanDoor?.severityNum}</div>:
-                                                <div>未启动</div>
+                                                <div>Non</div>
+                                        }
+                                    </div>
+                                </div>
+                                <div className='hole-border-left'>
+                                    <div className='overview-hole-desc'>错误问题</div>
+                                    <div className='overview-hole-num overview-hole-dired'>{scanRecordStat?.errorTrouble}</div>
+                                    <div className='overview-access'>
+                                        <div> 门禁</div>
+                                        {
+                                            scanDoor?.errorState===1?
+                                                <div>{scanDoor?.errorNum}</div>:
+                                                <div>Non</div>
                                         }
                                     </div>
                                 </div>
@@ -49,7 +61,7 @@ const Overview = (props) => {
                                     <div className='overview-hole-desc'>警告问题</div>
                                     <div className='overview-hole-num overview-hole-dired'>{scanRecordStat?.noticeTrouble}</div>
                                     <div className='overview-access'>
-                                        <div> 门禁阈值</div>
+                                        <div> 门禁</div>
                                         {
                                             scanDoor?.noticeState===1?
                                                 <div>{scanDoor?.noticeNum}</div>:
@@ -59,13 +71,13 @@ const Overview = (props) => {
                                 </div>
                                 <div className='hole-border-left'>
                                     <div className='overview-hole-desc'>提示问题</div>
-                                    <div className='overview-hole-num overview-hole-blue'>{scanRecordStat?.suggestTrouble}</div>
+                                    <div className='overview-hole-num overview-hole-green'>{scanRecordStat?.suggestTrouble}</div>
                                     <div className='overview-access'>
-                                        <div>门禁阈值</div>
+                                        <div>门禁</div>
                                         {
                                             scanDoor?.suggestState===1?
                                                 <div>{scanDoor?.suggestNum}</div>:
-                                                <div>未启动</div>
+                                                <div>Non</div>
                                         }
                                     </div>
                                 </div>
@@ -78,9 +90,19 @@ const Overview = (props) => {
                                 </div>
 
                                 <div className='hole-border-right'>
-                                    <div className='overview-hole-desc'>解决问题</div>
+                                    <div className='overview-hole-desc'>未解决问题</div>
                                     <div className='overview-hole-num'>{scanRecordStat?.allTrouble}</div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div className='overview-statistics'>
+                            <div className='overview-statistics-border'>
+                                <ProblemLevel scanRecordStat={scanRecordStat}/>
+                            </div>
+
+                            <div className='overview-statistics-border'>
+                                <ProblemType scanRecordStat={scanRecordStat}/>
                             </div>
                         </div>
 
@@ -94,16 +116,16 @@ const Overview = (props) => {
                                         </div>
                                         <div className='overview-statistics-metricStat'>
                                             <div className='metricStat-border'>
-                                                <div>代码重复率</div>
-                                                <div className='metricStat-border-size'>{metricStat?.duplicated}</div>
+                                                <div className='metricStat-border-text'>代码重复率</div>
+                                                <div className='metricStat-border-size metricStat-border-text'>{metricStat?.duplicated}</div>
                                             </div>
                                             <div className='metricStat-border'>
-                                                <div>圈复杂度</div>
-                                                <div className='metricStat-border-size'>{metricStat?.complexityNum}</div>
+                                                <div className='metricStat-border-text'>圈复杂度</div>
+                                                <div className='metricStat-border-size metricStat-border-text'>{metricStat?.complexityNum}</div>
                                             </div>
                                             <div className='metricStat-border'>
-                                                <div>非空代码行数</div>
-                                                <div className='metricStat-border-size'>{metricStat?.allLine}</div>
+                                                <div className='metricStat-border-text'>非空代码行数</div>
+                                                <div className='metricStat-border-size metricStat-border-text'>{metricStat?.allLine}</div>
                                             </div>
                                         </div>
                                     </div>:
@@ -111,16 +133,6 @@ const Overview = (props) => {
                                         <EmptyText title={"没有度量数据概况"}/>
                                     </div>
                             }
-                        </div>
-
-                        <div className='overview-statistics'>
-                            <div className='overview-statistics-border'>
-                                <ProblemLevel scanRecordStat={scanRecordStat}/>
-                            </div>
-
-                            <div className='overview-statistics-border'>
-                                <ProblemType scanRecordStat={scanRecordStat}/>
-                            </div>
                         </div>
                         {
                             scanCoverStat ?
@@ -133,7 +145,7 @@ const Overview = (props) => {
                                         <CoverPercent cover={scanCoverStat}/>
                                     </div>
                                 </div>:
-                                <div>
+                                <div className='overview-statistics'>
                                     <div className='overview-statistics-title'>
                                         覆盖率
                                     </div>

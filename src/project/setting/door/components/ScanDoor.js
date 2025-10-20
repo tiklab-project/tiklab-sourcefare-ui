@@ -12,6 +12,7 @@ import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
 import ScanDoorStore from "../store/ScanDoorStore";
 import {observer} from "mobx-react";
 import {FormOutlined} from "@ant-design/icons";
+import {PrivilegeProjectButton} from 'tiklab-privilege-ui';
 const ScanDoor = (props) => {
     const {match:{params}}=props
 
@@ -43,7 +44,6 @@ const ScanDoor = (props) => {
                 closeInputCompileDoor()
             }
           /*  if (severityRef.current && !severityRef.current.contains(event.target)) {
-                debugger
                 setCompileType(null);
                 closeInputCompileDoor()
             }*/
@@ -63,6 +63,11 @@ const ScanDoor = (props) => {
                             compileDoor({...scanDoor,severityNum:doorNum.value})
                         }
                         break
+                    case "error":
+                        if (scanDoor.errorNum!==doorNum.value){
+                            compileDoor({...scanDoor,errorNum:doorNum.value})
+                        }
+                        break
                     case "notice":
                         if (scanDoor.noticeNum!==doorNum.value){
                             compileDoor({...scanDoor,noticeNum:doorNum.value})
@@ -70,7 +75,7 @@ const ScanDoor = (props) => {
                         break
                     case "suggest":
                         if (scanDoor.suggestNum!==doorNum.value){
-                            compileDoor({...scanDoor,noticeNum:doorNum.value})
+                            compileDoor({...scanDoor,suggestNum:doorNum.value})
                         }
                         break
                 }
@@ -89,6 +94,9 @@ const ScanDoor = (props) => {
             case "severityState":
                  param={...scanDoor,severityState:state}
                  break
+            case "errorState":
+                param={...scanDoor,errorState:state}
+                break
             case "noticeState":
                 param={...scanDoor,noticeState:state}
                 break
@@ -165,9 +173,11 @@ const ScanDoor = (props) => {
                                             <div className='door-body-data-nav-num' >
                                                 {scanDoor?.severityNum}
                                             </div>
-                                            <div className='door-body-data-nav-cursor' onClick={()=>clickNum("severity")}>
-                                                <FormOutlined />
-                                            </div>
+                                            <PrivilegeProjectButton code={"scan_door_update"} domainId={params.id}>
+                                                <div className='door-body-data-nav-cursor' onClick={()=>clickNum("severity")}>
+                                                    <FormOutlined />
+                                                </div>
+                                            </PrivilegeProjectButton>
                                         </Fragment>
                                 }
                             </div>
@@ -176,35 +186,67 @@ const ScanDoor = (props) => {
                             </div>
                         </div>
                         <div className='door-body-data-row'>
-                            <div className='door-body-data-nav'>警告问题数量</div>
+                            <div className='door-body-data-nav'>错误问题数量</div>
                             <div className='door-body-data-nav'>{"<="}</div>
                             <div className='door-body-data-nav'>
                                 {
-                                    compileType==='notice'?
-                                        <Input defaultValue={scanDoor?.noticeNum}
+                                    compileType==='error'?
+                                        <Input defaultValue={scanDoor?.errorNum}
                                                style={{ width: '50%' }}
                                                onKeyDown={handleKeyDown}
-                                               onChange={(e) => setInputValue(e.target.value,"notice")}
+                                               onChange={(e) => setInputValue(e.target.value,"error")}
                                                autoFocus
 
                                         />:
                                         <Fragment>
                                             <div className='door-body-data-nav-num'>
-                                                {scanDoor?.noticeNum}
+                                                {scanDoor?.errorNum}
                                             </div>
-                                            <div className='door-body-data-nav-cursor' onClick={()=>clickNum("notice")}>
-                                                <FormOutlined />
-                                            </div>
+
+                                            <PrivilegeProjectButton code={"scan_door_update"} domainId={params.id}>
+                                                <div className='door-body-data-nav-cursor' onClick={()=>clickNum("error")}>
+                                                    <FormOutlined />
+                                                </div>
+                                            </PrivilegeProjectButton>
                                         </Fragment>
                                 }
 
+                            </div>
+                            <div className='door-body-data-nav door-body-data-nav-cursor'>
+                                <Switch defaultChecked checked={scanDoor?.errorState} checkedChildren="开启" unCheckedChildren="关闭" onChange={(e)=>onChangeDoor(e,"errorState")} />
+                            </div>
+                        </div>
+                        <div className='door-body-data-row'>
+                            <div className='door-body-data-nav'>警告问题数量</div>
+                            <div className='door-body-data-nav'>{"<="}</div>
+                            <div className='door-body-data-nav'  >
+                                {
+                                    compileType==='notice'?
+                                        <Input defaultValue={scanDoor?.noticeNum}
+                                               style={{ width: '50%' }}
+                                               onKeyDown={handleKeyDown}
+                                               autoFocus
+                                               onChange={(e) => setInputValue(e.target.value,"notice")}
+                                        />:
+                                        <Fragment>
+                                            <div className='door-body-data-nav-num'>
+                                                {scanDoor?.noticeNum}
+                                            </div>
+
+                                            <PrivilegeProjectButton code={"scan_door_update"} domainId={params.id}>
+                                                <div className='door-body-data-nav-cursor' onClick={()=>clickNum("notice")}>
+                                                    <FormOutlined />
+                                                </div>
+                                            </PrivilegeProjectButton>
+                                        </Fragment>
+                                }
                             </div>
                             <div className='door-body-data-nav door-body-data-nav-cursor'>
                                 <Switch defaultChecked checked={scanDoor?.noticeState} checkedChildren="开启" unCheckedChildren="关闭" onChange={(e)=>onChangeDoor(e,"noticeState")} />
                             </div>
                         </div>
                         <div className='door-body-data-row'>
-                            <div className='door-body-data-nav'>建议问题数量</div>
+                            <div className='door-body-data-nav'>提示问题数量</div>
                             <div className='door-body-data-nav'>{"<="}</div>
                             <div className='door-body-data-nav'  >
                                 {
@@ -219,9 +261,12 @@ const ScanDoor = (props) => {
                                             <div className='door-body-data-nav-num'>
                                                 {scanDoor?.suggestNum}
                                             </div>
-                                            <div className='door-body-data-nav-cursor' onClick={()=>clickNum("suggest")}>
-                                                <FormOutlined />
-                                            </div>
+                                            <PrivilegeProjectButton code={"scan_door_update"} domainId={params.id}>
+                                                <div className='door-body-data-nav-cursor' onClick={()=>clickNum("suggest")}>
+                                                    <FormOutlined />
+                                                </div>
+                                            </PrivilegeProjectButton>
+
                                         </Fragment>
                                 }
                             </div>

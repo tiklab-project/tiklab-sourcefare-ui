@@ -17,6 +17,7 @@ import Btn from "../../../../common/btn/Btn";
 import EmptyText from "../../../../common/emptyText/EmptyText";
 import SchemeAddPop from "./SchemeAddPop";
 import SchemeUpdatePop from "./SchemeUpdatePop";
+import {PrivilegeButton} from 'tiklab-privilege-ui';
 const SchemeList = (props) => {
     const {findScanSchemePage,deleteScanScheme,createScanScheme,createScanSchemeRuleSet, updateScanScheme,fresh}=ScanSchemeStore
 
@@ -111,20 +112,30 @@ const SchemeList = (props) => {
      */
     const pullDown=(value) => (
         <Menu>
-            <Menu.Item onClick={()=>openUpdatePop(value)} className='scheme-table-exec'>
-                编辑
-            </Menu.Item>
-
+            <PrivilegeButton code={"scan_scheme_update"} key={'scan_scheme_update'}>
+                <Menu.Item>
+                    <div onClick={()=>openUpdatePop(value)} className='table-nav-style'>
+                        编辑
+                    </div>
+                </Menu.Item>
+            </PrivilegeButton >
             {
                 value.category===1?
-                    <Menu.Item  disabled={true} className='scheme-table-exec'>
-                        <Tooltip placement="top" title={'默认方案不能被删除'} >
-                            删除
-                        </Tooltip>
-                    </Menu.Item>:
-                    <Menu.Item  className='scheme-table-exec'  onClick={()=>openDelete(value)}>
-                        删除
+                    <Menu.Item disabled>
+                        <div className='table-nav-style' >
+                            <Tooltip placement="top" title={'默认方案不能被删除'} >
+                                删除
+                            </Tooltip>
+                        </div>
                     </Menu.Item>
+                    :
+                    <PrivilegeButton code={"scan_scheme_delete"} key={'scan_scheme_delete'}>
+                        <Menu.Item>
+                            <div onClick={()=>openDelete(value)} className='table-nav-style'>
+                                删除
+                            </div>
+                        </Menu.Item>
+                    </PrivilegeButton >
             }
 
         </Menu>
@@ -170,12 +181,15 @@ const SchemeList = (props) => {
             >
                 <div className='scheme-up'>
                     <Breadcrumb firstItem={'扫描方案'}/>
-                    <Btn
-                        type={'primary'}
-                        title={'添加方案'}
-                        /*  icon={<PlusOutlined/>}*/
-                        onClick={()=> setAddVisible(true)}
-                    />
+                    <PrivilegeButton  code={"scan_scheme_add"} key={'scan_scheme_add'} >
+                        <Btn
+                            type={'primary'}
+                            title={'添加方案'}
+                            /*  icon={<PlusOutlined/>}*/
+                            onClick={()=> setAddVisible(true)}
+                        />
+                    </PrivilegeButton>
+
                 </div>
                 <div className='scheme-table'>
                     <Table

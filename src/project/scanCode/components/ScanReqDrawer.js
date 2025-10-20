@@ -16,6 +16,7 @@ import ScanReqPop from "./ScanReqPop";
 import InstanceStore from "../store/InstanceStore";
 import {getUser} from "tiklab-core-ui";
 import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
+import {PrivilegeProjectButton} from 'tiklab-privilege-ui';
 const ScanReqDrawer = (props) => {
     const {visible,setVisible,reqDetails,type,projectId}=props
     const {findCodeData}=CodeStore
@@ -109,8 +110,9 @@ const ScanReqDrawer = (props) => {
                                 </div>
                                 <div className='scan-drawer-hades-desc-nav'>
                                     <div className='scan-drawer-hades-desc-title'>问题类型</div>
-                                    <div>{reqDetails.ruleType==="function"&&<div>功能</div>|| reqDetails.ruleType==="norm"&&<div >规范</div>
-                                        ||reqDetails.ruleType==="secure"&&<div>安全</div>}
+                                    <div>{reqDetails.ruleType==="function"&&<div>功能</div>||
+                                        reqDetails.ruleType==="norm"&&<div >规范</div> ||
+                                        reqDetails.ruleType==="security"&&<div>安全</div>}
                                     </div>
                                 </div>
 
@@ -128,9 +130,16 @@ const ScanReqDrawer = (props) => {
                         {
                             type!=='issue'&&
                                 <>
-                                    {reqData?.state===0?
-                                        <div className="reqDrawer-bottom-text" onClick={openCond}>忽略问题</div>:
-                                        <div className="reqDrawer-bottom-text" onClick={updateState}>重新打开</div>}
+                                    {reqData?.state === 0 ?
+                                        <PrivilegeProjectButton code={"scan_issue_update"} domainId={projectId}>
+                                            <div className="reqDrawer-bottom-text" onClick={openCond}>忽略问题</div>
+                                        </PrivilegeProjectButton>
+                                        :
+                                        <PrivilegeProjectButton code={"scan_issue_update"} domainId={projectId}>
+                                            <div className="reqDrawer-bottom-text" onClick={updateState}>重新打开</div>
+                                        </PrivilegeProjectButton>
+                                    }
+
                                 </>
                         }
                     </div>

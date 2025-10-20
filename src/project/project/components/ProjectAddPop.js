@@ -33,15 +33,14 @@ const ProjectAddPop = (props) => {
     const [powerType,setPowerType] = useState("public")
 
 
-    //错误信息
-    const [errorMessage,setErrorMessage]=useState({})
-
     //步骤
     const [step,setStep]=useState(0)
 
     //添加的项目的内容
     const [addProjectData,setAddProjectData]=useState(null)
 
+    //复杂度测试
+    const [complexity,setComplexity]=useState(0)
 
     //扫描方式
     const [scanWay,setScanWay]=useState('server')
@@ -96,9 +95,10 @@ const ProjectAddPop = (props) => {
     }
 
     const onclickCreate = () => {
-        setCreateState(true)
         form.validateFields().then((values) => {
-            createProject({...addProjectData,
+            setCreateState(true)
+            createProject({
+                ...addProjectData,
                 scanWay:scanWay,
                 scanScheme:{
                     id:values.scanSchemeId
@@ -110,7 +110,11 @@ const ProjectAddPop = (props) => {
                 repositoryCode:repository?.id,
                 cover:values.cover,
                 excEnv:values.excEnv,
-                jdkEnv:values.jdkEnv
+                jdkEnv:values.jdkEnv,
+                complexity:values.complexity,
+                python:values.python,
+                scanType:values.scanType,
+                scanLanguage:values.scanLanguage
 
             }).then(res=>{
                 setCreateState(false)
@@ -211,6 +215,8 @@ const ProjectAddPop = (props) => {
                                         repository={repository}
                                         step={step}
                                         form={form}
+                                        complexity={complexity}
+                                        setComplexity={setComplexity}
                         />
                 }
             </div>

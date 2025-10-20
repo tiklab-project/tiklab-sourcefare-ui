@@ -7,30 +7,39 @@
  */
 
 import React,{useState,useEffect,Fragment} from 'react';
-import {observer} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import "./ReportCover.scss"
 import EmptyText from "../../../common/emptyText/EmptyText";
 import {Table, Tooltip} from "antd";
 import CoverStore from "../store/CoverStore";
 import Page from "../../../common/page/Page";
 import {FileTextOutlined, FolderOutlined} from "@ant-design/icons";
-import RenderBread from "../common/RenderBread";
+import RenderBreadCover from "../common/RenderBreadCover";
+import codePage from "../../../assets/images/img/code-home-page.png";
+import {withRouter} from "react-router";
 const ReportCover = (props) => {
-    const {recordId}=props
-    const {findProjectCoverList,findProjectCoverPage}=CoverStore
+    const {recordId,projectStore}=props
+    const {findProjectCoverPage,findProjectCoverGoPage}=CoverStore
+    const {projectData}=projectStore
 
     const [projectCoverList,setProjectCoverList]=useState([])
     const [currentPage,setCurrentPage]=useState(1)
     const [totalRecord,setTotalRecord]=useState()
     const [totalPage,setTotalPage]=useState()
-    const [pageSize]=useState(15)
+    const [pageSize]=useState(20)
 
     const [optCover,setOptCover]=useState(null);
     const [coverList,setCoverList]=useState([])
 
-
+    const [language,setLanguage]=useState(null)
     useEffect(async () => {
-        getProjectCover(currentPage)
+        const lan=projectData?.scanScheme.language?.toLowerCase()
+        setLanguage(lan)
+        if (lan==='go'){
+            getGoProjectCover(currentPage)
+        }else {
+            getProjectCover(currentPage)
+        }
     }, []);
 
 
@@ -133,6 +142,31 @@ const ReportCover = (props) => {
             </div>
         },
     ]
+    const coverGoColumns =[
+        {
+            title: '名称',
+            dataIndex: 'filePath',
+            key:"filePath",
+            width:'80%',
+            ellipsis:true,
+        },
+        {
+            title: '覆盖率',
+            dataIndex: 'coverageRate',
+            key:"coverageRate",
+            width:'20%',
+            render:(text,record)=>   <div >
+                {
+                    text?
+                        <div>{text}</div>:
+                        <div>
+                            {"n/a"}
+                        </div>
+                }
+            </div>
+        },
+    ]
+
 
 
     //查询项目覆盖率
@@ -141,6 +175,21 @@ const ReportCover = (props) => {
             pageParam:{currentPage:currentPage, pageSize:pageSize},
             scanRecordId:recordId,
             parentPath:parentPath,
+        }).then(res=>{
+            if (res.code===0){
+                setProjectCoverList(res.data.dataList)
+                setTotalPage(res.data.totalPage)
+                setCurrentPage(res.data.currentPage)
+                setTotalRecord(res.data.totalRecord)
+            }
+        })
+    }
+
+    //查询go语言项目覆盖率
+    const getGoProjectCover = (currentPage)=>{
+        findProjectCoverGoPage({
+            pageParam:{currentPage:currentPage, pageSize:pageSize},
+            scanRecordId:recordId,
         }).then(res=>{
             if (res.code===0){
                 setProjectCoverList(res.data.dataList)
@@ -168,7 +217,11 @@ const ReportCover = (props) => {
     //分页
     const handleChange = (value) => {
         setCurrentPage(value)
-        getProjectCover(value,optCover.path)
+        if (language==='go'){
+            getGoProjectCover(value)
+        }else {
+            getProjectCover(value,optCover.path)
+        }
     }
 
 
@@ -183,12 +236,19 @@ const ReportCover = (props) => {
             const a=coverList.slice(0,index+1)
             setCoverList(a)
 
+
             //添加当前选中的数据
             const data=coverList[index];
             setOptCover(data)
 
             getProjectCover(1,data.path)
         }
+    }
+
+    const goCodeHome = () => {
+        setCoverList([])
+        setOptCover(null)
+        getProjectCover(1)
     }
 
     const fileIcon = (type) => {
@@ -202,15 +262,18 @@ const ReportCover = (props) => {
 
 
     return(
-        <div className='cover'>
+        <div className='cover cover-page-width'>
             <div className='cover-bread'>
-                <RenderBread dataList={coverList}
+                <div onClick={goCodeHome} className='cover-bread-icon'>
+                    <img  src={codePage}  style={{width:23,height:23}}/>
+                </div>
+                <RenderBreadCover dataList={coverList}
                              breadJump={breadJump}
                              title={"覆盖率报告"}
                 />
             </div>
             <Table
-                columns={coverColumns}
+                columns={language==="go"?coverGoColumns:coverColumns}
                 dataSource={projectCoverList}
                 rowKey={record=>record.id}
                 pagination={false}
@@ -226,4 +289,4 @@ const ReportCover = (props) => {
         </div>
     )
 }
-export default observer(ReportCover)
+export default withRouter(inject('projectStore')(observer(ReportCover)))

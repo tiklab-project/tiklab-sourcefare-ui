@@ -31,10 +31,10 @@ export class CodeScanStore  {
      * @param  param
      */
     @action
-    findScanState=async (scanPlayId,scanWay)=>{
+    findScanState=async (projectId,recordId)=>{
         const param =new FormData()
-        param.append("scanPlayId",scanPlayId)
-        param.append("scanWay",scanWay)
+        param.append("recordId",recordId)
+        param.append("projectId",projectId)
         const res = await Axios.post("/codeScan/findScanState",param)
         return res
     }

@@ -8,7 +8,7 @@
         padding-bottom: 10px;
     }
     .scan-req-search{
-        padding: 15px 0;
+        padding: 10px 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -34,9 +34,10 @@
 
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
         position: relative;
-        background-color: #f7f7f7;
+        background-color: #efefef;
         border: none;
-        border-radius: 2px;
+        border-radius: 4px;
+
     }
 }
 
@@ -58,16 +59,18 @@
 .scan-req-state{
     width: 60px;
     padding: 3px 0;
-    background-color: #BBFADA;
+ /*   background-color: #BBFADA;*/
     border-radius: 4px;
     text-align: center;
-    color: #08934D;
+    color: #22863a;
 }
 .scan-req-state-no{
     width: 60px;
     padding: 3px 0;
-    background-color: #FFE0B3;
+  /*  background-color: #FFE0B3;*/
     border-radius: 4px;
     text-align: center;
-    color: #F0890A;
+    color: #ee9900;
 }
+
+

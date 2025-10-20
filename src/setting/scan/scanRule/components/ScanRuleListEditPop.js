@@ -12,7 +12,7 @@ import Modal from "../../../../common/modal/Modals";
 import Btn from "../../../../common/btn/Btn";
 const { TextArea } = Input;
 
-const levelList=[{key:1,value:"严重"},{key:2,value:"警告"},{key:3,value:"建议"}]
+const levelList=[{key:0,value:"全部"},{key:1,value:"严重"},{key:2,value:"错误"},{key:3,value:"警告"},{key:4,value:"提示"}]
 const ruleSetTypeList=[{key:"function",value:"功能"},{key:"norm",value:"规范"},{key:"secure",value:"安全"}]
 const ScanRuleListEditPop = (props) => {
     const [form] = Form.useForm()

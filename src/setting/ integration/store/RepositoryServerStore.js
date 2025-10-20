@@ -6,7 +6,7 @@ export class RepositoryServerStore {
 
     // 刷新
     @observable
-    fresh = false
+    repoFresh = false
 
 
     /**
@@ -19,7 +19,7 @@ export class RepositoryServerStore {
         const data = await Axios.post('/RepositoryServer/createRepositoryServer',value)
         if(data.code===0){
             message.info('创建成功',0.5)
-            this.fresh = !this.fresh
+            this.repoFresh = !this.repoFresh
         }
         return data
     }
@@ -34,7 +34,7 @@ export class RepositoryServerStore {
         const data = await Axios.post('/RepositoryServer/updateRepositoryServer',value)
         if(data.code===0){
             message.info('更新成功',0.5)
-            this.fresh = !this.fresh
+            this.repoFresh = !this.repoFresh
         }
         return data
     }
@@ -51,7 +51,7 @@ export class RepositoryServerStore {
         const data = await Axios.post('/RepositoryServer/deleteRepositoryServer',param)
         if(data.code===0){
             message.info('删除成功',0.5)
-            this.fresh = !this.fresh
+            this.repoFresh = !this.repoFresh
         }
     }
 

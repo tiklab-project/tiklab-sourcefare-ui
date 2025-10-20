@@ -31,7 +31,8 @@
     .scan-report-search-text{
       display: flex;
       color: #94979a;
-      background-color: #f7f7f7;
+      background-color: #efefef;
+      border-radius: 4px;
       align-items: center;
       gap: 10px;
       padding: 3px 10px;
@@ -59,14 +60,17 @@
   .scan-report-result-num{
       display: flex;
       gap: 5px;
-    .scan-report-num-server{
+    .scan-report-num-red{
       color: red;
     }
-    .scan-report-num-notice{
+    .scan-report-num-yellow{
       color: #df5000;
     }
-    .scan-report-num-suggest{
+    .scan-report-num-build{
       color: #1890ff;
+    }
+    .scan-report-num-green{
+      color: #02ba8b;
     }
   }
   .scan-result-success{
@@ -87,15 +91,16 @@
 
   .ant-select:not(.ant-select-customize-input) .ant-select-selector {
     position: relative;
-    background-color: #f7f7f7;
+    background-color: #efefef;
     border: none;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 
 .icon-text{
   display: flex;
-  gap: 5px;
+  gap: 7px;
   align-items: center;
+  cursor: pointer;
 }
 

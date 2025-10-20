@@ -61,7 +61,8 @@ const schemeDetailsDrawer = (props) => {
             width:'15%',
             ellipsis:true,
             render:(text)=>text===1&&<div className='text-red'>严重</div>||
-                text===2&&<div className='text-yellow'>警告</div> ||text===3&&<div className='text-blue'>建议</div>
+                text===2&&<div className='text-yellow'>错误</div> ||text===3&&<div className='text-blue'>警告</div>||
+                text===4&&<div className='text-green'>提示</div>
         },
         {
             title: '操作',
@@ -70,45 +71,43 @@ const schemeDetailsDrawer = (props) => {
             ellipsis:true,
             render:(text,record)=>{
                 return(
-                    <PrivilegeButton  code={"gittok_scan_scheme"} key={'gittok_scan_scheme'} >
-                        <div className='table-icon-style'>
-                           {/* <Tooltip title='编辑'>
+                    <div className='table-icon-style'>
+                        {/* <Tooltip title='编辑'>
                             <span className='icon-style' onClick={()=>opeEditPop(record)}>
                                 <EditOutlined />
                             </span>
                             </Tooltip>*/}
-                            {
-                                record.isDisable===0?
-                                    <Tooltip title={"停用"}>
-                                        <Popconfirm
-                                            placement="topRight"
-                                            title="停用后，运行当前检测方案时将不再执行对应规则"
-                                            onConfirm={()=>updateScanSchemeRule({...record,isDisable:1})}
-                                            okText="确定"
-                                            cancelText="取消"
-                                        >
+                        {
+                            record.isDisable===0?
+                                <Tooltip title={"停用"}>
+                                    <Popconfirm
+                                        placement="topRight"
+                                        title="停用后，运行当前检测方案时将不再执行对应规则"
+                                        onConfirm={()=>updateScanSchemeRule({...record,isDisable:1})}
+                                        okText="确定"
+                                        cancelText="取消"
+                                    >
                                 <span className='icon-style'>
                                     <CloseCircleOutlined />
                                 </span>
-                                        </Popconfirm>
-                                    </Tooltip>:
-                                    <Tooltip title={"启用"}>
-                                        <Popconfirm
-                                            placement="topRight"
-                                            title="是否启用"
-                                            onConfirm={()=>updateScanSchemeRule({...record,isDisable:0})}
-                                            okText="确定"
-                                            cancelText="取消"
-                                        >
+                                    </Popconfirm>
+                                </Tooltip>:
+                                <Tooltip title={"启用"}>
+                                    <Popconfirm
+                                        placement="topRight"
+                                        title="是否启用"
+                                        onConfirm={()=>updateScanSchemeRule({...record,isDisable:0})}
+                                        okText="确定"
+                                        cancelText="取消"
+                                    >
                                         <span className='icon-style'>
                                             <CheckCircleOutlined />
                                         </span>
-                                        </Popconfirm>
-                                    </Tooltip>
-                            }
+                                    </Popconfirm>
+                                </Tooltip>
+                        }
 
-                        </div>
-                    </PrivilegeButton >
+                    </div>
                 )
             }
         }

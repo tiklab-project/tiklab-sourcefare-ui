@@ -23,7 +23,14 @@
 }
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   position: relative;
-  background-color: #f7f7f7;
+  background-color: #efefef;
   border: none;
-  border-radius: 2px;
+  border-radius: 4px;
+}
+
+.graphics-background{
+  background-color: #f7f7f7;
+  border-radius: 4px;
+  padding: 15px 10px;
+  margin-top: 30px;
 }

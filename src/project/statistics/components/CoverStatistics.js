@@ -71,7 +71,9 @@ const DupStatistics = (props) => {
                     }
                 </Select>
             </div>
-            <CoverChart coverData={coverData}/>
+            <div className='graphics-background'>
+                <CoverChart coverData={coverData}/>
+            </div>
         </div>
     )
 

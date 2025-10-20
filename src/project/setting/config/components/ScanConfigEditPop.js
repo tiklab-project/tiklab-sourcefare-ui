@@ -12,8 +12,8 @@ import Modals from "../../../../common/modal/Modals";
 import Btn from "../../../../common/btn/Btn";
 import serverGitPukStore from "../../../scanCode/store/ServerGitPukStore";
 import scanSchemeStore from "../../../scanCode/store/ScanSchemeStore";
-import RepositoryServerStore from "../../../../setting/server/store/RepositoryServerStore";
-import scanEnvStore from "../../../../setting/scan/scanEnv/store/ScanEnvStore";
+import RepositoryServerStore from "../../../../setting/ integration/store/RepositoryServerStore";
+import scanEnvStore from "../../../../setting/ integration/store/ScanEnvStore";
 
 const scanWayList=[{value:"server",desc:"服务端扫描"},{value:"client",desc:"客户端扫描"}]
 const ScanConfigEditPop = (props) => {

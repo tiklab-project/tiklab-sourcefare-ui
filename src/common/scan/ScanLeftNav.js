@@ -10,6 +10,7 @@ import {Col, Layout, Tooltip} from 'antd';
 import "./ScanLeftNav.scss"
 import {FileSyncOutlined, FileUnknownOutlined, PieChartOutlined, RadarChartOutlined} from "@ant-design/icons";
 import {observer} from "mobx-react";
+import BreadcrumbContent from "../breadcrumb/Breadcrumb";
 const { Sider } = Layout;
 const ScanLeftNav = (props) => {
     const {setType,findType,treeNav,setTreeNav}=props
@@ -33,16 +34,17 @@ const ScanLeftNav = (props) => {
             icon:<FileUnknownOutlined />,
             childList:[
                 {
+                    title:"功能",
+                    key:"function",
+                },
+                {
                     title:"安全",
                     key:"security",
                 },
+
                 {
-                    title:"可靠性",
-                    key:"reliability",
-                },
-                {
-                    title:"可维护性",
-                    key:"maintain",
+                    title:"规范",
+                    key:"norm",
                 },
             ]
         },
@@ -71,6 +73,10 @@ const ScanLeftNav = (props) => {
                resizeable
         >
             <div className='left-tree-navs'>
+                <div className='left-tree-navs-title'>
+                    统计
+                </div>
+
                 {
                     navList.map(item=>{
                         return(

@@ -27,7 +27,7 @@ const ScanReqPop = (props) => {
                 if (res.code===0){
                     createRecordInstanceCond({
                         scanRecordId:reqDetails.scanRecordId,
-                        projectId:reqDetails.project.id,
+                        projectId:reqDetails.projectId,
                         recordInstanceId:reqDetails.id,
                         data:(value===3&&!data)?"其他":data,
                         user:{

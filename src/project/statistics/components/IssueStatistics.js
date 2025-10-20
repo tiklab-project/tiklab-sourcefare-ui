@@ -13,14 +13,14 @@ import IssueChart from "./IssueChart";
 import IssueTypeChart from "./IssueTypeChart";
 const IssueStatistics = (props) => {
     const {projectId,issueStat,treeNav}=props
-    const [findType,setFindType]=useState("issueLevel")
+    const [findType,setFindType]=useState("issueType")
     const [findNum,setFindNum]=useState(7)
     //问题统计
     const [issueData,setIssueData]=useState([])
 
 
     useEffect(async() => {
-        if (treeNav==='security'||treeNav==='reliability'||treeNav==='maintain'){
+        if (treeNav==='security'||treeNav==='function'||treeNav==='norm'){
             await findStatistics("issueType",findNum)
         }
         if (treeNav==='issue'){
@@ -76,8 +76,9 @@ const IssueStatistics = (props) => {
                 {
                     treeNav==='issue'&&
                     <Select   onChange={(type,value)=>changeIssue("findType",value)} style={{minWidth:140}} placeholder='查询类型'>
-                        <Select.Option value={"issueLevel"}>{"等级"}</Select.Option>
                         <Select.Option value={"issueType"}>{"类型"}</Select.Option>
+                        <Select.Option value={"issueLevel"}>{"等级"}</Select.Option>
+
                     </Select>
                 }
                 <Select
@@ -92,17 +93,20 @@ const IssueStatistics = (props) => {
                     }
                 </Select>
             </div>
-            {
-                treeNav==='issue'?
-                    <IssueChart issueData={issueData}
-                                typeData={findType}
+            <div className='graphics-background'>
+                {
+                    treeNav==='issue'?
+                        <IssueChart issueData={issueData}
+                                    typeData={findType}
 
-                    />:
-                    <IssueTypeChart
-                        issueData={issueData}
-                        treeNav={treeNav}
-                    />
-            }
+                        />:
+                        <IssueTypeChart
+                            issueData={issueData}
+                            treeNav={treeNav}
+                        />
+                }
+            </div>
+
 
         </div>
     )

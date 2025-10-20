@@ -36,7 +36,7 @@ export class ServerGitPukStore  {
         param.append("repId",repId)
         param.append("repServerId",repServerId)
         const data = await Axios.post("/serverGitPuk/findRepositoryBranchList",param)
-        if (data.code!==0){
+        if (data.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(data.msg)
         }
         return data

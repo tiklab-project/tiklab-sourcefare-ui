@@ -41,6 +41,23 @@ const Tabs = props =>{
         )
     }
 
+    //查询问题类型数量
+    const findIssueTypeNum = (value) => {
+        return(
+            <>
+                {value==="all"&&
+                    <span className='xcode-tab-num'>{dataNum?.all}</span>||
+                    value==="security"&&
+                    <span className='xcode-tab-num'>{dataNum?.security}</span>||
+                    value==="function"&&
+                    <span className='xcode-tab-num'>{dataNum?.function}</span>||
+                    value==="norm"&&
+                    <span className='xcode-tab-num'>{dataNum?.norm}</span>
+                }
+            </>
+        )
+    }
+
 
     return (
         <div className='xcode-tabs'>
@@ -54,9 +71,9 @@ const Tabs = props =>{
                         {
 
                             findType==="project"&& findProjectNum(item.id)||
-                            findType==="issue"&&findIssueNum(item.id)
+                            findType==="issue"&&findIssueNum(item.id)||
+                            findType==='issueType'&&findIssueTypeNum(item.id)
                         }
-
                     </div>
                 ))
             }

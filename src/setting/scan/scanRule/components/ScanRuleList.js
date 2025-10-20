@@ -19,7 +19,7 @@ import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
 import SearchInput from "../../../../common/input/SearchInput";
 import Page from "../../../../common/page/Page";
 import EmptyText from "../../../../common/emptyText/EmptyText";
-const leveList=[{key:0,value:"全部"},{key:1,value:"严重"},{key:2,value:"警告"},{key:3,value:"建议"}]
+const leveList=[{key:0,value:"全部"},{key:1,value:"严重"},{key:2,value:"错误"},{key:3,value:"警告"},{key:4,value:"提示"}]
 const scanToolList=[{key:"all",value:"全部"},{key:"SpotBugs",value:"SpotBugs"},{key:"PMD",value:"PMD"}]
 const ScanRuleList = (props) => {
     const {match:{params}} = props;
@@ -94,8 +94,8 @@ const ScanRuleList = (props) => {
             key: 'problemLevel',
             width:'10%',
             ellipsis:true,
-            render:(text)=>text===1&&<div className='text-red'>严重</div>|| text===2&&<div className='text-yellow'>警告</div>
-                ||text===3&&<div className='text-blue'>建议</div>
+            render:(text)=>text===1&&<div className='text-red'>严重</div>|| text===2&&<div className='text-yellow'>错误</div>
+                ||text===3&&<div className='text-blue'>警告</div>||text===4&&<div className='text-green'>提示</div>
         },
        /* {
             title:'操作',
@@ -212,7 +212,11 @@ const ScanRuleList = (props) => {
                         onChange={onInputRuleName}
                         onPressEnter={onSearchRule}
                     />
-                    <Select   style={{width: 190}}  onChange={selectLevel}  placeholder='问题等级'>
+                    <Select   style={{width: 190}}
+                              onChange={selectLevel}
+                              placeholder='问题等级'
+                              allowClear
+                    >
                         {leveList.map(item=>{
                             return(
                                 <Option  key={item.key} value={item.key}>

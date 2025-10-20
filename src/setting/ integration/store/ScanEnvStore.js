@@ -61,6 +61,20 @@ export class ScanEnvStore {
             message.info('创建成功',0.5)
             this.fresh = !this.fresh
         }
+        return data
+    }
+
+    /**
+     * 全局环境检测
+     * @param value
+     * @returns {Promise<void>}
+     */
+    @action
+    detectionEnv = async value =>{
+        const param=new FormData()
+        param.append("type",value)
+        const data = await Axios.post('/deployEnv/detectionEnv',param)
+        return data
     }
 
     /**
@@ -75,6 +89,7 @@ export class ScanEnvStore {
             message.info('更新成功',0.5)
             this.fresh = !this.fresh
         }
+        return data
     }
 
     /**

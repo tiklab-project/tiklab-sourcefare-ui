@@ -7,16 +7,15 @@ import React,{Fragment} from 'react';
 import "./RenderBread.scss"
 const RenderBread = (props) => {
     const {dataList,breadJump,title}=props
-
     return (
         <Fragment>
-            <div className={`${dataList.length&&"bread-item"}`} onClick={()=>breadJump(0,"home")}>{title}</div>
+            <div className="bread-item-name" onClick={()=>breadJump(0,"home")}>{title}</div>
             {
                 dataList.length>0 && dataList.map((item,index)=>{
                     return <Fragment key={index}>
-                        <div className='bread-item'> > </div>
-                        <div className={`${dataList.length!==index+1&&"bread-item"}`} onClick={()=>breadJump(index)}>
-                            {item.name}
+                        <div className='render-bread-item'> > </div>
+                        <div className={`${dataList.length!==index+1&&"bread-item-name"}`} onClick={()=>breadJump(index)}>
+                            {item}
                         </div>
                     </Fragment>
                 })

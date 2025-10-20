@@ -115,7 +115,7 @@ const ScanIssueList = (props) => {
             dataIndex: 'ruleType',
             key:"ruleType",
             width:'10%',
-            render:(text)=>text==="reliability"&&<div>可靠性</div>|| text==="maintain"&&<div >可维护性</div>
+            render:(text)=>text==="norm"&&<div>规范</div>|| text==="function"&&<div >功能</div>
                 ||text==="security"&&<div>安全</div>
         },
         {
@@ -202,8 +202,8 @@ const ScanIssueList = (props) => {
                     <div className='scan-req-search-right'>
                         <Select  allowClear onChange={value=>changType(value)} style={{minWidth:140}} placeholder='类型'>
                             <Select.Option value={"security"}>{"安全"}</Select.Option>
-                            <Select.Option value={"reliability"}>{"可靠性"}</Select.Option>
-                            <Select.Option value={"maintain"}>{"可维护性"}</Select.Option>
+                            <Select.Option value={"function"}>{"功能"}</Select.Option>
+                            <Select.Option value={"norm"}>{"规范"}</Select.Option>
                         </Select>
                         <Select  allowClear onChange={value=>changLeve(value)} style={{minWidth:140}} placeholder="问题等级">
                             <Select.Option value={1}>{"严重"}</Select.Option>

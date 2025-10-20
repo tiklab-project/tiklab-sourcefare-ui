@@ -1,0 +1,117 @@
+.metric-content{
+  height: 100%;
+/*  display: flex;*/
+
+  .metric-content-left-tab{
+    width: 60px;
+    flex: none;
+    height: 100%;
+    background-color: var(--tiklab-scan-data);
+    border-right: 1px solid #f0f2f5;
+    .metric-content-left-tab-nav{
+      padding: 10px 15px;
+      cursor: pointer;
+
+    }
+    .content-left-tab-nav-c{
+      color: var(--tiklab-blue);
+      background-color: var(--tiklab-gray-400);
+    }
+
+    .content-left-tab-nav-icon{
+      margin-left: 3px;
+      font-size: 18px;
+    }
+    .content-left-tab-nav-text{
+      writing-mode: vertical-rl; /* 从右到左垂直排列 */
+      /* writing-mode: vertical-lr; */ /* 从左到右垂直排列 */
+      text-orientation: mixed; /* 保持字符方向 */
+      margin-top: 7px;
+    }
+  }
+
+  .metric-content-top-tab{
+    display: flex;
+    gap: 40px;
+
+    .content-top-tab-nav{
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding-bottom: 15px;
+      cursor: pointer;
+      .content-top-tab-nav-icon{
+        font-size: 18px;
+      }
+    }
+    .content-top-tab-nav-c{
+      color: var(--tiklab-blue);
+      border-bottom: 2px solid var(--tiklab-blue);
+
+    }
+
+  }
+
+
+  .metric-content-tab{
+    padding: 0 20px 0 10px;
+    display: flex;
+    align-items: center;
+
+   /* background-color: #f6f7f9;*/
+    border-bottom: 1px solid #f0f0f0;
+
+
+    .metric-content-nav{
+      display: flex;
+      gap: 10px;
+      padding-top: 20px ;
+      flex: 1;
+
+
+      .metric-content-nav-one{
+        padding: 5px 7px;
+        cursor: pointer;
+        font-size: 14px;
+        background-color: #efefef;
+        border-radius: 4px;
+      }
+      .nav-one-chose{
+        color: var(--tiklab-blue);
+        background-color: var(--tiklab-gray-400);
+      }
+    }
+
+
+    .metric-content-help{
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      cursor: pointer;
+      margin-right: 7px;
+      .metric-content-icon{
+        /*   color: #7e8085;*/
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+    }
+  }
+  .metric-content-data{
+    display: flex;
+    height: 100%;
+    .metric-content-data-left{
+      height: 100%;
+    }
+  }
+}
+.code-page-width{
+  width: 100%;;
+  height: 100%;
+  overflow: auto;
+  padding: 0 10px 10px 10px;
+  .ant-col{
+    min-width: 720px;
+  }
+}

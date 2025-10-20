@@ -89,7 +89,7 @@ const FirstNav = (props) => {
         },
         {
             key: 'setting',
-            id:`/setting/home`,
+            id:`setting/role`,
             title:'设置',
             icon:   <SettingOutlined  className={`${collapsed?'close-iconfont':'open-iconfont'}`}/>
         }
@@ -99,11 +99,7 @@ const FirstNav = (props) => {
     const cuteNav = (value) => {
         setNavPath(value.id)
         if (value.key==='setting'){
-            if (version==='cloud'){
-                props.history.push('/setting/myLog')
-            }else {
-                props.history.push('/setting/role')
-            }
+            props.history.push('/setting/home')
         }else {
             props.history.push(value.id)
         }

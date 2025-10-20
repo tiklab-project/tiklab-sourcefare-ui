@@ -71,7 +71,10 @@ const DupStatistics = (props) => {
                     }
                 </Select>
             </div>
-            <DupChart duplicatedData={duplicatedData}/>
+            <div className='graphics-background'>
+                <DupChart duplicatedData={duplicatedData}/>
+            </div>
+
         </div>
     )
 

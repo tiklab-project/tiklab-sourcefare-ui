@@ -1,0 +1,103 @@
+.code-tree{
+  position: relative;
+  z-index: 1;
+
+  background-color: var(--tiklab-scan-data);
+  .code-tree-open{
+    border-right: 1px solid #f0f2f5;
+    width: 300px;
+
+    .code-tree-open-code{
+      overflow: auto;
+      height: calc(100vh - 175px);
+      padding: 10px;
+    }
+
+    .code-omit{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    .code-tree-open-code-height{
+      overflow: auto;
+      height: calc(100vh - 105px);
+      padding: 10px;
+    }
+
+    .tree-open-title-style{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-top: 10px;
+      .tree-open-title-style-text{
+        font-size: 15px;
+        font-weight: var(--tiklab-font-weight-bold);
+        color: #7e8085;
+      }
+    }
+
+    .code-tree-project{
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      cursor: pointer;
+      padding: 5px;
+      font-size: 14px;
+      font-weight: var(--tiklab-font-weight-bold);
+      margin-bottom: 5px;
+      color: #7e8085;;
+    }
+
+    .code-tree-nav{
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      cursor: pointer;
+      padding: 5px;
+      .code-tree-nav-icon{
+        display: flex;
+        gap: 5px;
+      }
+    }
+
+    .code-tree-nav-choice{
+      background-color:var(--tiklab-gray-300);
+      border-radius: 4px;
+    }
+  }
+
+  .code-tree-close{
+    border-right: 1px solid #f0f2f5;
+    height: 100%;
+    width: 40px;
+    padding: 13px 10px 0 13px;
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .code-left-nav-text{
+    padding-left: 15px;
+  }
+
+}
+.code-tree-open-code::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.code-tree-open-code:hover::-webkit-scrollbar {
+  width: 5px;
+  height: 0;
+}
+
+.code-tree-open-code-height::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.code-tree-open-code-height:hover::-webkit-scrollbar {
+  width: 5px;
+  height: 0;
+}

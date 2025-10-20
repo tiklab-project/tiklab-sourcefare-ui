@@ -8,7 +8,7 @@
  */
 import React,{useState,useEffect} from 'react';
 import "./ScanRuleSetList.scss"
-import {Col, Table} from "antd";
+import {Col, Select, Table} from "antd";
 import {observer} from "mobx-react";
 import ScanRuleSetEditPop from "./ScanRuleSetEditPop";
 import ScanRuleSetStore from "../store/ScanRuleSetStore";
@@ -16,6 +16,8 @@ import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
 import Btn from "../../../../common/btn/Btn";
 import SearchInput from "../../../../common/input/SearchInput";
 import EmptyText from "../../../../common/emptyText/EmptyText";
+import {Option} from "antd/es/mentions";
+const LanguageList=[{key:"Java",value:"Java"},{key:"JavaScript",value:"JavaScript"},{key:"Python",value:"Python"},{key:"C++",value:"C++"},{key:"Go",value:"Go"}]
 const ScanRuleSetList = (props) => {
 
     const {createScanRuleSet,deleteScanRuleSet,findScanRuleSetList,scanRuleSetList,fresh}=ScanRuleSetStore
@@ -23,6 +25,8 @@ const ScanRuleSetList = (props) => {
     const [editVisible,setEditVisible] = useState(false)
 
     const [ruleSetName,setRuleSetName]=useState('')
+
+    const [language,setLanguage]=useState(null);
 
     const columns = [
         {
@@ -72,11 +76,11 @@ const ScanRuleSetList = (props) => {
     ]
 
     useEffect(()=>{
-        getScanRuleSet();
+        getScanRuleSet({});
     },[fresh])
 
-  const getScanRuleSet = (ruleSetName) => {
-      findScanRuleSetList({ruleSetName:ruleSetName})
+  const getScanRuleSet = (value) => {
+      findScanRuleSetList(value)
   }
 
     //输入规则名称
@@ -84,13 +88,18 @@ const ScanRuleSetList = (props) => {
         const value = e.target.value
         setRuleSetName(value)
         if (value===''){
-            getScanRuleSet()
+            getScanRuleSet({language:language})
         }
 
     }
     //通过规则名称查询规则
     const onSearchRuleSet = () => {
-        getScanRuleSet(ruleSetName)
+        getScanRuleSet({language:language,ruleSetName:ruleSetName})
+    }
+
+    const cutLanguage = (value) => {
+        setLanguage(value)
+        getScanRuleSet({language:value,ruleSetName:ruleSetName})
     }
 
     const openRuleSetDetails = (value) => {
@@ -98,7 +107,7 @@ const ScanRuleSetList = (props) => {
     }
 
     return(
-        <div className='sourcefare sourcewair-page-width scanRule'>
+        <div className='drop-down sourcefare sourcewair-page-width scanRule'>
             <Col sm={{ span: "24" }}
                  md={{ span: "24" }}
                  lg={{ span: "24" }}
@@ -119,6 +128,19 @@ const ScanRuleSetList = (props) => {
                         onChange={onInputRuleSetName}
                         onPressEnter={onSearchRuleSet}
                     />
+                    <Select   style={{width: 190}}
+                              onChange={cutLanguage}
+                              placeholder='工具'
+                              allowClear
+                    >
+                        {LanguageList.map(item=>{
+                            return(
+                                <Option  key={item.key} value={item.key}>
+                                    {item.value}
+                                </Option>
+                            )
+                        })}
+                    </Select>
                 </div>
 
                 <div className='scanRule-table'>

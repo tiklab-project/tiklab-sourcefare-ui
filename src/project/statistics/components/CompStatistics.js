@@ -70,7 +70,10 @@ const CompStatistics = (props) => {
                     }
                 </Select>
             </div>
-            <CompChart complexityData={complexityData}/>
+            <div className='graphics-background'>
+                <CompChart complexityData={complexityData}/>
+            </div>
+
         </div>
     )
 

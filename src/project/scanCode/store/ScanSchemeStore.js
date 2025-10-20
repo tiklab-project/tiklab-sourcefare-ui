@@ -133,7 +133,16 @@ export class ScanSchemeStore {
         return data
     }
 
-
+    /**
+     * 通过语言查询扫描方案
+     * @param value
+     * @returns {Promise<void>}
+     */
+    @action
+    findScanSchemeByLanguage = async (param) =>{
+        const data = await Axios.post('/scanScheme/findScanSchemeByLanguage',param)
+        return data
+    }
 
     /**
      * 创建扫描方案和sonar关系

@@ -6,7 +6,7 @@
  * @update: 2024-09-14 14:30
  */
 import React,{useState,useEffect,Fragment} from 'react';
-import {observer} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import "./SchemeDetails.scss"
 import {Col, Dropdown, Table, Tooltip} from "antd";
 import scanRuleSetStore from "../../scanRule/store/ScanRuleSetStore";
@@ -22,11 +22,13 @@ import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
 import Btn from "../../../../common/btn/Btn";
 import {SpinLoading} from "../../../../common/loading/Loading";
 import EmptyText from "../../../../common/emptyText/EmptyText";
+import {withRouter} from "react-router";
 const SchemeDetails = (props) => {
-    const {match:{params}}=props
-    const {findScanScheme,createScanSchemeRuleSet,findScanSchemeSonarList,fresh}=ScanSchemeStore
+    const {match:{params},projectStore}=props
+    const {findScanScheme,createScanSchemeRuleSet,fresh}=ScanSchemeStore
     const {findScanRuleSetNotScheme}=scanRuleSetStore
     const {findScanSchemeRuleSetList,deleteScanSchemeRuleSet}=ScanSchemeRuleStore
+    const {findProjectPage}=projectStore
 
   const [load,setLoad]=useState(false)
     const [scheme,setScheme]=useState('')   //扫描方案
@@ -197,7 +199,7 @@ const SchemeDetails = (props) => {
                                     <SpinLoading type="table"/>: <EmptyText title={"暂无扫描规则"}/>}}
                         />||
                         tableType==="play"&&
-                        <ScanSchemePlay {...props} scanSchemeId={scheme.id}/>
+                        <ScanSchemePlay {...props} scanSchemeId={scheme.id}   findProjectPage={findProjectPage}/>
                     }
                 </div>
             </Col>
@@ -217,4 +219,4 @@ const SchemeDetails = (props) => {
         </div>
     )
 }
-export default observer(SchemeDetails)
+export default withRouter(inject('projectStore')(observer(SchemeDetails)))

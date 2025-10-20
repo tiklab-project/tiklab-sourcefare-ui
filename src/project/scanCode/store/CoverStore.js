@@ -32,7 +32,20 @@ export class CoverStore  {
     @action
     findProjectCoverPage=async (param)=>{
         const res = await Axios.post("/projectCover/findProjectCoverPage",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket invalid")){
+            message.error(res.msg)
+        }
+        return res
+    }
+
+    /**
+     *条件分页查询扫描覆盖率
+     * @param  param
+     */
+    @action
+    findProjectCoverGoPage=async (param)=>{
+        const res = await Axios.post("/projectCoverGo/findProjectCoverGoPage",param)
+        if (res.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(res.msg)
         }
         return res

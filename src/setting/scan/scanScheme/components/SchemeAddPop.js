@@ -14,8 +14,8 @@ import {observer} from "mobx-react";
 import scanRuleSetStore from "../../scanRule/store/ScanRuleSetStore";
 import Btn from "../../../../common/btn/Btn";
 import Modal from "../../../../common/modal/Modals";
-const languageList=[{key:"Java",value:"Java"},{key:"JavaScript",value:"JavaScript"},{key:"Go",value:"Go"}]
-const sanWay=[/*{key:"sonar",value:"sonar扫描"},*/{key:"rule",value:"规则包扫描"}]
+const languageList=[{key:"Java",value:"Java"},{key:"JavaScript",value:"JavaScript"},{key:"Go",value:"Go"}
+    ,{key:"Python",value:"Python"}]
 const SchemeAddPop = (props) => {
     const [form] = Form.useForm()
     const {visible,setVisible,createScanScheme,createScanSchemeRuleSet,setSchemeDate,scanSchemeList}=props

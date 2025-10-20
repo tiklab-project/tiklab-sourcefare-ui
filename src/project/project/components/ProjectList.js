@@ -32,6 +32,7 @@ import ProjectUpdatePop from "./ProjectUpdatePop";
 import Tabs from "../../../common/tabs/Tabs";
 import projectCollectStore from "../store/ProjectCollectStore";
 import ScanRecordStore from "../../scanCode/store/ScanRecordStore";
+import {PrivilegeButton} from 'tiklab-privilege-ui';
 const ProjectList = (props) => {
     const {projectStore}=props
     const {refresh,findProjectPage,createRecordOpen,deleteProject,updateProject,findProjectNum}=projectStore
@@ -125,16 +126,22 @@ const ProjectList = (props) => {
         findProject(value,{findType:projectType})
     }
 
+    //跳转项目历史界面
+    const goScanList = (data) => {
+        //创建打开记录
+        createRecordOpen(data.id)
+        findNewScanRecord(data.id).then(res=>{
+            props.history.push(`/project/${data.id}/report`)
+        })
+    }
 
-    //跳转项目想起
+    //跳转项目详情
     const goDetails = (data) => {
         //创建打开记录
         createRecordOpen(data.id)
         findNewScanRecord(data.id).then(res=>{
             if (res.code===0&&res.data){
                 props.history.push(`/project/${data.id}/report/${res.data.id}`)
-            }else {
-                props.history.push(`/project/${data.id}/report`)
             }
         })
     }
@@ -175,19 +182,36 @@ const ProjectList = (props) => {
      */
     const execPullDown=(value) => (
         <Menu>
-            <Menu.Item  style={{width:120}} onClick={()=>openEditePop(value)}>
-                <div className='project-nav'>
-                    <div><EditOutlined /></div>
-                    <div>编辑</div>
-                </div>
-
-            </Menu.Item>
-            <Menu.Item onClick={()=>openDeletePop(value)}>
-                <div className='project-nav'>
-                    <div><DeleteOutlined /></div>
-                    <div>删除</div>
-                </div>
-            </Menu.Item>
+            {
+                value.update?
+                    <Menu.Item  style={{width:120}} onClick={()=>openEditePop(value)}>
+                        <div className='project-nav'>
+                            <div><EditOutlined /></div>
+                            <div>编辑</div>
+                        </div>
+                    </Menu.Item>:
+                <Menu.Item  style={{width:120}}  disabled>
+                    <div className='project-nav' >
+                        <div><EditOutlined /></div>
+                        <div>编辑</div>
+                    </div>
+                </Menu.Item>
+            }
+            {
+                value.delete?
+                    <Menu.Item onClick={()=>openDeletePop(value)}>
+                        <div className='project-nav'>
+                            <div><DeleteOutlined /></div>
+                            <div>删除</div>
+                        </div>
+                    </Menu.Item>:
+                    <Menu.Item  disabled>
+                        <div className='project-nav'>
+                            <div><DeleteOutlined /></div>
+                            <div>删除</div>
+                        </div>
+                    </Menu.Item>
+            }
             <Menu.Item  style={{width:120}} onClick={()=>goSet(value)}>
                 <div className='project-nav'>
                     <div><SettingOutlined /></div>
@@ -206,7 +230,7 @@ const ProjectList = (props) => {
             ellipsis:true,
             render:(text,record)=>{
                 return (
-                    <div className='project-table-nav' onClick={()=>goDetails(record)}>
+                    <div className='project-table-nav' onClick={()=>goScanList(record)}>
                         <Listicon text={text}
                                   colors={record.color}
                                   type={"project"}
@@ -227,7 +251,7 @@ const ProjectList = (props) => {
                     <div>
                         {
                             text?
-                            <div style={{display:'flex',gap:'5',alignItems:"center"}}>
+                            <div style={{display:'flex',gap:'5',alignItems:"center",cursor:"pointer"}} onClick={()=>goDetails(record)}>
                                 {text}
                                 <div className='project-table-nav-result'>
                                     {record.scanResult==="success"&&
@@ -317,9 +341,12 @@ const ProjectList = (props) => {
             <Col sm={24} md={24} lg={{ span: 24 }} xl={{ span: "20", offset: "2" }} xxl={{ span: "18", offset: "3" }}>
                 <div className='project-head-style'>
                     <Breadcrumb firstItem={'项目'}/>
-                    <div className='add-button' onClick={()=>setAddVisible(true)}>
-                        新建项目
-                    </div>
+                    <PrivilegeButton  code={"project_add"} key={'project_add'} >
+                        <div className='add-button' onClick={()=>setAddVisible(true)}>
+                            新建项目
+                        </div>
+                    </PrivilegeButton>
+
                 </div>
 
                 <div className='project-search'>

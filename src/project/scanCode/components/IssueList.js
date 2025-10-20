@@ -13,11 +13,12 @@ import EmptyText from "../../../common/emptyText/EmptyText";
 import "./IssueList.scss"
 import InstanceStore from "../store/InstanceStore";
 import {observer} from "mobx-react";
+import Tabs from "../../../common/tabs/Tabs";
 
 const IssueList = (props) => {
-    const {projectId,scanRecord,type}=props
+    const {projectId,scanRecord}=props
 
-    const {refresh,findRecordInstancePageByPlay}=InstanceStore
+    const {refresh,findRecordInstancePageByPlay,findIssueTypeStatisticCount}=InstanceStore
 
     const [scanIssuesList,setScanIssuesList]=useState([])
     const [currentPage,setCurrentPage]=useState(1)
@@ -29,26 +30,35 @@ const IssueList = (props) => {
 
     const [reqDetails,setReqDetails]=useState('')       //错误详情
 
+    const [type,setType]=useState("all")
+
     //等级
     const [level,setLevel]=useState()
     //状态
     const [state,setState]=useState()
 
+    const [issueNumData,setIssueNumData]=useState()
+
 
     useEffect(async () => {
         if (scanRecord){
             findScanIssues(currentPage)
+
+            findIssueTypeStatisticCount(scanRecord.id).then(res=>{
+                setIssueNumData(res.data)
+            })
         }
     }, [scanRecord,type]);
 
 
     //分页查询问题列表
     const findScanIssues = (currentPage,param) => {
+        const findType=type==='all'?null:type
         findRecordInstancePageByPlay({
             pageParam:{currentPage:currentPage, pageSize:pageSize},
             projectId:projectId,
             scanRecordId:scanRecord.id,
-            ruleType: type,
+            ruleType: findType,
             ...param
             }).then(res=>{
 
@@ -89,6 +99,9 @@ const IssueList = (props) => {
         findScanIssues(1,{problemLevel:level,state:state})
     }
 */
+    const clickType = (value) => {
+        setType(value.id)
+    }
 
     const recordColumns =[
         {
@@ -111,7 +124,7 @@ const IssueList = (props) => {
             dataIndex: 'ruleType',
             key:"ruleType",
             width:'10%',
-            render:(text)=>text==="reliability"&&<div>可靠性</div>|| text==="maintain"&&<div >可维护性</div>
+            render:(text)=>text==="norm"&&<div>规范</div>|| text==="function"&&<div >功能</div>
                 ||text==="security"&&<div>安全</div>
         },
         {
@@ -135,8 +148,10 @@ const IssueList = (props) => {
             dataIndex: 'problemLevel',
             key:"problemLevel",
             width:'10%',
-            render:(text)=>text===1&&<div className='scanDetails-hole-red'>严重</div>|| text===2&&<div className='scanDetails-hole-dired'>警告</div>
-                ||text===3&&<div className='scanDetails-hole-blue'>建议</div>
+            render:(text)=>text===1&&<div className='issue-text-red'>严重</div>||
+                text===2&&<div className='issue-text-yellow'>错误</div>||
+                text===3&&<div className='issue-text-blue'>警告</div>||
+                text===4&&<div className='issue-text-green'>提示</div>
         },
         {
             title: '状态',
@@ -163,23 +178,36 @@ const IssueList = (props) => {
  */
     ]
 
+
+
     return(
-        <div >
-            <div className='scan-req'>
-              {/*  <Select  allowClear onChange={value=>changType(value)} style={{minWidth:140}} placeholder='类型'>
-                    <Select.Option value={"function"}>{"功能"}</Select.Option>
-                    <Select.Option value={"norm"}>{"规范"}</Select.Option>
-                    <Select.Option value={"secure"}>{"安全"}</Select.Option>
-                </Select>*/}
-                <Select  allowClear onChange={value=>changLeave(value)} style={{minWidth:140}} placeholder='问题等级'>
-                    <Select.Option value={1}>{"严重"}</Select.Option>
-                    <Select.Option value={2}>{"警告"}</Select.Option>
-                    <Select.Option value={3}>{"建议"}</Select.Option>
-                </Select>
-                <Select  allowClear onChange={value=>changState(value)} style={{minWidth:140}} placeholder='状态'>
-                    <Select.Option value={0}>{"未处理"}</Select.Option>
-                    <Select.Option value={1}>{"已解决"}</Select.Option>
-                </Select>
+        <div className='issue'>
+            <div className='issue-search'>
+                <Tabs
+                    type={type}
+                    tabLis={[
+                        {id:"all", title:'全部'},
+                        {id:"function", title:'功能'},
+                        {id:"security", title:'安全'},
+                        {id:"norm", title:'规范'}
+                    ]}
+                    onClick={clickType}
+                    findType={"issueType"}
+                    dataNum={issueNumData}
+                />
+
+                <div className='issue-search-right'>
+                    <Select  allowClear onChange={value=>changLeave(value)} style={{minWidth:140}} placeholder='问题等级'>
+                        <Select.Option value={1}>{"严重"}</Select.Option>
+                        <Select.Option value={2}>{"错误"}</Select.Option>
+                        <Select.Option value={3}>{"警告"}</Select.Option>
+                        <Select.Option value={4}>{"提示"}</Select.Option>
+                    </Select>
+                    <Select  allowClear onChange={value=>changState(value)} style={{minWidth:140}} placeholder='状态'>
+                        <Select.Option value={0}>{"未处理"}</Select.Option>
+                        <Select.Option value={1}>{"已解决"}</Select.Option>
+                    </Select>
+                </div>
             </div>
 
             <Table

@@ -44,7 +44,7 @@ const ProjectAside= props=>{
         },*/
          {
            id:`/project/${projectId}/report`,
-           title:`扫描报告`,
+           title:`扫描历史`,
            icon:<SwitcherOutlined  className={`${foldState?'close-iconfont':'open-iconfont'}`}/>,
        },
         {

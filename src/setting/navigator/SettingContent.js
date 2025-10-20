@@ -34,8 +34,12 @@ const SettingContent= props =>  {
         if (path.startsWith("/setting/scanRule")){
             setSelectKey("/setting/scanRuleSet")
         }else {
-            if (path.startsWith("/setting/power")){
+            if (path.startsWith("/setting/scheme")){
+                setSelectKey("/setting/scheme")
+            } else if (path.startsWith("/setting/power")){
                 setSelectKey("/setting/powerUser")
+            }else if (path.startsWith("/setting/tool")){
+                setSelectKey("/setting/tool")
             }else {
                 setSelectKey(path)
             }
@@ -87,21 +91,13 @@ const SettingContent= props =>  {
                 <li
                     className={`system-aside-li system-aside-second 
                     ${data.id=== selectKey ? 'system-aside-select' :null}
-                    ${deep===0?'system-aside-second-20':'system-aside-second-40'}
-                    
-                    `}
+                    ${deep===0?'system-aside-second-20':'system-aside-second-40'}`}
                     onClick={()=>childSkip(data)}
                     key={data.id}
                 >
                     <div className=' nav-style'>
                         <span className='sys-content-icon'>{data.icon}</span>
                         <span className='nav-style-title'>{t(data.title)}</span>
-                       {/* {
-                            getVersionInfo().expired&&data.character&&
-                            <span>
-                             <img  src={member}  style={{width:18,height:18}}/>
-                          </span>
-                        }*/}
                         {!authConfig?.authType&&(data.id.endsWith("orga")||data.id.endsWith("user")||
                                 data.id.endsWith("userGroup")||data.id.endsWith("dir"))&&
                             <span>
@@ -167,20 +163,6 @@ const SettingContent= props =>  {
     //跳转
     const childSkip = data =>{
         const value=data.id;
-       /* //未订阅
-        if (getVersionInfo().expired){
-            //自定义log
-            if (value==='/setting/customLogo'){
-                setCustomLogVisible(true)
-                return
-            }
-            //ip黑白名单
-            if (value==='/setting/ipRoster'){
-                setSecurityVisible(true)
-                return
-            }
-        }*/
-
         if (value.endsWith("orga")||value.endsWith("user")||value.endsWith("userGroup")||value.endsWith("dir")){
             //统一登陆
             if (!authConfig.authType) {

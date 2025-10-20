@@ -1,5 +1,5 @@
 /**
- * @name: RepositoryServerEditPop
+ * @name: IntegrationServerPop
  * @author: limingliang
  * @date: 2025-5-22 10:30
  * @description：编辑主机信息弹窗
@@ -7,14 +7,14 @@
  */
 import React,{useState,useEffect,Fragment} from 'react';
 import {Form, Input, Select} from 'antd';
-import "./RepositoryServer.scss";
+import "./IntegrationDetails.scss";
 import Modal from "../../../common/modal/Modals";
 import Btn from "../../../common/btn/Btn";
 import {getUser} from "tiklab-core-ui";
 import repositoryServerStore from "../store/RepositoryServerStore";
 
 const typeList=[{key:"GitPuk",value:"GitPuk"}]
-const RepositoryServerEditPop = (props) => {
+const IntegrationServerPop = (props) => {
     const [form] = Form.useForm()
     const {visible,setVisible,serverData,setServerData} = props
 
@@ -80,7 +80,7 @@ const RepositoryServerEditPop = (props) => {
             closable={false}
             footer={modalFooter}
             destroyOnClose={true}
-            title={"添加环境配置"}
+            title={"添加仓库服务"}
         >
             <div className='host-info-add-modal'>
                 <Form form={form} layout='vertical' autoComplete='off'
@@ -137,4 +137,4 @@ const RepositoryServerEditPop = (props) => {
     )
 
 }
-export default RepositoryServerEditPop
+export default IntegrationServerPop

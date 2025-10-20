@@ -21,17 +21,19 @@ import {SpinLoading} from "../../../common/loading/Loading";
 import EmptyText from "../../../common/emptyText/EmptyText";
 import Btn from "../../../common/btn/Btn";
 import codeScanStore from "../store/CodeScanStore";
-import {CopyOutlined, FileTextOutlined, SearchOutlined, SyncOutlined} from "@ant-design/icons";
+import {CopyOutlined, FileOutlined, FileTextOutlined, SearchOutlined, SyncOutlined} from "@ant-design/icons";
 import ProjectRepUploadStore from "../../project/store/ProjectRepUploadStore";
 import {getUser,getAPIgateway} from "tiklab-core-ui";
 import Tabs from "../../../common/tabs/Tabs";
+import {PrivilegeProjectButton} from 'tiklab-privilege-ui';
+import ScanLogDrawer from "../common/ScanLogDrawer";
 const scanReportList = (props) => {
     const {match:{params},projectStore} = props;
-    const {findScanRecordPage,deleteScanRecord,refresh}=ScanRecordStore
+    const {findScanRecordPage,deleteScanRecord,findScanRecordLogList,refresh}=ScanRecordStore
     const {createProjectRepUpload,findProjectRepUploadByRepId}=ProjectRepUploadStore
 
     const {projectData,findProject} = projectStore
-    const {codeScanExec}=codeScanStore
+    const {codeScanExec,findScanState}=codeScanStore
     const user = getUser();
     const [findState,setFindState]=useState(true)
 
@@ -42,10 +44,10 @@ const scanReportList = (props) => {
     const [totalPage,setTotalPage]=useState()
     const [pageSize]=useState(15)
 
-    const [searchName,setSearchName]=useState()
     const [scanResult,setScanResult]=useState(null)
 
     const [multiState,setMultiState]=useState(false)
+    const [logVisible,setLogVisible]=useState(false)  //日志抽屉状态
 
     //代码信息
     const [uploadCodeState,setUploadCodeState]=useState(false)
@@ -55,12 +57,20 @@ const scanReportList = (props) => {
     //执行类型
     const [execType,setExecType]=useState("all")
 
+    //扫描日志
+    const [logList,setLogList]=useState([])
+    const [scanRecord,setScanRecord]=useState(null)
+
     useEffect(async() => {
         findProject(params.id).then(res=>{
             if (res.code===0&&res.data?.scanWay==='serverUpload'){
                 findProjectRepUploadByRepId(params.id).then(res=>{
-                    if (res.code===0&&!res.data){
-                        setUploadCodeState(true)
+                    if (res.code===0){
+                        if (res.data){
+                            setUploadCodeState(false)
+                        }else {
+                            setUploadCodeState(true)
+                        }
                     }
                     setFindState(false)
                 })
@@ -74,7 +84,7 @@ const scanReportList = (props) => {
     }, [refresh]);
 
 
-    const findScanRecord = (currentPage,playName,scanResult) => {
+    const findScanRecord = (currentPage,scanResult) => {
         setIsLoading(true)
         findScanRecordPage({
             pageParam:{currentPage:currentPage, pageSize:pageSize},
@@ -95,7 +105,7 @@ const scanReportList = (props) => {
     //分页
     const changPage = (value) => {
         setCurrentPage(value)
-        findScanRecord(value,searchName,scanResult)
+        findScanRecord(value,scanResult)
     }
 
     //刷新查询
@@ -103,42 +113,101 @@ const scanReportList = (props) => {
         findScanRecord(1)
     }
 
-    //添加计划名字
-    const onInputName = (e) => {
-        const value=e.target.value
-        setSearchName(value)
-        if (value===''){
-            findScanRecord(1,null,scanResult)
-        }
-    }
-    //条件查询
-    const onSearch = () => {
-        findScanRecord(1,searchName,scanResult)
-    }
-
 
     const changResult = (value) => {
         setScanResult(value)
-        findScanRecord(1,searchName,value)
+        findScanRecord(1,value)
     }
 
+    //执行扫描
     const excMultiScan = () => {
-        message.info("开始执行扫描")
+        setMultiState(true)
         codeScanExec(params.id).then(res=>{
-            if (res.code===0&&res.data==='ok'){
-                //setMultiState(true)
-                //scanLibraryTime()
+            if (res.code===0&&res.data){
+                setDataNll()
+                setLogVisible(true)
+                scanTime(res.data.id)
+                findScanRecord(1)
             }else {
                 message.error(res.msg)
+                setMultiState(false)
             }
         })
     }
+
+
+    //扫描定时任务
+    const scanTime =async(value)=>{
+        let timer=setInterval(()=>{
+            findScanState(params.id,value).then(res=>{
+                if (res.code===0){
+                    const data=res.data
+                    setLogList(data.Logs)
+                    setScanRecord({
+                        id:value,
+                        scanTime:data.scanTime,
+                        createTime:data.createTime,
+                        scanResult:data.scanResult
+                    })
+                    if (data.scanRecord?.scanResult==='success'||data.scanRecord?.scanResult==='fail'){
+                        message.success('扫描成功',1)
+                    }
+                    if (data.scanRecord?.scanResult==='execFail'){
+                        message.error('扫描失败',1)
+                    }
+                    if (res.data.state==='end'){
+                        clearInterval(timer)
+                        setMultiState(false)
+                        findScanRecord(1)
+                    }
+                }else {
+                    clearInterval(timer)
+                    setMultiState(false)
+                }
+            })
+        },1000)
+    }
+
+
 
     //查询扫描报告的记录
     const goDetails = (data) => {
         props.history.push(`/project/${params.id}/report/${data.id}`)
     }
 
+    //打开日志
+    const openLog = (value) => {
+        setDataNll()
+        setScanRecord(value)
+        if (value.scanResult==='run'){
+            findScanState(params.id,value.id).then(res=>{
+                if (res.code===0){
+                    setScanRecord({
+                        id:value,
+                        scanTime:res.data?.scanTime,
+                        createTime:res.data?.createTime,
+                        scanResult:res.data?.scanResult
+                    })
+                }else {
+                    message.error("查询日志失败",1)
+                }
+            })
+        }else {
+            findScanRecordLogList({scanRecordId:value.id}).then(res=>{
+                if (res.code===0){
+                    setLogList(res.data)
+                } else {
+                    message.error("查询日志失败",1)
+                }
+            })
+        }
+        setLogVisible(true)
+    }
+
+    const setDataNll = () => {
+        setLogList([])
+        setScanRecord(null)
+    }
 
 
     //切换项目类型
@@ -210,6 +279,11 @@ const scanReportList = (props) => {
             fileList = fileList.slice(-1);
             fileList = fileList.map(file => {
                 if (file.response) {
+                    if (file.response.code===0){
+                        message.success("上传成功")
+                    }else {
+                        message.error("上传失败："+file.response.msg)
+                    }
                     file.url = file.response.url;
                 }
 
@@ -247,14 +321,19 @@ const scanReportList = (props) => {
                 return(
                     <div>
                         {
-                            text==='execFail'?
+                            text==='execFail'&&
                             <div className='icon-text'>
                                 <img  src={fail}  style={{width:16,height:16}}/>
                                 <span>失败</span>
-                            </div>:
+                            </div>||
+                            (text==='success'||text==='fail')&&
                             <div className='icon-text'>
                                 <img  src={success}  style={{width:16,height:16}}/>
                                 <span>成功</span>
+                            </div>||
+                            text==='run'&&
+                            <div className='icon-text'>
+                                <span>执行中</span>
                             </div>
                         }
                     </div>
@@ -294,11 +373,13 @@ const scanReportList = (props) => {
             render:(text,record)=>{
                 return (
                     <div className='scan-report-result-num'>
-                        <span className='scan-report-num-server'>{record?.severityTrouble}</span>
+                        <span className='scan-report-num-red'>{record?.severityTrouble}</span>
                         <span>/</span>
-                        <span className='scan-report-num-notice'>{record?.noticeTrouble}</span>
+                        <span className='scan-report-num-yellow'>{record?.errorTrouble}</span>
                         <span>/</span>
-                        <span className='scan-report-num-suggest'>{record?.suggestTrouble}</span>
+                        <span className='scan-report-num-build'>{record?.noticeTrouble}</span>
+                        <span>/</span>
+                        <span className='scan-report-num-green'>{record?.suggestTrouble}</span>
                     </div>
 
                 )
@@ -310,19 +391,32 @@ const scanReportList = (props) => {
             width:'20%',
         },
         {
+            title: '耗时',
+            dataIndex: 'scanTime',
+            width:'10%',
+        },
+        {
             title: '操作',
             key: 'activity',
             width:'7%',
             render: (text, record) => {
                 return(
-                    <DeleteExec value={record} deleteData={deleteScanRecord} title={"确认删除"}/>
+                    <div className="icon-text">
+                        <Tooltip title='日志'>
+                            <FileTextOutlined  onClick={()=>openLog(record)}/>
+                        </Tooltip>
+                        <PrivilegeProjectButton code={"scan_report_delete"} domainId={params.id}>
+                            <DeleteExec value={record} deleteData={deleteScanRecord} title={"确认删除"}/>
+                        </PrivilegeProjectButton>
+                    </div>
+
+
                 )
             }
         },
     ];
 
     return(
-
         <div className='sourcefare sourcewair-page-width scan-report' >
             <Col sm={{ span: "24" }}
                  md={{ span: "24" }}
@@ -331,17 +425,18 @@ const scanReportList = (props) => {
                  xxl={{ span: "18", offset: "3" }}
             >
                 <div className='scan-report-top'>
-                     <Breadcrumb firstItem={`扫描报告`}/>
+                     <Breadcrumb firstItem={`扫描历史`}/>
                      {
                          (projectData?.scanWay==='server'||(!uploadCodeState&&projectData?.scanWay==='serverUpload'))&&
-                         <div className='scan-but-style'>
-                             {
-                                 multiState?
-                                     <Btn   type={'primary'} title={'加载中'} />:
-                                     <Btn   type={'primary'} title={'扫描'} onClick={excMultiScan}/>
-                             }
-                         </div>
-
+                         <PrivilegeProjectButton code={"scan_exec"} domainId={params.id}>
+                             <div className='scan-but-style'>
+                                 {
+                                     multiState?
+                                         <Btn   type={'primary'} title={'加载中'} />:
+                                         <Btn   type={'primary'} title={'扫描'} onClick={excMultiScan}/>
+                                 }
+                             </div>
+                         </PrivilegeProjectButton>
                      }
                 </div>
 
@@ -412,7 +507,11 @@ const scanReportList = (props) => {
                     }
                 </Spin >
             </Col>
-
+            <ScanLogDrawer visible={logVisible}
+                           setVisible={setLogVisible}
+                           scanRecord={scanRecord}
+                           logList={logList}
+            />
         </div>
     )
 

@@ -21,7 +21,7 @@ import {PrivilegeProjectButton} from 'tiklab-privilege-ui';
 const { TextArea } = Input;
 import ProjectDeletePop from "../../../common/project/ProjectDeletePop";
 import ProjectPower from "../../../common/project/ProjectPower";
-import RepositoryServerStore from "../../../setting/server/store/RepositoryServerStore";
+import RepositoryServerStore from "../../../setting/ integration/store/RepositoryServerStore";
 import serverGitPukStore from "../../scanCode/store/ServerGitPukStore";
 import scanSchemeStore from "../../scanCode/store/ScanSchemeStore";
 const scanWayList=[{value:"server",desc:"服务端扫描"},{value:"client",desc:"客户端扫描"}]
@@ -255,28 +255,18 @@ const ProjectBasicInfo = (props) => {
                     {
                         updateState?
                                 <Btn  title={'加载中'} type={'primary'}/>:
-                            <Btn
-                                type={'primary'}
-                                title={'确定'}
-                                onClick={() => {
-                                    form.validateFields()
-                                        .then((values) => {
-                                            onOk(values)
-                                        })
-                                }}
-                            />
-                                /*<PrivilegeProjectButton code={"rpy_update"} domainId={projectData && projectData.id}>
-                                    <Btn
-                                        type={'primary'}
-                                        title={'确定'}
-                                        onClick={() => {
-                                            form.validateFields()
-                                                .then((values) => {
-                                                    onOk(values)
-                                                })
-                                        }}
-                                    />
-                                </PrivilegeProjectButton>*/
+                            <PrivilegeProjectButton code={"project_update"} domainId={projectData && projectData.id}>
+                                <Btn
+                                    type={'primary'}
+                                    title={'确定'}
+                                    onClick={() => {
+                                        form.validateFields()
+                                            .then((values) => {
+                                                onOk(values)
+                                            })
+                                    }}
+                                />
+                            </PrivilegeProjectButton>
 
                     }
 
@@ -433,7 +423,11 @@ const ProjectBasicInfo = (props) => {
                     此操作无法恢复！请慎重操作！
                 </div>
                 <Btn title={'取消'} isMar={true} onClick={()=>setOpenOrClose(3)}/>
-                <Btn onClick={()=>setDeleteVisible(true)} type={'dangerous'} title={'删除'}/>
+                <PrivilegeProjectButton code={"project_delete"} domainId={projectData && projectData.id}>
+                    <Btn onClick={()=>setDeleteVisible(true)} type={'dangerous'} title={'删除'}/>
+                </PrivilegeProjectButton>
+
+
             </div>
         }
     ]

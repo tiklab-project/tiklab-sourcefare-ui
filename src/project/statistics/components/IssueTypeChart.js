@@ -42,12 +42,12 @@ const  IssueTypeChart = (props) => {
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                data: issueData.time
+                data: issueData?.time
             },
             yAxis: {
                 type: 'value'
             },
-            series: treeNav==='security'&&securitySeries||treeNav==='reliability'&&reliabilitySeries||treeNav==='maintain'&&maintainSeries
+            series: treeNav==='security'&&securitySeries||treeNav==='function'&&reliabilitySeries||treeNav==='norm'&&maintainSeries
         };
         myChart.setOption(option);
 
@@ -67,20 +67,20 @@ const  IssueTypeChart = (props) => {
         name: '安全',
         type: 'line',
         stack: 'Total',
-        data: issueData.security
+        data: issueData?.security
     }]
     const reliabilitySeries=[{
-        name: '可靠性',
+        name: '功能',
         type: 'line',
         stack: 'Total',
-        data: issueData.reliability
+        data: issueData?.function
     }]
 
     const maintainSeries=[  {
-        name: '可维护性',
+        name: '规范',
         type: 'line',
         stack: 'Total',
-        data: issueData.maintain
+        data: issueData?.norm
     }]
 
 

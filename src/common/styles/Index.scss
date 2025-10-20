@@ -163,7 +163,7 @@ ul li{
 
 /*antd 下拉框样式修改*/
 .drop-down .ant-select-selector{
-    background-color: #f7f7f7!important;
+    background-color: #efefef!important;
     border:none !important;
 }
 
@@ -269,6 +269,8 @@ ul li{
     --tiklab-gray-600: #fafbfc; /* 内容区域色调 */
     --tiklab-gray-700: #f0f3fa; /* 侧边栏色调(一级) */
     --tiklab-gray-800: #fafbfc; /* 侧边栏色调(二级) */
+
+    --tiklab-scan-data: #fafbfc;
 
     --tiklab-gray: #f7f8fa;  /* 主色调灰 左侧导航*/
     --tiklab-gray-color: #efefef;  /*主色调灰 左侧一级导航*/

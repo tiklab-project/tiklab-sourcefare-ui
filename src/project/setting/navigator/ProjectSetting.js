@@ -26,8 +26,21 @@ const ProjectSetting = (props) => {
     let remoteLayerRouter = [
         {
             id:'1',
-            title: '仓库信息',
+            title: '项目信息',
             router:`/project/${projectId}/setting/info`,
+        },
+        {
+            id:'4',
+            title: '成员',
+            router:`/project/${projectId}/setting/user`,
+            icon:   <SettingOutlined className='icon-nav'/>,
+            // purviewCode: "rpy_user",
+        },
+        {
+            id:'5',
+            title: '权限',
+            router:`/project/${projectId}/setting/role`,
+            //  purviewCode: "rpy_authority",
         },
         {
             id:"2",
@@ -38,20 +51,6 @@ const ProjectSetting = (props) => {
             id:"3",
             router:`/project/${projectId}/setting/door`,
             title:`扫描门禁`,
-        },
-
-        {
-            id:'4',
-            title: '成员',
-            router:`/project/${projectId}/setting/user`,
-            icon:   <SettingOutlined className='icon-nav'/>,
-           // purviewCode: "rpy_user",
-        },
-        {
-            id:'5',
-            title: '权限',
-            router:`/project/${projectId}/setting/role`,
-          //  purviewCode: "rpy_authority",
         },
     ];
 

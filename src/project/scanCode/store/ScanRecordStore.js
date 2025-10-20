@@ -66,11 +66,13 @@ export class ScanRecordStore  {
     @action
     findScanRecordPage=async (param)=>{
         const res = await Axios.post("/scanRecord/findScanRecordPage",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket")){
             message.error("查询报错，"+res.msg)
         }
         return res
     }
+
+
 
 
 
@@ -81,7 +83,7 @@ export class ScanRecordStore  {
     @action
     findScanRecordLogList=async (param)=>{
         const res = await Axios.post("/scanRecordLog/findScanRecordLogList",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket")){
             message.error("查询错误："+res.msg,1)
         }
         return res
@@ -95,7 +97,7 @@ export class ScanRecordStore  {
     @action
     findRecordDuplicatedList=async (param)=>{
         const res = await Axios.post("/recordDuplicated/findRecordDuplicatedList",param)
-        if (res.code!==0){
+        if (res.code!==0&&!res.msg.concat("ticket")){
             message.error("查询错误："+res.msg,1)
         }
         return res
