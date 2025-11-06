@@ -32,15 +32,16 @@ const Setting = props =>{
                 icon: <TeamOutlined/>,
                 children: [
                     {
-                        id: "/setting/orga",
-                        title: "部门",
-                        purviewCode: "orga",
-                    },
-                    {
                         id: "/setting/user",
                         title: "Users",
                         purviewCode: "user",
                     },
+                    {
+                        id: "/setting/orga",
+                        title: "部门",
+                        purviewCode: "orga",
+                    },
+
                     {
                         id: "/setting/userGroup",
                         title: "用户组",

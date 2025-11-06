@@ -65,7 +65,7 @@ const ScanRuleListDrawer = (props) => {
                         <div  className='ruleDrawer-nav-title'>说明</div>
                         <pre className='ruleDrawer-nav-de ruleDrawer-nav-desc'>
                            <code>
-                            {scanRule.description}
+                            {scanRule.description?scanRule.description:scanRule.ruleOverview}
                             </code>
                          </pre>
 

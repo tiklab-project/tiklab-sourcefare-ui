@@ -16,6 +16,9 @@
       padding-top: 10px;
       .bread-center-item{
         font-size: 13px;
+        display: flex;
+        align-items: center;
+        padding:5px 0;
         &:not(:last-child){
           margin-right: 15px;
           padding-right: 15px;
@@ -24,10 +27,10 @@
         .bread-center-name{
           padding-right: 8px;
         }
+
         .bread-center-desc{
           text-align: center;
           font-weight: bold;
-          padding-top:10px;
         }
       }
     }
@@ -39,7 +42,7 @@
     flex-direction: row;
 
     .scan-log-left{
-      width: 200px;
+      width: 220px;
       min-width: 200px;
       padding: 10px;
       height: 100%;
@@ -49,9 +52,21 @@
         display: flex;
         padding: 7px 10px;
         cursor: pointer;
+        align-items: center;
         .left-li-title{
+          width: 100px;
+        }
+
+        .left-li-state{
           flex: 1;
         }
+        .left-li-state-success{
+          color: forestgreen;
+        }
+        .left-li-state-fail{
+          color: red;
+        }
+
         .left-li-time{
           color: #999999;
         }

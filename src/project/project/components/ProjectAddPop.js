@@ -46,6 +46,8 @@ const ProjectAddPop = (props) => {
     const [scanWay,setScanWay]=useState('server')
     const [repository,setRepository]=useState(null);
 
+    //c#构建命令
+    const [buildPath,setBuildPath]=useState()
 
     useEffect(async () => {
         if (visible){
@@ -71,30 +73,26 @@ const ProjectAddPop = (props) => {
         })
     }
 
-    //提交创建
-    const onFinish =async () => {
-        setCreateState(true)
-        form.validateFields().then((values) => {
-            setStep(1)
-            setAddProjectData({...values,
-                rules:powerType,
-                user:{
-                    id:getUser().userId
-                }
-            })
-        })
-    }
-
-
 
     //取消编辑弹窗
     const  cancel= () => {
         form.resetFields()
         setStep(0)
         setVisible(false)
+        form.setFieldsValue({
+            repositoryPath:null,
+            repository:null,
+            scanSchemeId:null,
+            scanType:null,
+            excEnv:null,
+            python:null,
+            cover:null,
+            jdkEnv:null,
+        })
     }
 
     const onclickCreate = () => {
+        debugger
         form.validateFields().then((values) => {
             setCreateState(true)
             createProject({
@@ -114,8 +112,8 @@ const ProjectAddPop = (props) => {
                 complexity:values.complexity,
                 python:values.python,
                 scanType:values.scanType,
-                scanLanguage:values.scanLanguage
-
+                scanLanguage:values.scanLanguage,
+                buildPath:buildPath,
             }).then(res=>{
                 setCreateState(false)
                 if (res.code===0){
@@ -217,6 +215,7 @@ const ProjectAddPop = (props) => {
                                         form={form}
                                         complexity={complexity}
                                         setComplexity={setComplexity}
+                                        setBuildPath={setBuildPath}
                         />
                 }
             </div>

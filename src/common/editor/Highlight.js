@@ -45,45 +45,48 @@ const Highlighter = props => {
 
     return (
         <pre>
-             {lines.map((line, index) => (
-                 <div>
-                     <div className='code-line'>
-                         <div key={`line-number-${index}`}>{index + 1}</div>
-                         <code
-                             key={index}
-                             ref={(el) => (codeRef.current[index] = el)} // 将每行代码的引用存储到数组中
-                             className={`language-${language} code-line-text`}
-                         >
-                             {line}
-                         </code>
-                     </div>
-                     <div>
-                         {
-                             index+1===reqDetails?.problemLine&&
-                             <pre className='code-line-error'  ref={sectionRef}>
-                                 <div>
-                                     {
-                                         reqDetails?.problemLevel===1&&
-                                         <div className='line-error-leve-1'>严重</div>||
-                                         reqDetails?.problemLevel===2&&
-                                         <div className='line-error-leve-2'>警告</div>||
-                                         reqDetails?.problemLevel===3&&
-                                         <div className='line-error-leve-2'>提示</div>
-                                     }
-                                 </div>
-                                 <div> { reqDetails?.problemDesc}</div>
-                                  <div className='error-line' id={"error"} >错误行{reqDetails?.problemLine}</div>
-                             </pre>
-                         }
-                     </div>
-                 </div>
-
-
-             ))}
-           {/*  <code ref={codeRef} className={` language-${language} `}>
-                {code}
-            </code>*/}
-
+           {lines.map((line, index) => (
+                    <div>
+                        <div className='code-line'>
+                            <div key={`line-number-${index}`}>{index + 1}</div>
+                            <code
+                                key={index}
+                                ref={(el) => (codeRef.current[index] = el)} // 将每行代码的引用存储到数组中
+                                className={`language-${language} code-line-text`}
+                            >
+                                {line}
+                            </code>
+                        </div>
+                        <div>
+                            {
+                                index+1===reqDetails?.problemLine&&
+                                <div className='code-line-error'  ref={sectionRef}>
+                                    <div className='code-line-error-lin code-line-error-top'>
+                                        <div className='code-line-error-title'>{"问题等级:"}</div>
+                                        {
+                                            reqDetails?.problemLevel===1&&
+                                            <div className='line-error-leve-1'>严重</div>||
+                                            reqDetails?.problemLevel===2&&
+                                            <div className='line-error-leve-2'>警告</div>||
+                                            reqDetails?.problemLevel===3&&
+                                            <div className='line-error-leve-2'>提示</div>
+                                        }
+                                    </div>
+                                    <div className='code-line-error-lin code-line-error-top'>
+                                        <div className='code-line-error-title'>{"错误行: "}</div>
+                                        <div>{reqDetails?.problemLine}</div>
+                                    </div>
+                                    <div className='code-line-error-lin code-line-error-top'>
+                                        <div className='code-line-error-title'>{"问题描述: "}</div>
+                                        <pre>
+                                       <code>{reqDetails?.problemDesc?.trimStart()}</code>
+                                   </pre>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                ))}
         </pre>
     );
 }

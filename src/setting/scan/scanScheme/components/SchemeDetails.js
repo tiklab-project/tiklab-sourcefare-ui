@@ -23,6 +23,7 @@ import Btn from "../../../../common/btn/Btn";
 import {SpinLoading} from "../../../../common/loading/Loading";
 import EmptyText from "../../../../common/emptyText/EmptyText";
 import {withRouter} from "react-router";
+import {getVersionInfo} from "tiklab-core-ui";
 const SchemeDetails = (props) => {
     const {match:{params},projectStore}=props
     const {findScanScheme,createScanSchemeRuleSet,fresh}=ScanSchemeStore
@@ -48,7 +49,18 @@ const SchemeDetails = (props) => {
             key: 'schemeName',
             width:'20%',
             ellipsis:true,
-            render:(text,record)=><div className='details-table-name' onClick={()=>openRuleDetails(record)}>{record.scanRuleSet.ruleSetName}</div>
+            render:(text,record)=>(
+                <div>
+                    {(record.property===1&&getVersionInfo().expired)?
+                        <div className='scheme-disabled' >
+                            {record.scanRuleSet.ruleSetName}
+                        </div>:
+                        <div className='details-table-name' onClick={()=>openRuleDetails(record)}>
+                            {record.scanRuleSet.ruleSetName}
+                        </div>
+                    }
+                </div>
+            )
         },
         {
             title: '规则数量',
@@ -56,6 +68,18 @@ const SchemeDetails = (props) => {
             key: 'ruleNum',
             width:'20%',
             ellipsis:true,
+            render:(text,record)=>(
+                <div>
+                    {(record.property===1&&getVersionInfo().expired)?
+                        <div className='scheme-disabled' >
+                            {text}
+                        </div>:
+                        <div>
+                            {text}
+                        </div>
+                    }
+                </div>
+            )
         },
         {
             title: '描述',
@@ -63,9 +87,38 @@ const SchemeDetails = (props) => {
             key: 'describe',
             width:'55%',
             ellipsis:true,
-            render:(text,record)=>  <Tooltip placement="top" title={record.scanRuleSet?.describe} >
-                {record.scanRuleSet?.describe}
-            </Tooltip>
+            render:(text,record)=>(
+                <div>
+                    {(record.property===1&&getVersionInfo().expired)?
+                        <div className='scheme-disabled desc-overflow' >
+                            {record.scanRuleSet?.describe}
+                        </div>:
+                        <div className='desc-overflow'>
+                            <Tooltip placement="top" title={record.scanRuleSet?.describe} >
+                                {record.scanRuleSet?.describe}
+                            </Tooltip>
+                        </div>
+
+                    }
+                </div>
+            )
+
+        },
+        {
+            title: '启用状态',
+            dataIndex: "property",
+            key: 'property',
+            width:'10%',
+            ellipsis:true,
+            render:(text,record)=> (
+               <div>
+                   {
+                   (text===1&&getVersionInfo().expired)?
+                       <div className='scheme-disabled'>{"未启用"}</div>:
+                   <div>{"启用"}</div>
+                   }
+               </div>
+            )
         },
         {
             title:'操作',
@@ -181,10 +234,6 @@ const SchemeDetails = (props) => {
                 <div className='scheme-details-tab'>
                     <div className={`${tableType==='ruleSet'&& ' choose-tab-nav '} scheme-details-tab-nav`}  onClick={()=>cuteTab("ruleSet")}>扫描规则</div>
                     <div  className={`${tableType==='play'&& ' choose-tab-nav '} scheme-details-tab-nav`}  onClick={()=>cuteTab("play")}>关联计划</div>
-                  {/*  {
-                        scanScheme?.scanWay!=='rule'&&
-                        <div className={`${tableType==='setting'&& ' choose-tab-nav '}  scanScheme-details-tab-nav`} onClick={()=>cuteTab("setting")}>设置</div>
-                    }*/}
                 </div>
                 <div className='scheme-details-table'>
                     {

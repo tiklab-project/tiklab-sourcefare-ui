@@ -23,7 +23,7 @@ const ProjectAside= props=>{
 
     const projectId = match.params.id
 
-    const [theme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "gray");
+    const [theme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "blue");
 
 
     // 页面初始加载状态

@@ -28,6 +28,7 @@ const integrationToolPop = (props) => {
     const [errorMsg,setErrorMsg]=useState(null)
 
     const [placePath,setPlacePath]=useState(null)
+    const [envType,setEnvType]=useState("netsdk")
 
     useEffect(()=>{
         setInstallWay(0)
@@ -57,11 +58,17 @@ const integrationToolPop = (props) => {
             if (type==='python'){
                 setText(`请输入${type}路径,如：/usr/python/bin 地址`)
             }
+            if (type==='net'){
+                setText(`请输入${type}路径,如：/usr/local/share/dotnet/sdk/6.0.428 `)
+            }
         }
     },[type,visible,serverData])
 
 
 
+    const optType = (value) => {
+        setEnvType(value)
+    }
 
     //切换类
     const optInstallWay = (value) => {
@@ -106,11 +113,11 @@ const integrationToolPop = (props) => {
                     }
                 })
             }else {
-                if (!checkState&&installWay===0){
+                if (!checkState&&installWay===0&&type!=="net"){
                     setErrorMsg("未检测安装路径")
                    return
                 }
-                if (!envPath&&installWay===1){
+                if (!envPath&&installWay===1&&type!=="net"){
                     setErrorMsg("路径必填")
                     return
                 }
@@ -148,6 +155,8 @@ const integrationToolPop = (props) => {
     }
 
 
+
+
     const modalFooter = (
         <>
             <Btn onClick={cancel} title={'取消'} isMar={true}/>
@@ -175,58 +184,85 @@ const integrationToolPop = (props) => {
                         ]}
                     ><Input  placeholder={"名称"}/>
                     </Form.Item>
-                    <Form.Item
-                        label={'安装方式'}
-                        name={'installWay'}
-                    > {/*<Select
-                        onChange={optInstallWay}
-                        defaultValue={0}
-                        options={[
-                            { value: 0, label: '全局安装' },
-                            { value: 1, label: '本地安装' },
-                        ]}
-                    />*/}
-                        <div className="integration-tool-pop">
-                            <div className={`tool-pop-border ${installWay===0&&"tool-pop-border-opt"}`} onClick={()=>optInstallWay(0)}>
-                                <div>全局安装</div>
-                                <div className='tool-pop-border-desc'>系统已安装全局</div>
-                            </div>
-                            <div className={`tool-pop-border ${installWay===1&&"tool-pop-border-opt"}`} onClick={()=>optInstallWay(1)}>
-                                <div>指定路径安装</div>
-                                <div className='tool-pop-border-desc'>系统存在SVN，但没有配置全局命令</div>
-                            </div>
-                        </div>
-                    </Form.Item>
                     {
-                        installWay===1&&
-                        <div className='tool-pop-detection'>
-                            <div className='tool-pop-detection-title'>路径</div>
-                            <Input placeholder={text} onChange={inputRpyName}/>
-                            {
-                                errorMsg&&
-                                <div className='tool-pop-detection-error'>{errorMsg}</div>
-                            }
-                        </div>
-                        ||
-                        installWay===0&&
-                        <div className='tool-pop-detection'>
-                           <div className='tool-pop-detection-title'>检测安装路径</div>
-                            <Btn onClick={onclickCheck} title={'检测'} isMar={true}/>
-                            {
-                                errorMsg&&
-                                <div className='tool-pop-detection-error'>{errorMsg}</div>
-                            }
-                        </div>
+                        type==='net'&&
+                        <Form.Item
+                            label={'安装类型'}
+                            name={'type'}
+                        >
+                            <Select
+                                onChange={optType}
+                                defaultValue={"netsdk"}
+                                options={[
+                                  /*  { value: "net", label: 'net版本' },*/
+                                    { value: "netsdk", label: 'sdkPath' },
+                                ]}
+                            />
+                        </Form.Item>
                     }
                     {
-                        (installWay===0&&placePath)&&
+                        (type!=='net') &&
                         <Form.Item
-                            label={'路径'}
-                            name={'envAddress'}
+                            label={'安装方式'}
+                            name={'installWay'}
                         >
-                            <Input  disabled value={placePath}/>
+                            <div className="integration-tool-pop">
+                                <div className={`tool-pop-border ${installWay===0&&"tool-pop-border-opt"}`} onClick={()=>optInstallWay(0)}>
+                                    <div>全局安装</div>
+                                    <div className='tool-pop-border-desc'>系统已安装全局</div>
+                                </div>
+                                <div className={`tool-pop-border ${installWay===1&&"tool-pop-border-opt"}`} onClick={()=>optInstallWay(1)}>
+                                    <div>指定路径安装</div>
+                                    <div className='tool-pop-border-desc'>系统存在，但没有配置全局命令</div>
+                                </div>
+                            </div>
                         </Form.Item>
+                    }
+                    {
+                        ( envType==="netsdk"&&type==='net')?
+                            <Form.Item
+                                label={'路径'}
+                                name={'envAddress'}
+                                rules={[
+                                    {required:true,message:'不能为空'},
+                                ]}
+                            >
+                                <Input   value={placePath} placeholder={text} onChange={inputRpyName} />
+                            </Form.Item>:
+                            <>
 
+                                {
+                                    installWay===1&&
+                                    <div className='tool-pop-detection'>
+                                        <div className='tool-pop-detection-title'>路径</div>
+                                        <Input placeholder={text} onChange={inputRpyName}/>
+                                        {
+                                            errorMsg&&
+                                            <div className='tool-pop-detection-error'>{errorMsg}</div>
+                                        }
+                                    </div>
+                                    ||
+                                    installWay===0&&
+                                    <div className='tool-pop-detection'>
+                                        <div className='tool-pop-detection-title'>检测安装路径</div>
+                                        <Btn onClick={onclickCheck} title={'检测'} isMar={true}/>
+                                        {
+                                            errorMsg&&
+                                            <div className='tool-pop-detection-error'>{errorMsg}</div>
+                                        }
+                                    </div>
+                                }
+                                {
+                                    (installWay===0&&placePath)&&
+                                    <Form.Item
+                                        label={'路径'}
+                                        name={'envAddress'}
+                                    >
+                                        <Input  disabled value={placePath}/>
+                                    </Form.Item>
+
+                                }
+                            </>
                     }
 
                 </Form>

@@ -1,0 +1,29 @@
+.project-add-scan-add{
+  font-size: 14px;
+  font-weight: 500;
+  color: #42526E;
+  padding: 6px 15px;
+  cursor: pointer;
+ &:hover{
+   background-color: #f7f7f7;
+ }
+}
+
+.add-scan-add-nav{
+  margin-bottom: 20px;
+  .add-scan-add-title{
+      display: flex;
+      gap: 5px;
+      padding-bottom: 8px;
+    .add-scan-add-title-text{
+      color: #666;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .add-scan-add-title-desc{
+      color: #999999;
+
+    }
+  }
+
+}

@@ -16,16 +16,18 @@ import RuleInfo from "./RuleInfo";
 import ScanRuleSetStore from "../../scanRule/store/ScanRuleSetStore";
 import EmptyText from "../../../../common/emptyText/EmptyText";
 import {SpinLoading} from "../../../../common/loading/Loading";
+import Page from "../../../../common/page/Page";
 const schemeDetailsDrawer = (props) => {
 
     const {visible,setVisible,schemeRuleSet}=props
     const {findScanSchemeRulePage,updateScanSchemeRule,fresh}=ScanSchemeRuleStore
-    const {findScanRuleSet,scanRuleSet}=ScanRuleSetStore
 
     const [load,setLoad]=useState(false)
     const [schemeRuleList,setSchemeRuleList]=useState([])
+
     const [currentPage,setCurrentPage]=useState(1)
     const [totalPage,setTotalPage]=useState()
+    const [totalRecord,setTotalRecord]=useState()
     const [pageSize]=useState(15)
 
     const [dataType,setDataType]=useState('list')
@@ -50,7 +52,7 @@ const schemeDetailsDrawer = (props) => {
             title: '规则概述',
             dataIndex: ["scanRule","ruleOverview"],
             key: 'ruleOverview',
-            width:'40%',
+            width:'45%',
             ellipsis:true,
             render:(text)=> <Tooltip placement="top" title={text}>{text} </Tooltip>
         },
@@ -58,7 +60,7 @@ const schemeDetailsDrawer = (props) => {
             title: '问题等级',
             dataIndex: 'problemLevel',
             key: 'problemLevel',
-            width:'15%',
+            width:'10%',
             ellipsis:true,
             render:(text)=>text===1&&<div className='text-red'>严重</div>||
                 text===2&&<div className='text-yellow'>错误</div> ||text===3&&<div className='text-blue'>警告</div>||
@@ -130,6 +132,8 @@ const schemeDetailsDrawer = (props) => {
             if (res.code==0){
                 setSchemeRuleList(res.data.dataList)
                 setTotalPage(res.data.totalPage)
+                setCurrentPage(res.data.currentPage)
+                setTotalRecord(res.data.totalRecord)
             }
         })
     }
@@ -151,6 +155,16 @@ const schemeDetailsDrawer = (props) => {
         setVisible(false)
     }
 
+
+    //分页查询
+    const changPage = (value) => {
+        setCurrentPage(value)
+        getScanRulePage(value)
+    }
+    //刷新查询
+    const refreshFind = () => {
+        getScanRulePage(currentPage)
+    }
 
 
     return(
@@ -184,6 +198,15 @@ const schemeDetailsDrawer = (props) => {
                                   scanRuleSet={schemeRuleSet?.scanRuleSet}
                                   setDataType={setDataType}
                         />
+                }
+                {
+                    dataType==='list'&&
+                    <Page pageCurrent={currentPage}
+                          changPage={changPage}
+                          totalPage={totalPage}
+                          totalRecord={totalRecord}
+                          refresh={refreshFind}
+                    />
                 }
 
             </div>

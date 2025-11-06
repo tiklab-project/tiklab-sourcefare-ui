@@ -7,6 +7,7 @@ import node from "../../assets/images/img/node.png"
 import jdk from "../../assets/images/img/jdk.png"
 import go from "../../assets/images/img/go.png"
 import python from "../../assets/images/img/python.png"
+import net from "../../assets/images/img/net.png"
 const Images = (props) => {
     const {type,width,height}=props
     const [imgPath,setImagPath]=useState()
@@ -27,6 +28,9 @@ const Images = (props) => {
                 break
             case "python":
                 setImagPath(python)
+                break
+            case "net":
+                setImagPath(net)
                 break
         }
     }, [type])

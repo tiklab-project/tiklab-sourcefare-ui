@@ -14,7 +14,7 @@
     padding-top: var(--data-top-20);
   }
   .scanRule-tables-nav{
-    width: 50px;
+    width: 70px;
     padding: 3px 0;
     background: #F4F4F4;
     border-radius: 4px;
@@ -23,5 +23,12 @@
     /* width: -moz-fit-content;
      width: fit-content;*/
     color: #2b333e;
+  }
+
+  .rule-set-table-name{
+    cursor: pointer;
+    &:hover{
+      color: #1890ff;
+    }
   }
 }

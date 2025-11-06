@@ -31,10 +31,7 @@ export class ServerGitPukStore  {
      * @param  repServerId repServerId
      */
     @action
-    findRepositoryBranchList=async (repId,repServerId)=>{
-        const param =new FormData()
-        param.append("repId",repId)
-        param.append("repServerId",repServerId)
+    findRepositoryBranchList=async (param)=>{
         const data = await Axios.post("/serverGitPuk/findRepositoryBranchList",param)
         if (data.code!==0&&!res.msg.concat("ticket invalid")){
             message.error(data.msg)

@@ -95,6 +95,18 @@ const IntegrationTool = (props) => {
                                     <RightOutlined />
                                 </div>
                             </div>
+                            <div className='integration-li' onClick={()=>openSystemNav("net")}>
+                                <div className="integration-li-icon">
+                                    <Images type={"net"}  width={18} height={18}/>
+                                </div>
+                                <div className="integration-li-center">
+                                    <div className="integration-text-title">{".Net"}</div>
+                                    <div className="integration-li-desc">{".Net版本"}</div>
+                                </div>
+                                <div className="system-li-down">
+                                    <RightOutlined />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

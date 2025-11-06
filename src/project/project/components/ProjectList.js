@@ -258,6 +258,8 @@ const ProjectList = (props) => {
                                         <CheckCircleOutlined className={"project-table-nav-result-success"}/>
                                        ||
                                         record.scanResult==="fail"&&
+                                        <CloseCircleOutlined className='project-table-nav-result-fail'/>||
+                                        record.scanResult==="execFail"&&
                                         <CloseCircleOutlined className='project-table-nav-result-fail'/>
                                     }
                                 </div>

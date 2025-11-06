@@ -30,7 +30,7 @@ const Aside = props => {
     const {t} = useTranslation()
     const isSide = localStorage.getItem('isSide')
 
-    const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "gray");
+    const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "blue");
     const [nav,setNav] = useState('')
     const [normalOrScrum,setNormalOrScrum] = useState('normal')
     const [isLoading,setIsLoading] = useState(false)

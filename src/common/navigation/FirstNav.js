@@ -22,7 +22,7 @@ const FirstNav = (props) => {
     const {location,AppLink,HelpLink,AvatarLink,customLogo}=props
     const {i18n,t} = useTranslation()
 
-    const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "gray");
+    const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "blue");
     const [navPath,setNavPath]=useState('')   //选中的导航栏路径
 
     const [themeClass, setThemeClass] = useState("theme-gray")

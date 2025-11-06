@@ -7,17 +7,19 @@
  */
 
 import React, {useState, useEffect,useRef} from "react";
-import {Form, Input, Col, Steps, Select} from 'antd';
+import {Form, Input, Col, Steps, Select, Spin, Button, Divider} from 'antd';
 import serverGitPukStore from "../../scanCode/store/ServerGitPukStore";
 import scanSchemeStore from "../../scanCode/store/ScanSchemeStore";
 import RepositoryServerStore from "../../../setting/ integration/store/RepositoryServerStore";
 import {observer} from "mobx-react";
 import scanEnvStore from "../../../setting/ integration/store/ScanEnvStore";
+import "./projectAddScan.scss"
+import Btn from "../../../common/btn/Btn";
 const scanWayList=[{value:"server",desc:"服务端扫描(Git)"},{value:"serverUpload",desc:"服务端扫描(包上传)"},{value:"client",desc:"客户端扫描"}]
 const scanLanguageList=[{value:"java",desc:"Java"},{value:"javascript",desc:"JavaScript"},{value:"c++",desc:"C、C++"},
         {value:"go",desc:"Go"},{value:"c#",desc:"C#"},{value:"python",desc:"Python"}]
 const projectAddScan = (props) => {
-    const {step,form,scanWay,setScanWay,setRepository,repository,complexity,setComplexity}=props
+    const {step,form,scanWay,setScanWay,setRepository,repository,complexity,setComplexity,setBuildPath}=props
 
     const {findAllRepositoryServer}=RepositoryServerStore
     const {findRepositoryList,findRepositoryBranchList}=serverGitPukStore
@@ -30,9 +32,11 @@ const projectAddScan = (props) => {
 
     //仓库list
     const [repositoryList,setRepositoryList]=useState([]);
+    const [repoSpin,setRepoSpin]=useState(false)
 
     //分支
     const [branchList,setBranchList]=useState([])
+    const [branchSpin,setBranchSpin]=useState(false)
 
     //环境
     const [allEnvList,setAllEnvList]=useState([])
@@ -42,12 +46,9 @@ const projectAddScan = (props) => {
     const [jdkEnvList,setJdkEnvList]=useState([])
     const [pythonList,setPythonList]=useState([])
 
-    //选择的扫描方案
-    const [scanScheme,setScanScheme]=useState(null)
 
     //覆盖率测试
     const [cover,setCover]=useState(0)
-
 
     const [envText,setEnvVersionText]=useState(null)
 
@@ -55,7 +56,9 @@ const projectAddScan = (props) => {
     const [language,setLanguage]=useState()
     const [scanSchemeList,setScanSchemeList]=useState([])
 
-    const [scanType,setScanType]=useState()
+    const [scanType,setScanType]=useState("static")
+
+    const [envType,setEnvType]=useState(null);
 
     useEffect(()=>{
         if (step===1){
@@ -84,18 +87,54 @@ const projectAddScan = (props) => {
     //选择扫描方式
     const choiceSanWay = (value) => {
         setScanWay(value)
+        form.setFieldsValue({
+            repositoryPath:null,
+            repository:null,
+            scanSchemeId:null,
+            scanType:null,
+            excEnv:null,
+            python:null,
+            cover:null,
+            jdkEnv:null,
+        })
     }
 
     //选择仓库服务
     const choiceRepServer = (value) => {
         const serverList=repServerList.filter(a=>a.id===value)
         setRepServer(serverList[0])
+        setRepositoryList([])
+        setBranchList([])
+        form.setFieldsValue({
+            repository:null,
+            scanSchemeId:null,
+            scanType:null,
+            excEnv:null,
+            python:null,
+            cover:null,
+            jdkEnv:null,
+        })
+    }
+
+    //初始化查询仓库
+    const onFocusRepository = () => {
+        if (repServer){
+            setRepoSpin(true)
+            findRepositoryList(repServer).then(res=>{
+                setRepoSpin(false)
+                if (res.code===0){
+                    setRepositoryList(res.data)
+                }
+            })
+        }
     }
 
     //条件查询仓库
     const onSearchRepository = (value) => {
         if (repServer){
+            //setRepoSpin(true)
             findRepositoryList({...repServer,repName:value}).then(res=>{
+               // setRepoSpin(false)
                 if (res.code===0){
                     setRepositoryList(res.data)
                 }
@@ -105,6 +144,7 @@ const projectAddScan = (props) => {
     const choiceRepository = (value) => {
         const param=repositoryList.filter(a=>a.id===value);
         setRepository(param[0])
+        setBranchList([])
     }
 
     //切换语言
@@ -130,25 +170,34 @@ const projectAddScan = (props) => {
         })
     }
 
-    //初始化查询仓库
-    const onFocusRepository = () => {
-        if (repServer){
-            findRepositoryList(repServer).then(res=>{
-                if (res.code===0){
-                    setRepositoryList(res.data)
-                }
-            })
-        }
-    }
+
 
     //初始化查询仓库分支
     const onFocusBranch = () => {
         if (repository&&repServer){
-            findRepositoryBranchList(repository.id,repServer.id).then(res=>{
+            let repo;
+            let owner;
+            if (repServer.serverType==='gitee'){
+                repo=repository.name
+                owner=repository.nameWithSpace
+            }else {
+                repo=repository.id
+            }
+            setBranchSpin(true)
+            findRepositoryBranchList({
+                repServerId:repServer.id,
+                repo:repo,
+                owner:owner
+            }).then(res=>{
+                setBranchSpin(false)
                 if (res.code===0){
                     setBranchList(res.data)
+                }else {
+                    message.error(res.msg)
                 }
-            })}}
+            })}
+    }
+
 
     //查询扫描方案
     const onFocusScheme = () => {
@@ -188,11 +237,12 @@ const projectAddScan = (props) => {
                 setComplexity(1)
                 type="go"
                 break
-           /* case "c++":
-                setEnvVersionText("python版本")
-                type="python"
-                break*/
+            case "c#":
+                setEnvVersionText(".net版本")
+                type="net"
+                break
         }
+        setEnvType(type)
         const param=allEnvList.filter(a=>a?.envType.toLowerCase()===type)
         setEnvList(param)
     }
@@ -207,9 +257,22 @@ const projectAddScan = (props) => {
       setCover(value)
     }
 
-    //是否开启复杂度
-    const optComplexity = (value) => {
-      setComplexity(value)
+
+
+    //跳转配置
+    const goSetting = (type) => {
+        switch (type){
+            case "server":
+                props.history.push(`setting/server/code`)
+                break
+            case "env":
+                props.history.push(`setting/tool/${envType}`)
+        }
+    }
+
+    //输入 c#的项目文件路径
+    const inputNetPath = (value) => {
+        setBuildPath(value.target.value)
     }
 
     return(
@@ -249,6 +312,14 @@ const projectAddScan = (props) => {
                     >
                         <Select allowClear onChange={choiceRepServer}
                                 placeholder={"请选择仓库服务"}
+                                dropdownRender={(menu) => (
+                                    <>
+                                        {menu}
+                                        <Divider style={{margin:"4px 0"}} />
+                                        <div className='project-add-scan-add' onClick={()=>goSetting("server")}>添加</div>
+                                    </>
+
+                                )}
                         >
                             {
                                 (repServerList&&repServerList.length)&&repServerList.map(item=>{
@@ -269,13 +340,14 @@ const projectAddScan = (props) => {
                                 showSearch
                                 placeholder={"请选择仓库"}
                                 onChange={choiceRepository}
-                                onSearch={onSearchRepository}
+                                /*onSearch={onSearchRepository}*/
                                 onFocus={onFocusRepository}
+                                notFoundContent={repoSpin ? <Spin size="small" /> : null}
                         >
                             {
-                                (repositoryList&&repositoryList.length)&&repositoryList.map(item=>{
+                                repositoryList.map(item=>{
                                         return(
-                                            <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                                            <Select.Option key={item.id} value={item.id}>{item.pathWithSpace}</Select.Option>
                                         )
                                     }
                                 )
@@ -289,6 +361,7 @@ const projectAddScan = (props) => {
                     >
                         <Select allowClear  placeholder={"请选择分支"}
                                 onFocus={onFocusBranch}
+                                notFoundContent={branchSpin ? <Spin size="small" /> : null}
                         >
                             {
                                 (branchList&&branchList.length)&&branchList.map(item=>{
@@ -322,7 +395,7 @@ const projectAddScan = (props) => {
                 </Select>
             </Form.Item>
             {
-                ((scanWay==="server"||scanWay==="serverUpload")&& language==="java")&&
+                language==="java"&&
                 <Form.Item
                     label={'扫描类型'}
                     name={'scanType'}
@@ -362,8 +435,20 @@ const projectAddScan = (props) => {
             {
                 (scanWay==="server"||scanWay==="serverUpload")&&
                 <>
+
+                    {  ( language&&language==="c#")&&
+
+                        <div className='add-scan-add-nav'>
+                            <div className='add-scan-add-title'>
+                                <div className='add-scan-add-title-text'>{"构建路径"}</div>
+                                <div className='add-scan-add-title-desc'>{"(项目sln文件地址、或者csproj文件地址, 为空则默认从根目录获取)"}</div>
+                            </div>
+                            <Input placeholder={"请输入构建路径 ,以项目根目录开始"} onChange={inputNetPath}/>
+                        </div>
+                    }
+
                     {
-                        ( language&&language!=="c++"&&language!=="c#")&&
+                        ( language&&language!=="c++")&&
                         <Form.Item
                             label={envText}
                             name={'excEnv'}
@@ -373,6 +458,14 @@ const projectAddScan = (props) => {
                                         placeholder={"请选择"}
                                         onChange={optEnv}
                                         value={env}
+                                        dropdownRender={(menu) => (
+                                            <>
+                                                {menu}
+                                                <Divider style={{margin:"4px 0"}} />
+                                                <div className='project-add-scan-add' onClick={()=>goSetting("env")}>添加</div>
+                                            </>
+
+                                        )}
                             >
                                 {
                                     envList.length&&envList.map(item=>{
@@ -386,32 +479,7 @@ const projectAddScan = (props) => {
                         </Form.Item>
                     }
                     {
-                        (complexity===1&&language==='javascript')&&
-                        <Form.Item
-                            label={'python版本'}
-                            name={'python'}
-                            rules={[{required:true,message:'python版本'}]}
-                        >
-                            <Select     allowClear
-                                        placeholder={"请选择"}
-
-                                        onChange={optEnv}
-
-                            >
-                                {
-                                    pythonList.length&&pythonList.map(item=>{
-                                            return(
-                                                <Select.Option key={item.id} value={item.id}>{item.envName}</Select.Option>
-                                            )
-                                        }
-                                    )
-                                }
-                            </Select>
-                        </Form.Item>
-                    }
-
-                    {
-                        language!=='javascript'&&language!=='python'&&language!=='c++'&&language!=='c#'&&language!=='java'&&
+                        language&&language!=='javascript'&&language!=='python'&&language!=='c++'&&language!=='c#'&&language!=='java'&&
                         <Form.Item
                             label={'是否开启覆盖测试'}
                             name={'cover'}

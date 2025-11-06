@@ -8,12 +8,21 @@
 import React, {useState, useEffect, Fragment,useRef} from 'react';
 import {Drawer, Empty, Space, Tooltip} from 'antd'
 import "./ScanLogDrawer.scss"
-import {CloseOutlined} from "@ant-design/icons";
+import {
+    CheckCircleOutlined,
+    CloseCircleOutlined,
+    CloseOutlined,
+    LoadingOutlined,
+    MinusCircleOutlined
+} from "@ant-design/icons";
 import {runStatusText} from "./ScanLogCommon";
 import {Btn} from "../../../ui";
 import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
+import fail from "../../../assets/images/img/fail.png";
+import success from "../../../assets/images/img/success.png";
+import {inject, observer} from "mobx-react";
 const ScanLogDrawer = (props) => {
-    const {visible,setVisible,scanRecord,logList}=props
+    const {visible,setVisible,scanRecord,logList,openType}=props
     const scrollRef = useRef();
     // 日志滚动条
     const [isActiveSlide,setIsActiveSlide] = useState(true);
@@ -128,10 +137,28 @@ const ScanLogDrawer = (props) => {
                       </div>
                       <div className="bread-center-item">
                           <span className='bread-center-name'>运行状态</span>
-                          <span className={`bread-center-desc bread-center-${scanRecord?.scanResult}`}>{runStatusText(scanRecord?.scanResult)}</span>
+                          <span className={"bread-center-desc"}>
+                              {
+                                  scanRecord?.issueResult==='run'?
+                                      <div className='bread-center-run'>
+                                          <span>执行中</span>
+                                      </div>:
+                                      (scanRecord?.issueResult==='execFail'|| scanRecord?.comResult==='execFail'||
+                                          scanRecord?.dupResult==='execFail'||   scanRecord?.coverResult==='execFail')?
+                                          <div className=' bread-center-fail'>
+
+                                              <span>失败</span>
+                                          </div>:
+                                          <div className=' bread-center-success'>
+                                              <span>成功</span>
+                                          </div>
+                              }
+
+                          </span>
                       </div>
                       <div className="bread-center-item">
                           <span className='bread-center-name'>运行时长</span>
+
                           <span className='bread-center-desc'>{scanRecord?.scanTime}</span>
                       </div>
                   </div>
@@ -148,6 +175,24 @@ const ScanLogDrawer = (props) => {
                                                    onClick={()=>changeAnchor(item.id)}
                                               >
                                                   <div className='left-li-title'>{item.title}</div>
+                                                  {
+                                                      item.state===0&&
+                                                      <div className='left-li-state left-li-state-fail'>
+                                                          <CloseCircleOutlined />
+                                                      </div>||
+                                                      item.state===1&&
+                                                      <div className='left-li-state left-li-state-success'>
+                                                          <CheckCircleOutlined />
+                                                      </div>||
+                                                      item.state===2&&
+                                                      <div className='left-li-state'>
+                                                          <LoadingOutlined />
+                                                      </div>||
+                                                      item.state===3&&
+                                                      <div className='left-li-state'>
+                                                          <MinusCircleOutlined />
+                                                      </div>
+                                                  }
                                                   <div className='left-li-time'>{item.time}</div>
                                               </div>
                                           )
@@ -173,4 +218,4 @@ const ScanLogDrawer = (props) => {
         </Drawer>
     )
 }
-export default ScanLogDrawer
+export default observer(ScanLogDrawer)

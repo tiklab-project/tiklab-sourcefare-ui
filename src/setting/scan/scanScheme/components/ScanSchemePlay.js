@@ -12,6 +12,7 @@ import Page from "../../../../common/page/Page";
 import EmptyText from "../../../../common/emptyText/EmptyText";
 import {SpinLoading} from "../../../../common/loading/Loading";
 import "./SchemeDetails"
+import {getUser} from "tiklab-core-ui";
 const ScanSchemePlay = (props) => {
     const {scanSchemeId,findProjectPage}=props
 
@@ -80,7 +81,8 @@ const ScanSchemePlay = (props) => {
     const getScanPlayPage= (currentPage) => {
         setLoad(true)
         findProjectPage({scanSchemeId:scanSchemeId,
-            findType: "viewable",
+            findType: "relevancyRepo",
+            userId:getUser().userId,
             pageParam:{currentPage:currentPage, pageSize:pageSize}}
         ).then(res=>{
             setLoad(false)

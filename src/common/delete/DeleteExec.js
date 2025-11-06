@@ -64,6 +64,8 @@ const DeleteExec = (props) => {
                break
             case "pipeline":deleteData(repositoryId,value.id)
                 break
+            case "record": deleteData(repositoryId,value.id)
+                break
             default: deleteData(value.id)
                 break
         }

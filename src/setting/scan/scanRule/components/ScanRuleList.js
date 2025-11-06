@@ -20,7 +20,7 @@ import SearchInput from "../../../../common/input/SearchInput";
 import Page from "../../../../common/page/Page";
 import EmptyText from "../../../../common/emptyText/EmptyText";
 const leveList=[{key:0,value:"全部"},{key:1,value:"严重"},{key:2,value:"错误"},{key:3,value:"警告"},{key:4,value:"提示"}]
-const scanToolList=[{key:"all",value:"全部"},{key:"SpotBugs",value:"SpotBugs"},{key:"PMD",value:"PMD"}]
+const scanTypeList=[{key:"function",value:"功能"},{key:"security",value:"安全"},{key:"norm",value:"规范"}]
 const ScanRuleList = (props) => {
     const {match:{params}} = props;
     const {createScanRule,deleteScanRule,findScanRulePage,fresh}=ScanRuleStore
@@ -33,7 +33,7 @@ const ScanRuleList = (props) => {
     const [DrawerVisible,setDrawerVisible] = useState(false)
     const [ruleName,setRuleName]=useState('') //搜索的输入规则名称
     const [problemLevel,setProblemLevel]=useState()  //选择查询的等级
-    const [scanTool,setScanTool]=useState()  //工具
+    const [scanType,setScanType]=useState()  //工具
 
     const [currentPage,setCurrentPage]=useState(1)
     const [totalPage,setTotalPage]=useState()
@@ -60,7 +60,7 @@ const ScanRuleList = (props) => {
             ellipsis:true,
             render:(text,record)=>
                 <Tooltip placement="top" title={text}>
-                    <div className='text-color' onClick={()=>openRuleDetails(record)}>
+                    <div className='rule-table-name' onClick={()=>openRuleDetails(record)}>
                         {text}
                     </div>
                 </Tooltip>
@@ -73,20 +73,23 @@ const ScanRuleList = (props) => {
             width:'40%',
             ellipsis:true,
         },
+
         {
-            title: '扫描工具',
-            dataIndex: 'scanTool',
-            key: 'scanTool',
-            width:'15%',
+            title: '类型',
+            dataIndex: 'ruleType',
+            key: 'ruleType',
+            width:'10%',
             ellipsis:true,
-        },
-        {
-            title: '语言',
-            dataIndex: 'language',
-            key: 'language',
-            width:'15%',
-            ellipsis:true,
-            render:(text)=><div>{scanRuleSet.language}</div>
+            render:(text)=>(
+                <div>
+                    {
+                        text==='function'&&<div>功能</div>||
+                        text==='norm'&&<div>规范</div>||
+                        text==='security'&&<div>安全</div>
+                    }
+                </div>
+            )
+
         },
         {
             title: '问题等级',
@@ -125,13 +128,13 @@ const ScanRuleList = (props) => {
         setRuleName(value)
         if (value===''){
             setCurrentPage(1)
-            getScanRulePage(1,problemLevel,scanTool)
+            getScanRulePage(1,problemLevel,scanType)
         }
     }
     //通过规则名称查询规则
     const onSearchRule = () => {
         setCurrentPage(1)
-        getScanRulePage(1,problemLevel,scanTool,ruleName)
+        getScanRulePage(1,problemLevel,scanType,ruleName)
     }
 
 
@@ -147,24 +150,25 @@ const ScanRuleList = (props) => {
     const selectLevel = (value) => {
         setCurrentPage(1)
         setProblemLevel(value)
-        getScanRulePage(1,value,scanTool,ruleName)
+        getScanRulePage(1,value,scanType,ruleName)
     }
 
 
-    //漏洞工具查询
-    const selectTool = (value) => {
+    //扫描类型查询
+    const selectType = (value) => {
         setCurrentPage(1)
-        setScanTool(value)
+        setScanType(value)
+
         getScanRulePage(1,problemLevel,value,ruleName)
     }
 
 
     //分页查询
-    const getScanRulePage = (currentPage,problemLevel,scanTool,ruleName) => {
+    const getScanRulePage = (currentPage,problemLevel,scanType,ruleName) => {
         findScanRulePage({ruleSetId:params.ruleSetId,
             pageParam:{currentPage:currentPage, pageSize:pageSize},
             problemLevel:problemLevel,
-            scanTool:scanTool,
+            ruleType:scanType,
             ruleName:ruleName
             }).then(res=>{
             if(res.code===0){
@@ -183,11 +187,11 @@ const ScanRuleList = (props) => {
     //分页查询
     const changPage = (value) => {
         setCurrentPage(value)
-        getScanRulePage(value,problemLevel,scanTool,ruleName)
+        getScanRulePage(value,problemLevel,scanType,ruleName)
     }
     //刷新查询
     const refreshFind = (data) => {
-        getScanRulePage(currentPage,problemLevel,scanTool,ruleName)
+        getScanRulePage(currentPage,problemLevel,scanType,ruleName)
     }
 
     return(
@@ -226,8 +230,8 @@ const ScanRuleList = (props) => {
                         })}
                     </Select>
 
-                    <Select   style={{width: 190}}  onChange={selectTool}  placeholder='工具'>
-                        {scanToolList.map(item=>{
+                    <Select   allowClear  style={{width: 190}}  onChange={selectType}  placeholder='工具'>
+                        {scanTypeList.map(item=>{
                             return(
                                 <Option  key={item.key} value={item.key}>
                                     {item.value}

@@ -29,8 +29,8 @@ import {PrivilegeProjectButton} from 'tiklab-privilege-ui';
 import ScanLogDrawer from "../common/ScanLogDrawer";
 const scanReportList = (props) => {
     const {match:{params},projectStore} = props;
-    const {findScanRecordPage,deleteScanRecord,findScanRecordLogList,refresh}=ScanRecordStore
-    const {createProjectRepUpload,findProjectRepUploadByRepId}=ProjectRepUploadStore
+    const {findScanRecordPage,deleteScanRecordByProjectId,findScanRecordLogList,refresh}=ScanRecordStore
+    const {findProjectRepUploadByRepId}=ProjectRepUploadStore
 
     const {projectData,findProject} = projectStore
     const {codeScanExec,findScanState}=codeScanStore
@@ -60,6 +60,8 @@ const scanReportList = (props) => {
     //扫描日志
     const [logList,setLogList]=useState([])
     const [scanRecord,setScanRecord]=useState(null)
+
+
 
     useEffect(async() => {
         findProject(params.id).then(res=>{
@@ -145,9 +147,7 @@ const scanReportList = (props) => {
                     setLogList(data.Logs)
                     setScanRecord({
                         id:value,
-                        scanTime:data.scanTime,
-                        createTime:data.createTime,
-                        scanResult:data.scanResult
+                        ...data,
                     })
                     if (data.scanRecord?.scanResult==='success'||data.scanRecord?.scanResult==='fail'){
                         message.success('扫描成功',1)
@@ -182,11 +182,10 @@ const scanReportList = (props) => {
         if (value.scanResult==='run'){
             findScanState(params.id,value.id).then(res=>{
                 if (res.code===0){
+                    setFindLogType("run")
                     setScanRecord({
                         id:value,
-                        scanTime:res.data?.scanTime,
-                        createTime:res.data?.createTime,
-                        scanResult:res.data?.scanResult
+                        ...res.data
                     })
                 }else {
                     message.error("查询日志失败",1)
@@ -317,23 +316,23 @@ const scanReportList = (props) => {
             dataIndex: "scanResult",
             key:"scanResult",
             width:'15%',
-            render:(text)=>{
+            render:(text,record)=>{
                 return(
                     <div>
                         {
-                            text==='execFail'&&
+                            record.issueResult==='run'?
+                                <div className='icon-text'>
+                                    <span>执行中</span>
+                                </div>:
+                            ( record.issueResult==='execFail'|| record.comResult==='execFail'||
+                                record.dupResult==='execFail'||   record.coverResult==='execFail')?
                             <div className='icon-text'>
                                 <img  src={fail}  style={{width:16,height:16}}/>
                                 <span>失败</span>
-                            </div>||
-                            (text==='success'||text==='fail')&&
+                            </div>:
                             <div className='icon-text'>
                                 <img  src={success}  style={{width:16,height:16}}/>
                                 <span>成功</span>
-                            </div>||
-                            text==='run'&&
-                            <div className='icon-text'>
-                                <span>执行中</span>
                             </div>
                         }
                     </div>
@@ -342,7 +341,7 @@ const scanReportList = (props) => {
         },
         {
             title: '扫描结果',
-            dataIndex: 'scanResult',
+            dataIndex: 'issueResult',
             width:'15%',
             render:(text,record)=>{
                 return (
@@ -406,7 +405,11 @@ const scanReportList = (props) => {
                             <FileTextOutlined  onClick={()=>openLog(record)}/>
                         </Tooltip>
                         <PrivilegeProjectButton code={"scan_report_delete"} domainId={params.id}>
-                            <DeleteExec value={record} deleteData={deleteScanRecord} title={"确认删除"}/>
+                            <DeleteExec value={record}
+                                        repositoryId={params.id}
+                                        deleteData={deleteScanRecordByProjectId}
+                                        type={"record"}
+                                        title={"确认删除"}/>
                         </PrivilegeProjectButton>
                     </div>
 
@@ -511,6 +514,7 @@ const scanReportList = (props) => {
                            setVisible={setLogVisible}
                            scanRecord={scanRecord}
                            logList={logList}
+
             />
         </div>
     )

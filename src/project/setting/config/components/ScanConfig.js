@@ -7,7 +7,7 @@
  */
 
 import React, {useState, useEffect} from "react";
-import {Col, Form, Select} from 'antd';
+import {Col, Form, Input, Select} from 'antd';
 import "./ScanConfig.scss"
 import serverGitPukStore from "../../../scanCode/store/ServerGitPukStore";
 import scanSchemeStore from "../../../scanCode/store/ScanSchemeStore";
@@ -19,6 +19,9 @@ import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
 import Btn from "../../../../common/btn/Btn";
 import {PrivilegeProjectButton} from 'tiklab-privilege-ui';
 const scanWayList=[{value:"server",desc:"服务端扫描(Git)"},{value:"serverUpload",desc:"服务端扫描(包上传)"},{value:"client",desc:"客户端扫描"}]
+const scanLanguageList=[{value:"java",desc:"Java"},{value:"javascript",desc:"JavaScript"},{value:"c++",desc:"C、C++"},
+    {value:"go",desc:"Go"},{value:"c#",desc:"C#"},{value:"python",desc:"Python"}]
+
 const ScanConfig = (props) => {
 
     const {match:{params},projectStore}=props
@@ -29,10 +32,9 @@ const ScanConfig = (props) => {
     const [form] = Form.useForm();
 
     const {findRepositoryList,findRepositoryBranchList}=serverGitPukStore
-    const {findAllScanScheme} = scanSchemeStore
+    const {findAllScanScheme,findScanSchemeByLanguage} = scanSchemeStore
     const {findAllRepositoryServer}=RepositoryServerStore
     const {findAllDeployEnv}=scanEnvStore
-
 
     const [scanSchemeList,setScanSchemeList]=useState([])
     const [projectData,setProjectData]=useState(null)
@@ -71,15 +73,14 @@ const ScanConfig = (props) => {
 
     const [envText,setEnvVersionText]=useState(null)
 
-
-
     //覆盖率测试
     const [cover,setCover]=useState(null)
-    //复杂度测试
-    const [complexity,setComplexity]=useState(null)
 
     const [updateState,setUpdateState]=useState(false)
+    const [scanType,setScanType]=useState()
 
+    //构建地址
+    const [buildPath,setBuildPath]=useState(null)
 
 
     useEffect(async () => {
@@ -89,10 +90,13 @@ const ScanConfig = (props) => {
                 scanWay:res.data?.scanWay,
                 scanSchemeId:res.data.scanScheme?.id,
                 cover:res.data?.cover,
-                complexity:res.data?.complexity,
+                scanType:res.data.scanType,
+                scanLanguage:res.data?.scanLanguage
             })
+            setLanguage(res.data?.scanLanguage)
 
-
+            setScanType(res.data.scanType)
+            setBuildPath(res.data.buildPath)
             //查询所有仓库服务
             findAllRepositoryServer().then(res=>{
                 if (res.code===0){
@@ -105,53 +109,61 @@ const ScanConfig = (props) => {
             //覆盖率
             setCover(res.data?.cover)
 
-            //重复度
-            setComplexity(res.data?.complexity)
             //扫描方式
             setScanWay(res.data?.scanWay)
+            //通过语言查询扫描方案
+            findScanSchemeByLanguage({language:res.data.scanLanguage,scanType:scanType}).then(res=>{
+                if (res.code===0){
+                    setScanSchemeList(res.data)
+                }
+            })
 
-
+            let type;
             const language=res.data.scanScheme?.language.toLowerCase();
             switch (language){
                 case "java":
                     setEnvVersionText("maven版本")
+                    type="maven"
                     break
                 case "jdk":
                     setEnvVersionText("jdk版本")
+                    type="jdk"
                     break
                 case "javascript":
                     setEnvVersionText("node版本")
+                    type="node"
                     break
                 case "python":
                     setEnvVersionText("python版本")
+                    type="python"
                     break
                 case "go":
                     setEnvVersionText("go版本")
+                    type="go"
+                    break
+                case "c#":
+                    setEnvVersionText(".net版本")
+                    type="net"
                     break
             }
 
-            //查询扫描方案
-            findAllScanScheme().then(res=>{
-                if (res.code===0){
-                   const param=res.data.filter(a=>a.language.toLowerCase()===language)
-                    setScanSchemeList(param)
+            //查询所有扫描环境
+            findAllDeployEnv().then(res=>{
+                if (res.code===0&&res.data){
+                    const execs= res.data.filter(b=>b.envType===type)
+                    setEnvList(execs)
+
+                    const jdkData=res.data.filter(a=>a.envType==='jdk');
+                    setJdkEnvList(jdkData)
+
+                    const pythonData=res.data.filter(a=>a.envType==='python');
+                    setPythonList(pythonData)
+
                 }
             })
         })
 
-        //查询所有扫描环境
-        findAllDeployEnv().then(res=>{
-            if (res.code===0&&res.data){
-                const data=res.data.filter(a=>a.envType!=='exec');
-                setEnvList(data)
 
-                const jdkData=res.data.filter(a=>a.envType==='jdk');
-                setJdkEnvList(jdkData)
-
-                const pythonData=res.data.filter(a=>a.envType==='python');
-                setPythonList(pythonData)
-            }
-        })
 
         //查询扫描环境
         findProjectEnvList({projectId:params.id}).then(res=>{
@@ -213,12 +225,18 @@ const ScanConfig = (props) => {
     const onclick = () => {
         form.validateFields().then((values) => {
             //扫描方案不相等 修改
-            if (values.scanSchemeId!==projectData.scanScheme?.id||projectData.cover!==cover||projectData.complexity!==complexity){
+            if (values.scanSchemeId!==projectData.scanScheme?.id||
+                projectData.cover!==cover||projectData.buildPath!==buildPath||
+                projectData.scanType!==scanType
+            ){
                 updateProject({...projectData,
                     scanScheme:{id:values.scanSchemeId},
-                    cover:cover,
-                    complexity:complexity,
+                    scanType:scanType,
+                    buildPath:buildPath
                 })
+              /*  if (!projectData.scanType&&projectData.scanType!==values.scanType){
+
+                }*/
             }
             if (values?.branch!==scanConfigData?.branch||
                 repository?.id!==scanConfigData?.repositoryCode||
@@ -237,10 +255,18 @@ const ScanConfig = (props) => {
                     }
                 })
             }
-            //扫描环境不同修改项目扫描环境
-            if (execEnv.deployEnv.id!==envId){
-                updateProjectEnv({...execEnv,deployEnv:{id:envId}})
+
+            //扫描环境
+            if (execEnv){
+                //扫描环境不同修改项目扫描环境
+                if (execEnv.deployEnv?.id!==envId){
+                    updateProjectEnv({...execEnv,deployEnv:{id:envId}})
+                }
+            }else {
+                //不存在扫描环境就创建
+                createProjectEnv({projectId:params.id,type:"exec",deployEnv:{id:envId}})
             }
+
 
             //添加覆盖率
             if (values.cover===1){
@@ -256,19 +282,6 @@ const ScanConfig = (props) => {
                 }
             }
 
-            //添加复杂度
-            if (values.complexity===1){
-                if (!pythonEnv){
-                    createProjectEnv({
-                        projectId:params.id,
-                        type:"python",
-                        deployEnv:{id:pythonId}
-                    })
-                }
-                if (pythonEnv?.deployEnv.id!==pythonId){
-                    updateProjectEnv({...pythonEnv,deployEnv:{id:pythonId}})
-                }
-            }
         })
     }
 
@@ -331,6 +344,9 @@ const ScanConfig = (props) => {
             })}
     }
 
+
+
+
     //选择方案
     const choiceScheme = (value) => {
         const scheme=scanSchemeList.filter(a=>a.id===value)[0]
@@ -340,8 +356,18 @@ const ScanConfig = (props) => {
 
     //初始化查询仓库分支
     const onFocusBranch = () => {
+        let repo;
+        if (repServer.serverType==='gitee'){
+            repo=repository.name
+        }else {
+            repo=repository.id
+        }
         if (repository&&repServer){
-            findRepositoryBranchList(repository.id,repServer.id).then(res=>{
+            findRepositoryBranchList({
+                repServerId:repServer.id,
+                repo:repo,
+                owner:repository.nameWithSpace
+            }).then(res=>{
                 if (res.code===0){
                     setBranchList(res.data)
                 }
@@ -367,13 +393,38 @@ const ScanConfig = (props) => {
     const optCover = (value) => {
         setCover(value)
     }
-    const optComplexity = (value) => {
-        setComplexity(value)
-    }
+
 
     const setOpenOrClose = () => {
 
     }
+
+    //切换扫描方式
+    const choiceScanType = (value) => {
+        setScanType(value)
+        form.setFieldsValue({
+            scanSchemeId:null,
+        })
+    }
+    //查询扫描方案
+    const onFocusScheme = () => {
+        findScanSchemeByLanguage({language:language,scanType:scanType}).then(res=>{
+            if (res.code===0){
+                setScanSchemeList(res.data)
+            }
+        })
+    }
+
+    //初始化扫描环境
+    const onFocusExecEnv = () => {
+
+    }
+
+    //输入 c#的项目文件路径
+    const inputNetPath = (value) => {
+        setBuildPath(value.target.value)
+    }
+
 
     return(
         <div className='sourcefare scan-config config-page-width'>
@@ -411,7 +462,24 @@ const ScanConfig = (props) => {
                                 }
                             </Select>
                         </Form.Item>
-
+                        <Form.Item
+                            label={'扫描语言'}
+                            name={'scanLanguage'}
+                            rules={[{required:true,message:'扫描语言'}]}
+                        >
+                            <Select   placeholder={"扫描语言"}
+                                      disabled={true}
+                            >
+                                {
+                                    scanLanguageList.map(item=>{
+                                            return(
+                                                <Select.Option key={item.value} value={item.value}>{item.desc}</Select.Option>
+                                            )
+                                        }
+                                    )
+                                }
+                            </Select>
+                        </Form.Item>
 
                         {
                             scanWay==="server"&&
@@ -477,13 +545,34 @@ const ScanConfig = (props) => {
                                 </Form.Item>
                             </>
                         }
+
+
+                        {
+                           schemeData?.language==='Java'&&
+                            <Form.Item
+                                label={'扫描类型'}
+                                name={'scanType'}
+                                rules={[{required:true,message:'扫描类型'}]}
+                            >
+                                <Select  allowClear  style={{minWidth:140}} placeholder='扫描类型'  onChange={choiceScanType}>
+                                    <Select.Option value={"static"}>{"静态扫描"}</Select.Option>
+                                    <Select.Option value={"compile"}>{"编译扫描"}</Select.Option>
+                                    <Select.Option value={"collect"}>{"静态+编译扫描"}</Select.Option>
+                                </Select>
+                            </Form.Item>
+                        }
+
                         <Form.Item
                             label={'扫描方案'}
                             name={'scanSchemeId'}
                             rules={[{required:true,message:'扫描方案'}]}
                             value={schemeData?.id}
                         >
-                            <Select  defaultValue={schemeData?.id}   onChange={choiceScheme}  placeholder={"请选择"}>
+                            <Select  defaultValue={schemeData?.id}
+                                     onChange={choiceScheme}
+                                     onFocus={onFocusScheme}
+                                     placeholder={"请选择"}
+                            >
                                 {
                                     scanSchemeList.length&&scanSchemeList.map(item=>{
                                             return(
@@ -497,8 +586,20 @@ const ScanConfig = (props) => {
                         {
                             ( scanWay==="server"||scanWay==="serverUpload")&&
                             <>
+
+                                {(language==="c#")&&
+
+                                    <div className='scan-config-nav'>
+                                        <div className='scan-config-title'>
+                                            <div className='scan-config-title-text'>{"构建路径"}</div>
+                                            <div className='scan-config-title-desc'>{"(项目sln文件地址、或者csproj文件地址, 为空则默认从根目录获取)"}</div>
+                                        </div>
+                                        <Input placeholder={"请输入构建路径"} onChange={inputNetPath} value={buildPath}/>
+                                    </div>
+                                }
+
                                 {
-                                    (schemeData?.language==='Java'||schemeData?.language==='JavaScript'||schemeData?.language==='Python')&&
+                                    (language!=="c++")&&
                                     <Form.Item
                                         label={envText}
                                         name={'execEnv'}
@@ -507,6 +608,7 @@ const ScanConfig = (props) => {
                                         <Select     allowClear
                                                     placeholder={"请选择"}
                                                     onChange={optEnv}
+                                                    onFocus={onFocusExecEnv}
                                         >
                                             {
                                                 envList.length&&envList.map(item=>{
@@ -520,25 +622,7 @@ const ScanConfig = (props) => {
                                     </Form.Item>
                                 }
                                 {
-                                    (schemeData?.language==="JavaScript"||schemeData?.language==="Python"
-                                        ||schemeData?.language==="c++"
-                                        ||schemeData?.language==="c#")&&
-                                    <Form.Item
-                                        label={'是否开启复杂度测试'}
-                                        name={'complexity'}
-                                    >
-                                        <Select
-                                            onChange={optComplexity}
-                                            options={[
-                                                { value: 0, label: '否' },
-                                                { value: 1, label: '是' },
-                                            ]}
-                                        />
-                                    </Form.Item>
-                                }
-                                {
-                                    schemeData?.language==='Java'&&
-                                    <Form.Item
+                                    language==='java'&&cover===1&&                                    <Form.Item
                                         label={'是否开启覆盖测试'}
                                         name={'cover'}
                                         value={cover}
@@ -554,7 +638,7 @@ const ScanConfig = (props) => {
                                     </Form.Item>
                                 }
                                 {
-                                    schemeData?.language==='Java'&&cover===1&&
+                                    language&&language!=='javascript'&&language!=='python'&&language!=='c++'&&language!=='c#'&&language!=='java'&&
                                     <Form.Item
                                         label={'jdk环境'}
                                         name={'jdkEnv'}

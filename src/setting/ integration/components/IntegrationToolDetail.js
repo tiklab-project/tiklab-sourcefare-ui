@@ -111,6 +111,17 @@ const IntegrationServer = (props) => {
                 </div>
 
                 <div className='host-info-table'>
+                    {params?.type==='net'&&
+                        <div className='tool-details-border-dec'>
+                            <div>
+                                {"当前扫描工具仅支持.net6对应的版本,在全局需要安装.net6版本"}
+                            </div>
+                            <div>
+                                {"请添加--sdk-path,如果全局安装了.net,通过命令查询--sdk-path： dotnet --list-sdks"}
+                            </div>
+                        </div>
+                    }
+
                     {
                         <Table
                             bordered={false}

@@ -39,3 +39,13 @@
     background-color:#f5f5f5 ;
   }
 }
+.task-add-enhance-modal{
+  height: calc(100% - 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  top: 60px;
+  .ant-modal-body{
+    padding: 0 !important;
+  }
+}

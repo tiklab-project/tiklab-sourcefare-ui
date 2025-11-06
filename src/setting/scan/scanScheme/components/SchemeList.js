@@ -18,6 +18,8 @@ import EmptyText from "../../../../common/emptyText/EmptyText";
 import SchemeAddPop from "./SchemeAddPop";
 import SchemeUpdatePop from "./SchemeUpdatePop";
 import {PrivilegeButton} from 'tiklab-privilege-ui';
+import {getVersionInfo} from "tiklab-core-ui";
+import ModalContentTip from "../../../../common/statistics/ComTip/ModalContentTip";
 const SchemeList = (props) => {
     const {findScanSchemePage,deleteScanScheme,createScanScheme,createScanSchemeRuleSet, updateScanScheme,fresh}=ScanSchemeStore
 
@@ -31,6 +33,8 @@ const SchemeList = (props) => {
     const [addVisible,setAddVisible] = useState(false)    //打开扫描方案弹窗状态
     const [updateVisible,setUpdateVisible]=useState(false)
     const [schemeDate,setSchemeDate]=useState('') //编辑选择的扫描方案
+
+    const [staticVisible,setStaticVisible] = useState(false)    //打开提示款弹窗
 
     const columns = [
         {
@@ -171,6 +175,16 @@ const SchemeList = (props) => {
         });
     }
 
+    //打开添加扫描方案的
+    const clickAddScheme = () => {
+       // setAddVisible(true)
+        if (getVersionInfo().expired){
+            setStaticVisible(true)
+        }else {
+            setAddVisible(true)
+        }
+    }
+
     return(
         <div className='xcode drop-down  sourcewair-page-width scheme'>
             <Col sm={{ span: "24" }}
@@ -186,7 +200,7 @@ const SchemeList = (props) => {
                             type={'primary'}
                             title={'添加方案'}
                             /*  icon={<PlusOutlined/>}*/
-                            onClick={()=> setAddVisible(true)}
+                            onClick={()=> clickAddScheme()}
                         />
                     </PrivilegeButton>
 
@@ -202,6 +216,23 @@ const SchemeList = (props) => {
                     />
                 </div>
             </Col>
+
+            <Modal
+                closable={false}
+                footer={null}
+                className='task-add-enhance-modal'
+                width={450}
+                visible={staticVisible}
+                onCancel={()=>setStaticVisible(false)}
+            >
+                <ModalContentTip
+                    config={{
+                        title:'添加扫描方案',
+                        desc:'根据需求添加自定义扫描方案'
+                    }}
+                />
+            </Modal>
+
             <SchemeAddPop visible={addVisible} setVisible={setAddVisible}
                            createScanScheme={createScanScheme}
                            createScanSchemeRuleSet={createScanSchemeRuleSet}

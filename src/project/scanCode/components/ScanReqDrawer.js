@@ -148,7 +148,7 @@ const ScanReqDrawer = (props) => {
                 </div>
                 <div className='req-drawer-body'>
                     <div className='req-drawer-body-tabs'>
-                        <div>问题状态</div>
+                       {/* <div>问题状态</div>*/}
                         <Highlighter language={"javascript"}
                                      code={dataList}
                                      lines={lines}

@@ -35,7 +35,7 @@ const ScanRuleSetList = (props) => {
             key: 'ruleSetName',
             width:'30%',
             ellipsis:true,
-            render:(text,record)=><div className='text-color' onClick={()=>openRuleSetDetails(record)}>{text}</div>
+            render:(text,record)=><div className='rule-set-table-name' onClick={()=>openRuleSetDetails(record)}>{text}</div>
         },
         {
             title: '支持语言',
@@ -130,7 +130,7 @@ const ScanRuleSetList = (props) => {
                     />
                     <Select   style={{width: 190}}
                               onChange={cutLanguage}
-                              placeholder='工具'
+                              placeholder='语言'
                               allowClear
                     >
                         {LanguageList.map(item=>{

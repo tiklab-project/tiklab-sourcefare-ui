@@ -49,7 +49,6 @@ const IntegrationServer = (props) => {
                         </div>
                     </div>
                 </div>
-
             </Col>
         </div>
     )

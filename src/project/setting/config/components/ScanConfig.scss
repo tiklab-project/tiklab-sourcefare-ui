@@ -97,6 +97,26 @@
   }
 }
 
+
+.scan-config-nav{
+  margin-bottom: 20px;
+  .scan-config-title{
+    display: flex;
+    gap: 5px;
+    padding-bottom: 8px;
+    .scan-config-title-text{
+      color: #666;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .scan-config-title-desc{
+      color: #999999;
+
+    }
+  }
+
+}
+
 .icon-text{
   display: flex;
   gap: 5px;
@@ -113,3 +133,5 @@
     min-width: 720px;
   }
 }
+
+

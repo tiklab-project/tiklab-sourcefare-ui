@@ -95,6 +95,9 @@ const IntegrationServerDetails = (props) => {
             key: 'serverType',
             width:'10%',
             ellipsis:true,
+            render:(text,record)=><div className=''>
+                {text==='priGitlab'?"自建gitlab":text}
+            </div>
         },
         {
             title: '创建人',

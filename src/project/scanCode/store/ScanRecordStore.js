@@ -23,12 +23,15 @@ export class ScanRecordStore  {
      * @param  param
      */
     @action
-    deleteScanRecord=async (id)=>{
+    deleteScanRecordByProjectId=async (projectId,recordId)=>{
         const param=new FormData()
-        param.append("id",id)
-        const res = await Axios.post("/scanRecord/deleteScanRecord",param)
+        param.append("projectId",projectId)
+        param.append("recordId",recordId)
+        const res = await Axios.post("/scanRecord/deleteScanRecordByProjectId",param)
         if (res.code===0){
             this.refresh=!this.refresh
+        }else {
+            message.error("删除失败："+res.msg)
         }
         return res
     }

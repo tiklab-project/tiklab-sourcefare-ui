@@ -16,6 +16,12 @@
       font-size: var(--tiklab-input-icon-15);
     }
   }
+  .rule-table-name{
+    cursor: pointer;
+    &:hover{
+      color: #1890ff;
+    }
+  }
 
   .text-red{
     color: red;

@@ -12,15 +12,23 @@
 
 .code-line-error{
   scroll-margin-top: 100px;
-  border: 1px solid #e6e7eb;
+  /*border: 1px solid #e6e7eb;*/
   border-radius: 4px 4px 0 0;
   align-items: center;
-  display: flex;
   font-weight: 500;
-  padding: 10px;
-  margin: 15px;
+  padding: 5px 15px;
+  margin: 15px 15px 15px 60px;
   background-color: #EBECF0;
-  gap: 20px;
+
+  .code-line-error-lin{
+    display: flex;
+  }
+  .code-line-error-title{
+    width: 80px;
+  }
+  .code-line-error-top{
+    margin-top: 5px;
+  }
   .code-line-text{
     flex: 1;
   }
