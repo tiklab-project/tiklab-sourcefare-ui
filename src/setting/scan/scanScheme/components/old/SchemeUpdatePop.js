@@ -7,9 +7,9 @@
  */
 import React,{useState,useEffect,Fragment} from 'react';
 import {Form, Input, Select,Checkbox} from "antd";
-import Modal from "../../../../common/modal/Modals";
-import Btn from "../../../../common/btn/Btn";
-import DeployStore from "../../store/DeployStore";
+import Modal from "../../../../../common/modal/Modals";
+import Btn from "../../../../../common/btn/Btn";
+import DeployStore from "../../../store/DeployStore";
 import {observer} from "mobx-react";
 const SchemeUpdatePop = (props) => {
     const [form] = Form.useForm()

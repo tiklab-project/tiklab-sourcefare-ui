@@ -75,7 +75,10 @@ const IssueStatistics = (props) => {
             <div className='scan-statistics-tab-nav'>
                 {
                     treeNav==='issue'&&
-                    <Select   onChange={(type,value)=>changeIssue("findType",value)} style={{minWidth:140}} placeholder='查询类型'>
+                    <Select   onChange={(type,value)=>changeIssue("findType",value)}
+                              style={{minWidth:140}} placeholder='查询类型'
+                              defaultValue="issueType"
+                    >
                         <Select.Option value={"issueType"}>{"类型"}</Select.Option>
                         <Select.Option value={"issueLevel"}>{"等级"}</Select.Option>
 
@@ -85,6 +88,7 @@ const IssueStatistics = (props) => {
                     placeholder="查询次数"
                     style={{width:150}}
                     onChange={(type,value)=>changeIssue("findNum",value)}
+                    defaultValue="7"
                 >
                     {
                         dateList && dateList.map(item => {

@@ -40,8 +40,6 @@
           }
         }
       }
-
-
     }
 
     &:not(:last-child) {
@@ -50,5 +48,8 @@
   }
 
 }
-
+.integration-home-limited{
+  padding: 20px 30px;
+  min-width: 576px;
+}
 

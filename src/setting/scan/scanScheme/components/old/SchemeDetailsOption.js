@@ -7,8 +7,8 @@
  */
 import React, {useState} from "react";
 import {Dropdown, Input, Table, Tooltip} from "antd";
-import Btn from "../../../../common/btn/Btn";
-import Modal from "../../../../common/modal/Modals";
+import Btn from "../../../../../common/btn/Btn";
+import Modal from "../../../../../common/modal/Modals";
 const SchemeDetailsOption = (props) => {
     const {visible,setVisible,notSchemeRuleSet,scanScheme,createScanSchemeRuleSet}=props
 

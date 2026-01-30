@@ -15,6 +15,7 @@ import CoverNum from "../../../common/statistics/CoverNum";
 const Overview = (props) => {
     const {scanRecordStat,scanCoverStat,metricStat,scanDoor}=props
 
+
     return(
         <div className='overview'>
             {
@@ -22,14 +23,14 @@ const Overview = (props) => {
                     <>
                         <div className='overview-border'>
                             <div className='overview-hole-border'>
-                                <div className={`${scanRecordStat?.scanResult==="success"?"result-success ":"result-fails "}  overview-rpy-border`}>
+                                <div className={`${scanRecordStat?.issueResult==="success"?"result-success ":"result-fails "}  overview-rpy-border`}>
                                     <div className='overview-rpy-desc'>检测结果</div>
                                     {
-                                        scanRecordStat?.scanResult==='success'&&
+                                        scanRecordStat?.issueResult==='success'&&
                                             <div className='overview-rpy-num relyOn-num'>{"通过"}</div>||
-                                        scanRecordStat?.scanResult==='fail'&&
+                                        scanRecordStat?.issueResult==='fail'&&
                                             <div className='overview-rpy-num relyOn-num'>{"未通过"}</div>||
-                                        scanRecordStat?.scanResult==='execFail'&&
+                                        scanRecordStat?.issueResult==='execFail'&&
                                         <div className='overview-rpy-num relyOn-num'>{"运行失败"}</div>
                                     }
                                 </div>
@@ -59,7 +60,7 @@ const Overview = (props) => {
                                 </div>
                                 <div className='hole-border-left'>
                                     <div className='overview-hole-desc'>警告问题</div>
-                                    <div className='overview-hole-num overview-hole-dired'>{scanRecordStat?.noticeTrouble}</div>
+                                    <div className='overview-hole-num overview-hole-blue'>{scanRecordStat?.noticeTrouble}</div>
                                     <div className='overview-access'>
                                         <div> 门禁</div>
                                         {
@@ -91,7 +92,7 @@ const Overview = (props) => {
 
                                 <div className='hole-border-right'>
                                     <div className='overview-hole-desc'>未解决问题</div>
-                                    <div className='overview-hole-num'>{scanRecordStat?.allTrouble}</div>
+                                    <div className='overview-hole-num'>{scanRecordStat?.untreated}</div>
                                 </div>
                             </div>
                         </div>

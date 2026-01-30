@@ -10,7 +10,7 @@ import React,{useState,useEffect,Fragment} from 'react';
 import "./ScanReportDetails.scss"
 import {inject, observer} from "mobx-react";
 import scanRecordStore from "../store/ScanRecordStore"
-import {Table, message, Empty, Tooltip, Popconfirm, Col, Row} from "antd";
+import {Table, message, Empty, Tooltip, Popconfirm, Col, Row, Modal} from "antd";
 import codeScanStore from "../store/CodeScanStore";
 import ScanLogDrawer from "../common/ScanLogDrawer";
 import ScanSetting from "./ScanSetting";
@@ -25,14 +25,22 @@ import OverviewStore from "../store/OverviewStore";
 import IssueList from "./IssueList";
 import MetricContent from "./MetricContent";
 import CodeStore from "../store/CodeStore";
-import {FileDoneOutlined, FileTextOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {
+    DownloadOutlined,
+    FileDoneOutlined,
+    FileTextOutlined,
+    QuestionCircleOutlined,
+    ToTopOutlined
+} from "@ant-design/icons";
+import {getVersionInfo} from "tiklab-core-ui";
+import ModalContentTip from "../../../common/statistics/ComTip/ModalContentTip";
 const ScanReportDetails= (props) => {
     const {projectStore,match:{params}} = props;
     const {findScanRecord,findScanRecordLogList,refresh}=scanRecordStore
     const {findRecordInstancePageByPlay}=InstanceStore
     const {findScanDoorByProjectId}=ScanDoorStore
     const {codeScanExec}=codeScanStore
-    const {findProject,findProjectRepByProjectId} = projectStore
+    const {findProject,findProjectRepByProjectId,findApplySystem} = projectStore
     const {findProjectCoverStat,findScanRecordStat,findMetricStat}=OverviewStore
 
     const [projectData,setProjectData]=useState(null)
@@ -57,7 +65,9 @@ const ScanReportDetails= (props) => {
     //门禁值
     const [scanDoor,setScanDoor]=useState(null)
 
+    const [staticVisible,setStaticVisible] = useState(false)    //打开提示款弹窗
 
+    const [applySystem,setApplySystem]=useState(null)
 
     useEffect(async () => {
 
@@ -72,6 +82,14 @@ const ScanReportDetails= (props) => {
         })
 
     }, [refresh]);
+
+    useEffect( ()=>{
+        findApplySystem().then(value=>{
+            if (value.code===0){
+                setApplySystem(value.data)
+            }
+        })
+    },[])
 
 
     useEffect(async () => {
@@ -152,15 +170,27 @@ const ScanReportDetails= (props) => {
 
     //打开扫描日志
     const openLog = (value) => {
-        setLogVisible(true)
-        findScanRecordLogList({scanRecordId:params.recordId}).then(res=>{
-            if (res.code===0&&res.data){
-               setRecordLogList(res.data)
-            }
-        })
+
+    }
+    //导出报告
+    const exportReport = (value) => {
+        if (value==='log'){
+            setLogVisible(true)
+            findScanRecordLogList({scanRecordId:params.recordId}).then(res=>{
+                if (res.code===0&&res.data){
+                    setRecordLogList(res.data)
+                }
+            })
+        }else {
+            window.open(`${node_env? base_url:window.location.origin}/exportData/exportPdf/${scanRecord.projectId}/${scanRecord.id}`);
+
+        }
     }
 
-
+    const closeVisible = () => {
+        setStaticVisible(false)
+        window.open(`${node_env? base_url:window.location.origin}/exportData/exportPdf/${scanRecord.projectId}/${scanRecord.id}`);
+    }
 
     return(
         <div className='scanRecord'>
@@ -191,14 +221,18 @@ const ScanReportDetails= (props) => {
 
                     </Col>
                     <Col span={8}>
-                        <div className='scan-play-style' onClick={openLog}>
-                            <FileTextOutlined />
-                            日志
+                        <div className='scan-play-style-right'>
+                            <div className='scan-play-style' onClick={()=>exportReport("log")}>
+                                <Tooltip title='日志'>
+                                    <FileTextOutlined />
+                                </Tooltip>
 
-                           {/* <FileDoneOutlined />*/}
-                           {/* <div className='scan-but-style'>
-                                <Btn   title={'日志'} onClick={openLog}/>
-                            </div>*/}
+                            </div>
+                            <div className='scan-play-style' onClick={()=>exportReport("pdf")}>
+                                <Tooltip title='导出'>
+                                    <DownloadOutlined />
+                                </Tooltip>
+                            </div>
                         </div>
                     </Col>
                 </Row>
@@ -249,6 +283,24 @@ const ScanReportDetails= (props) => {
                            scanRecord={scanRecord}
                            logList={logRecordLogList}
             />
+
+            <Modal
+                closable={false}
+                footer={null}
+                className='task-add-enhance-modal'
+                width={450}
+                visible={staticVisible}
+                onCancel={()=>setStaticVisible(false)}
+            >
+                <ModalContentTip
+                    config={{
+                        title:'导出pdf',
+                        desc:'导出扫描概览的pdf'
+                    }}
+                    applySystem={applySystem}
+                    closeVisible={closeVisible}
+                />
+            </Modal>
         </div>
 
     )

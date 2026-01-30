@@ -114,19 +114,27 @@ const ScanCode = (props) => {
         choiceFile(value,"code")
         setFindType(value.type)
         if (value.type==='file'){
-            findCodeDetails(value.path)
+            debugger
+            findCodeDetails(value)
         }else {
             getCode(value.path,"child")
         }
     }
 
     //查询代码内容
-    const findCodeDetails = (filePath) => {
+    const findCodeDetails = (value) => {
+        const filePath=value.path
         findCodeData(filePath).then(res=>{
             if (res.code===0){
                 const lines = res.data.split("\n")
                 setLines(lines)
                 setDataList(res.data)
+                setCodeData({fileCount:1,
+                    severityCount:value?.severityTrouble,
+                    errorCount:value?.errorTrouble,
+                    noticeCount:value?.noticeTrouble,
+                    suggestCount:value?.suggestTrouble
+                })
             }
         })
     }
@@ -226,7 +234,7 @@ const ScanCode = (props) => {
                                         <Spin  spinning={spinState}>
                                             <div className='scan-code-tab'>
                                             {
-                                                codeData?.codeList.length?codeData.codeList.map(item=>{
+                                                codeData?.codeList?.length?codeData.codeList.map(item=>{
                                                     return(
                                                         <div key={item.path} className='scan-code-tab-line'>
                                                             <div className='scan-code-tab-name' onClick={()=>openChild(item)}>

@@ -1,0 +1,106 @@
+.scheme-tree{
+  position: relative;
+  z-index: 1;
+  background-color: var(--tiklab-scan-data);
+  .scheme-tree-style{
+    border-right: 1px solid #f0f2f5;
+    width: 260px;
+    .scheme-tree-title{
+      line-height: 1.5;
+      padding: 20px 7px 20px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .scheme-tree-title-text{
+        font-size: 16px;
+        font-weight:500;
+      }
+      .scheme-tree-title-icon{
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+    .scheme-tree-data{
+      display: flex;
+      gap: 7px;
+      flex-direction: column;
+      overflow: auto;
+      padding:0 7px;
+      height: calc(100vh - 67px);
+      .scheme-tree-data-nv{
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 10px;
+        .scheme-tree-data-nv-text{
+          padding: 6px 6px 6px 12px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          word-break: keep-all;
+        }
+
+        .scheme-tree-data-nv-icon{
+          font-size: 20px;
+          color: black;
+        }
+        &:hover{
+          background-color: var(--tiklab-gray-300);
+          border-radius: 4px;
+        /*  padding-right: 10px;*/
+        }
+      }
+      .scheme-tree-data-nv-choice{
+        background-color: var(--tiklab-gray-300);
+        color: #0d66e4;
+        border-radius: 4px;
+      }
+    }
+  }
+
+}
+.task-add-enhance-modal {
+  height: calc(100% - 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  top: 60px;
+
+  .ant-modal-body {
+    padding: 0 !important;
+  }
+}
+
+.scheme-dropdown-more{
+  box-shadow: 0 4px 8px -2px #091e4240, 0 0 1px #091e424f;
+  border-radius: 4px;
+  background: #ffffff;
+  width: 120px;
+  padding: 8px;
+  &:empty{
+    display: none;
+  }
+  .dropdown-more-item{
+    display: flex;
+    cursor: pointer;
+    padding: 5px;
+    gap: 5px;
+    align-items: center;
+    &:hover{
+      background: #f4f4f4;
+    }
+  }
+
+  .dropdown-more-item-no{
+    display: flex;
+    cursor:not-allowed;
+    padding: 5px;
+    color: #DCDCDC;
+    gap: 5px;
+    align-items: center;
+  }
+  .ant-divider-horizontal{
+    margin: 6px 0 !important;
+  }
+}

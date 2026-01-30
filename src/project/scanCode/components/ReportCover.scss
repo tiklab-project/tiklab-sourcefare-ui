@@ -48,10 +48,11 @@
 
 .cover-page-width{
   width: 100%;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 105px);
   overflow: auto;
-  padding: 20px 30px;
+  padding: 20px;
   .ant-col{
     min-width: 900px;
   }
 }
+

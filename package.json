@@ -62,6 +62,7 @@
         "tiklab-core-ui": "^1.0.3",
         "tiklab-eam-ui": "^1.0.3",
         "tiklab-licence-ui": "^1.0.3",
+        "tiklab-markdown-ui": "^1.0.1",
         "tiklab-message-ui": "^1.0.3",
         "tiklab-openapi-ui": "^1.0.0",
         "tiklab-postin-client-ui": "^1.0.0",

@@ -8,9 +8,9 @@
  */
 import React,{useState,useEffect,Fragment} from 'react';
 import { Table} from "antd";
-import Page from "../../../../common/page/Page";
-import EmptyText from "../../../../common/emptyText/EmptyText";
-import {SpinLoading} from "../../../../common/loading/Loading";
+import Page from "../../../../../common/page/Page";
+import EmptyText from "../../../../../common/emptyText/EmptyText";
+import {SpinLoading} from "../../../../../common/loading/Loading";
 import "./SchemeDetails"
 import {getUser} from "tiklab-core-ui";
 const ScanSchemePlay = (props) => {

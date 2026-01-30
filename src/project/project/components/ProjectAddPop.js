@@ -17,6 +17,7 @@ import Btn from "../../../common/btn/Btn";
 import ProjectPower from "../../../common/project/ProjectPower";
 import {getUser} from "tiklab-core-ui";
 import Modals from "../../../common/modal/Modals";
+import ProjectAddBasics from "./ProjectAddBasics";
 const { TextArea } = Input;
 const { Step } = Steps;
 const ProjectAddPop = (props) => {
@@ -31,7 +32,6 @@ const ProjectAddPop = (props) => {
     //创建的状态
     const [createState,setCreateState]=useState(false)
     const [powerType,setPowerType] = useState("public")
-
 
     //步骤
     const [step,setStep]=useState(0)
@@ -48,6 +48,11 @@ const ProjectAddPop = (props) => {
 
     //c#构建命令
     const [buildPath,setBuildPath]=useState()
+
+    //分支
+    const [branch,setBranch]=useState("branch")
+
+
 
     useEffect(async () => {
         if (visible){
@@ -92,7 +97,6 @@ const ProjectAddPop = (props) => {
     }
 
     const onclickCreate = () => {
-        debugger
         form.validateFields().then((values) => {
             setCreateState(true)
             createProject({
@@ -124,6 +128,39 @@ const ProjectAddPop = (props) => {
     }
 
 
+    //选择扫描方式
+    const choiceSanWay = (value) => {
+        setScanWay(value)
+        form.setFieldsValue({
+            repositoryPath:null,
+            repository:null,
+            scanSchemeId:null,
+            scanType:null,
+            excEnv:null,
+            python:null,
+            cover:null,
+            jdkEnv:null,
+        })
+    }
+
+    //跳转步骤
+    const jumpSteps = (value) => {
+        setStep(value)
+        form.setFieldsValue({
+            repositoryPath:null,
+            repository:null,
+            branch:null,
+            scanLanguage:null,
+            scanSchemeId:null,
+            scanType:null,
+            excEnv:null,
+            python:null,
+            cover:null,
+            jdkEnv:null,
+        })
+    }
+
+
     const modalFooter = (
         <>
             <Btn onClick={cancel} title={'取消'} isMar={true}/>
@@ -132,7 +169,7 @@ const ProjectAddPop = (props) => {
                     <Btn  title={'下一步'} type={'primary'} onClick={addProject}/>
                 :
                 <>
-                    <Btn  title={'上一步'}  onClick={()=>setStep(0)} isMar={true}/>
+                    <Btn  title={'上一步'}  onClick={()=>jumpSteps(0)} isMar={true}/>
                     {createState? <Btn  title={'加载中'} type={'primary'}/>:
                         <Btn  title={'确定'} type={'primary'} onClick={onclickCreate} />
                     }
@@ -163,49 +200,14 @@ const ProjectAddPop = (props) => {
                 </div>
 
                 {
-                    step==0?
-                        <Form
-                            form={form}
-                            layout="vertical"
-                        >
-                            <Form.Item
-                                label='项目名称'
-                                name='name'
-                                rules={[
-                                    {required:true,message:'项目名称不能为空'},
-                                    {max:30,message:'请输入1~31位以内的名称'},
-                                    Validation('名称','appoint'),
-                                    ({getFieldValue}) => ({
-                                        validator(rule,value) {
-                                            let nameArray = []
-                                            if(projectList&&projectList.length>0){
-                                                nameArray = projectList && projectList.map(item=>item.name)
-                                            }
-                                            if (nameArray.includes(value)) {
-                                                return Promise.reject('名称已经存在')
-                                            }
-                                            return Promise.resolve()
-                                        }
-                                    }),
-                                ]}
-                            >
-                                <Input style={{background:'#fff'}} placeholder={"输入仓库组名称"}/>
-                            </Form.Item>
+                    step===0?
+                        <ProjectAddBasics {...props}
+                                          form={form}
+                                          projectList={projectList}
+                                          powerType={powerType}
+                                          setPowerType={setPowerType}/>
+                        :
 
-
-                            <ProjectPower
-                                powerType={powerType}
-                                setPowerType={setPowerType}
-                                powerTitle={'项目'}
-                            />
-
-                            <Form.Item
-                                label="描述"
-                                name="projectDesc"
-                            >
-                                <TextArea rows={4} />
-                            </Form.Item>
-                        </Form>:
                         <ProjectAddScan {...props}
                                         setScanWay={setScanWay}
                                         scanWay={scanWay}
@@ -216,6 +218,8 @@ const ProjectAddPop = (props) => {
                                         complexity={complexity}
                                         setComplexity={setComplexity}
                                         setBuildPath={setBuildPath}
+                                        onclickCreate={onclickCreate}
+                                        setBranch={setBranch}
                         />
                 }
             </div>

@@ -9,14 +9,14 @@ import React,{useState,useEffect} from 'react';
 import {Drawer, Popconfirm, Table, Tooltip} from 'antd'
 import {CheckCircleOutlined, CloseCircleOutlined, CloseOutlined, EditOutlined} from "@ant-design/icons";
 import {PrivilegeButton} from "tiklab-privilege-ui";
-import ScanSchemeRuleStore from "../store/ScanSchemeRuleStore";
+import ScanSchemeRuleStore from "../../store/ScanSchemeRuleStore";
 import "./SchemeDetailsDrawer.scss"
 import {observer} from "mobx-react";
 import RuleInfo from "./RuleInfo";
-import ScanRuleSetStore from "../../scanRule/store/ScanRuleSetStore";
-import EmptyText from "../../../../common/emptyText/EmptyText";
-import {SpinLoading} from "../../../../common/loading/Loading";
-import Page from "../../../../common/page/Page";
+import ScanRuleSetStore from "../../../scanRule/store/ScanRuleSetStore";
+import EmptyText from "../../../../../common/emptyText/EmptyText";
+import {SpinLoading} from "../../../../../common/loading/Loading";
+import Page from "../../../../../common/page/Page";
 const schemeDetailsDrawer = (props) => {
 
     const {visible,setVisible,schemeRuleSet}=props

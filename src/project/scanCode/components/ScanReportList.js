@@ -61,6 +61,8 @@ const scanReportList = (props) => {
     const [logList,setLogList]=useState([])
     const [scanRecord,setScanRecord]=useState(null)
 
+    const [openLogType,setOpenLogType]=useState()
+
 
 
     useEffect(async() => {
@@ -126,6 +128,7 @@ const scanReportList = (props) => {
         setMultiState(true)
         codeScanExec(params.id).then(res=>{
             if (res.code===0&&res.data){
+                setOpenLogType("run")
                 setDataNll()
                 setLogVisible(true)
                 scanTime(res.data.id)
@@ -179,10 +182,11 @@ const scanReportList = (props) => {
     const openLog = (value) => {
         setDataNll()
         setScanRecord(value)
-        if (value.scanResult==='run'){
-            findScanState(params.id,value.id).then(res=>{
+        setOpenLogType("")
+        if (value.issueResult==='run'){
+            scanTime(value.id)
+          /*  findScanState(params.id,value.id).then(res=>{
                 if (res.code===0){
-                    setFindLogType("run")
                     setScanRecord({
                         id:value,
                         ...res.data
@@ -190,8 +194,9 @@ const scanReportList = (props) => {
                 }else {
                     message.error("查询日志失败",1)
                 }
-            })
+            })*/
         }else {
+
             findScanRecordLogList({scanRecordId:value.id}).then(res=>{
                 if (res.code===0){
                     setLogList(res.data)
@@ -401,6 +406,7 @@ const scanReportList = (props) => {
             render: (text, record) => {
                 return(
                     <div className="icon-text">
+
                         <Tooltip title='日志'>
                             <FileTextOutlined  onClick={()=>openLog(record)}/>
                         </Tooltip>

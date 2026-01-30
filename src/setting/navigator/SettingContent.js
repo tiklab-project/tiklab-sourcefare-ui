@@ -40,6 +40,8 @@ const SettingContent= props =>  {
                 setSelectKey("/setting/powerUser")
             }else if (path.startsWith("/setting/tool")){
                 setSelectKey("/setting/tool")
+            }else if (path.startsWith("/setting/server")){
+                setSelectKey("/setting/server")
             }else {
                 setSelectKey(path)
             }

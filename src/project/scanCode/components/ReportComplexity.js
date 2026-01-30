@@ -17,8 +17,9 @@ import CodeTree from "../common/CodeTree";
 import DuplicatedCode from "../common/DuplicatedCode";
 import codePage from "../../../assets/images/img/code-home-page.png";
 import {SpinLoading} from "../../../common/loading/Loading";
+import ReportCover from "./ReportCover";
 const ReportComplexity = (props) => {
-    const {scanRecord,projectData}=props
+    const {scanRecord,projectData,allTabType,tabType,setTabType}=props
 
     const {findCode,findCodeData,complexityTreeData,complexityOpenNav,complexityChoseItem,choiceFile,choiceBrad}=CodeStore
 
@@ -89,25 +90,30 @@ const ReportComplexity = (props) => {
         findCode(param,findState).then(res=>{
             setLoad(false)
             if (res.code===0){
-                setComplexityCode(res.data.codeList)
                 setComplexityCode(res.data)
             }
         })
     }
 
     //查询代码内容
-    const findCodeDetails = (filePath) => {
+    const findCodeDetails = (value) => {
+        const filePath=value.path
         findCodeData(filePath).then(res=>{
             if (res.code===0){
                 const lines = res.data.split("\n")
                 setLines(lines)
                 setDataList(res.data)
+                setComplexityCode({
+                    fileCount:value?.fileNum,
+                    complexityNum:value?.complexityNum
+                })
             }
         })
     }
 
     //打开下一级
     const openDetails = (value) => {
+        setTabType(tabType)
         choiceFile(value,"complexity")
 
         setFindType(value.type)
@@ -115,7 +121,7 @@ const ReportComplexity = (props) => {
 
 
         if (value.type==='file'){
-            findCodeDetails(value.path)
+            findCodeDetails(value)
         }else {
             getCodeComplexity(value.path,"child")
         }
@@ -193,6 +199,8 @@ const ReportComplexity = (props) => {
 
 
     const goCodeHome = () => {
+        setTabType(tabType)
+
         setFindType("folder")
         setBreadList([])
         getCodeComplexity(projectData.id)
@@ -206,65 +214,75 @@ const ReportComplexity = (props) => {
                       choseItem={complexityChoseItem}
                       goCodeHome={goCodeHome}
                       title={projectData?.name}
+                      tabType={allTabType}
+                      setTabType={setTabType}
             />
-            <div className="complexity-page-width">
-                <Col sm={{ span: "24" }}
-                     md={{ span: "24" }}
-                     lg={{ span: "22"}}
-                     xl={{ span: "22", offset: "1" }}
-                     xxl={{ span: "20", offset: "2" }}
-                >
-                    <div className='complexity-data'>
-                        <div className='complexity-bread'>
-                            <div onClick={goCodeHome} className='complexity-bread-icon'>
-                                <Tooltip title='回到库首页' >
-                                    <img  src={codePage}  style={{width:23,height:23}}/>
-                                </Tooltip>
-                            </div>
-                            <RenderBread dataList={breadList}
-                                         breadJump={breadJump}
-                                         title={projectData?.name}
-                            />
-                        </div>
+            {
+                allTabType==='complexity'?
+                    <div className="complexity-page-width">
+                        <Col sm={{ span: "24" }}
+                             md={{ span: "24" }}
+                             lg={{ span: "22"}}
+                             xl={{ span: "22", offset: "1" }}
+                             xxl={{ span: "20", offset: "2" }}
+                        >
+                            {
 
-                        <div className='complexity-data-info'>
-                            <div className='complexity-data-nav'>
-                                文件数量
-                                <div className='complexity-data-nav-num'>{complexityCode?.fileCount}</div>
-                            </div>
-                            <div className='complexity-data-nav'>
-                                复杂度
-                                <div className='complexity-data-nav-num complexity-num'>{complexityCode?.complexityNum}</div>
-                            </div>
-                            {/*<div className='complexity-data-nav'>
+                            }
+                            <div className='complexity-data'>
+                                <div className='complexity-bread'>
+                                    <div onClick={goCodeHome} className='complexity-bread-icon'>
+                                        <Tooltip title='回到库首页' >
+                                            <img  src={codePage}  style={{width:23,height:23}}/>
+                                        </Tooltip>
+                                    </div>
+                                    <RenderBread dataList={breadList}
+                                                 breadJump={breadJump}
+                                                 title={projectData?.name}
+                                    />
+                                </div>
+
+                                <div className='complexity-data-info'>
+                                    <div className='complexity-data-nav'>
+                                        文件数量
+                                        <div className='complexity-data-nav-num'>{complexityCode?.fileCount}</div>
+                                    </div>
+                                    <div className='complexity-data-nav'>
+                                        复杂度
+                                        <div className='complexity-data-nav-num complexity-num'>{complexityCode?.complexityNum}</div>
+                                    </div>
+                                    {/*<div className='complexity-data-nav'>
                                 非空代码行
                                 <div className='complexity-data-nav-num complexity-line-num'>{complexityCode?.lineNonCount}</div>
                             </div>*/}
-                        </div>
-
-                        {
-                            findType==='folder'?
-                                <Table
-                                    columns={columns}
-                                    dataSource={complexityCode?.codeList}
-                                    rowKey={record=>record.id}
-                                    pagination={false}
-                                    className='scan-tab-top'
-                                    locale={{emptyText:load ?
-                                            <SpinLoading type="table"/>: <EmptyText title={"暂无数据"}/>}}
-                                />:
-                                <div className='complexity-code-details'>
-                                    <DuplicatedCode code={dataList}
-                                                    lines={lines}
-
-                                    />
                                 </div>
-                        }
 
-                    </div>
+                                {
+                                    findType==='folder'?
+                                        <Table
+                                            columns={columns}
+                                            dataSource={complexityCode?.codeList}
+                                            rowKey={record=>record.id}
+                                            pagination={false}
+                                            className='scan-tab-top'
+                                            locale={{emptyText:load ?
+                                                    <SpinLoading type="table"/>: <EmptyText title={"暂无数据"}/>}}
+                                        />:
+                                        <div className='complexity-code-details'>
+                                            <DuplicatedCode code={dataList}
+                                                            lines={lines}
 
-                </Col>
-            </div>
+                                            />
+                                        </div>
+                                }
+
+                            </div>
+
+                        </Col>
+                    </div>:
+                    <ReportCover recordId={scanRecord?.id} />
+            }
+
         </div>
     )
 }

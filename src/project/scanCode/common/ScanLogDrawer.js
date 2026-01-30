@@ -30,10 +30,16 @@ const ScanLogDrawer = (props) => {
     //日志id
     const [id,setId] = useState(null);
 
+    const [logs,setLogs]=useState([])
+
     useEffect(async () => {
+
+
         if (logList.length){
             setId(logList[0].id)
         }
+
+
     }, [logList]);
 
 

@@ -557,7 +557,7 @@ const ScanConfig = (props) => {
                                 <Select  allowClear  style={{minWidth:140}} placeholder='扫描类型'  onChange={choiceScanType}>
                                     <Select.Option value={"static"}>{"静态扫描"}</Select.Option>
                                     <Select.Option value={"compile"}>{"编译扫描"}</Select.Option>
-                                    <Select.Option value={"collect"}>{"静态+编译扫描"}</Select.Option>
+                                 {/*   <Select.Option value={"collect"}>{"静态+编译扫描"}</Select.Option>*/}
                                 </Select>
                             </Form.Item>
                         }
@@ -597,13 +597,36 @@ const ScanConfig = (props) => {
                                         <Input placeholder={"请输入构建路径"} onChange={inputNetPath} value={buildPath}/>
                                     </div>
                                 }
-
                                 {
-                                    (language!=="c++")&&
+                                    (language==='java'&&scanType!=='static')&&
+                                    <Form.Item
+                                        label={'Jdk环境'}
+                                        name={'jdkEnv'}
+                                        rules={[{required:true,message:'jdk版本'}]}
+                                    >
+                                        <Select     allowClear
+                                                    placeholder={"请选择"}
+                                                    onChange={optJdkEnv}
+
+                                        >
+                                            {
+                                                jdkEnvList.length&&jdkEnvList.map(item=>{
+                                                        return(
+                                                            <Select.Option key={item.id} value={item.id}>{item.envName}</Select.Option>
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        </Select>
+                                    </Form.Item>
+                                }
+                                {
+                                    ( language&&(language!=="c++"&&(scanType!=='static'||language!=='java')))&&
                                     <Form.Item
                                         label={envText}
                                         name={'execEnv'}
                                         value={envId}
+                                        rules={[{required:true,message:envText}]}
                                     >
                                         <Select     allowClear
                                                     placeholder={"请选择"}
@@ -637,29 +660,7 @@ const ScanConfig = (props) => {
                                         />
                                     </Form.Item>
                                 }
-                                {
-                                    language&&language!=='javascript'&&language!=='python'&&language!=='c++'&&language!=='c#'&&language!=='java'&&
-                                    <Form.Item
-                                        label={'jdk环境'}
-                                        name={'jdkEnv'}
 
-                                    >
-                                        <Select     allowClear
-                                                    placeholder={"请选择"}
-                                                    onChange={optJdkEnv}
-
-                                        >
-                                            {
-                                                jdkEnvList.length&&jdkEnvList.map(item=>{
-                                                        return(
-                                                            <Select.Option key={item.id} value={item.id}>{item.envName}</Select.Option>
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        </Select>
-                                    </Form.Item>
-                                }
 
                             </>
                         }

@@ -42,24 +42,26 @@ const IssueList = (props) => {
 
     useEffect(async () => {
         if (scanRecord){
-            findScanIssues(currentPage)
+            findScanIssues(currentPage,{ruleType:type})
 
             findIssueTypeStatisticCount(scanRecord.id).then(res=>{
                 setIssueNumData(res.data)
             })
         }
-    }, [scanRecord,type]);
+    }, [scanRecord]);
 
 
     //分页查询问题列表
     const findScanIssues = (currentPage,param) => {
-        const findType=type==='all'?null:type
+
+        const findType= param.ruleType==='all'?null:param.ruleType
+
         findRecordInstancePageByPlay({
-            pageParam:{currentPage:currentPage, pageSize:pageSize},
-            projectId:projectId,
-            scanRecordId:scanRecord.id,
-            ruleType: findType,
-            ...param
+                ...param,
+                pageParam:{currentPage:currentPage, pageSize:pageSize},
+                projectId:projectId,
+                scanRecordId:scanRecord.id,
+                ruleType: findType,
             }).then(res=>{
 
             if (res.code===0){
@@ -80,18 +82,18 @@ const IssueList = (props) => {
     //分页查询
     const handleChange = (value) => {
         setCurrentPage(value)
-        findScanIssues(value)
+        findScanIssues(value,{ruleType:type,problemLevel:level,state:state})
     }
 
     //切换问题等级
     const changLeave = (value) => {
         setLevel(value)
-        findScanIssues(1,{problemLevel:value,state:state})
+        findScanIssues(1,{ruleType:type,problemLevel:value,state:state})
     }
     //切换状态
     const changState = (value) => {
         setState(value)
-        findScanIssues(1,{problemLevel:level,state:value})
+        findScanIssues(1,{ruleType:type,problemLevel:level,state:value})
     }
   /*  //切换类型
     const changType = (value) => {
@@ -101,6 +103,7 @@ const IssueList = (props) => {
 */
     const clickType = (value) => {
         setType(value.id)
+        findScanIssues(1,{ruleType:value.id,problemLevel:level,state:state})
     }
 
     const recordColumns =[

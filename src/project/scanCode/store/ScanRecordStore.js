@@ -106,6 +106,20 @@ export class ScanRecordStore  {
         return res
     }
 
+    /**
+     * 导出pdf
+     * @param  param
+     */
+    @action
+    exportPdf=async (param)=>{
+        const res = await Axios.post("/exportData/exportPdf",param)
+        if (res.code!==0&&!res.msg.concat("ticket")){
+            message.error("失败："+res.msg,1)
+        }
+        return res
+    }
+
+
 }
 let scanRecordStore=new ScanRecordStore()
 export default scanRecordStore;

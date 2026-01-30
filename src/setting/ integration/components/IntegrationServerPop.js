@@ -16,11 +16,10 @@ const { TextArea } = Input;
 const typeList=[{desc:"GitPuk",value:"gitPuk"},{desc:"Gitee",value:"gitee"},{desc:"自建GitLab",value:"priGitlab"}]
 const IntegrationServerPop = (props) => {
     const [form] = Form.useForm()
-    const {visible,setVisible,serverData,setServerData} = props
+    const {visible,setVisible,serverData,setServerData,serverType} = props
 
     const {createRepositoryServer,updateRepositoryServer} = repositoryServerStore
 
-    const [serverType,setServerType]=useState("gitPuk")
     const [authType,setAuthType]=useState("password")
     const [editState,setEditState]=useState(false)
     useEffect(()=>{
@@ -33,10 +32,10 @@ const IntegrationServerPop = (props) => {
                 authType:serverData.authType?serverData.authType:"password",
                 secretKey:serverData.secretKey
             })
-            setServerType(serverData.serverType)
             setAuthType(serverData.authType?serverData.authType:"password")
-
         }
+
+        (serverType==='gitpuk'||serverType==='url')?setAuthType("password"):setAuthType("key")
     },[serverData])
 
     /**
@@ -44,6 +43,10 @@ const IntegrationServerPop = (props) => {
      */
     const onOk = () => {
         form.validateFields().then((values) => {
+           /* if (!values.address.startWith("http")||!values.address.startWith("https")){
+
+            }*/
+
             setEditState(true)
             if (serverData){
                 updateRepositoryServer({...values,
@@ -80,8 +83,13 @@ const IntegrationServerPop = (props) => {
         setVisible(false)
         setServerData(null)
         setAuthType("password")
-        setServerType("gitPuk")
         form.resetFields()
+       /* form.setFieldsValue({
+            name:null,
+            account:null,
+            secretKey:null,
+            passWord:null
+        })*/
     }
 
     //选择类型
@@ -89,7 +97,6 @@ const IntegrationServerPop = (props) => {
         if (value!=="gitpuk"){
             setAuthType("key")
         }
-        setServerType(value)
     }
 
     //切换类型
@@ -128,7 +135,6 @@ const IntegrationServerPop = (props) => {
         >
             <div className='host-info-add-modal'>
                 <Form form={form} layout='vertical' autoComplete='off'
-                      initialValues={{envType:'maven'}}
                 >
                     <Form.Item
                         label={'名称'}
@@ -137,22 +143,6 @@ const IntegrationServerPop = (props) => {
                     >
                         <Input  placeholder={"名称"}/>
                     </Form.Item>
-                    <Form.Item
-                        label={'服务类型'}
-                        name={'serverType'}
-                    >
-                        <Select defaultValue={serverType}  allowClear onChange={choiceType} placeholder={"请选择规则类型"}>
-                            {
-                                typeList.map(item=>{
-                                        return(
-                                            <Select.Option key={item.value} value={item.value}>{item.desc}</Select.Option>
-                                        )
-                                    }
-                                )
-                            }
-                        </Select>
-                    </Form.Item>
-
                     {
                         serverType!=="gitee"&&
                         <Form.Item
@@ -162,11 +152,13 @@ const IntegrationServerPop = (props) => {
                                 {required:true,message:'服务地址不能为空'},
                             ]}
                         >
-                            <Input  placeholder={"服务地址:示例http://192.168.10.78:8090"}/>
+                            <Input  placeholder={serverType==="url"?
+                                "示例：https://gitee.com/tiklab-project/tiklab-kanass.git":
+                                "示例：http://192.168.10.6:8090"}/>
                         </Form.Item>
                     }
                     {
-                        serverType==="gitPuk"&& <Form.Item
+                        serverType==="url"&& <Form.Item
                             label={'认证类型'}
                             name={'authType'}
                         >
@@ -182,7 +174,7 @@ const IntegrationServerPop = (props) => {
                     }
 
                     {
-                        (authType==='password'&&serverType==="gitPuk")?
+                        authType==='password'?
                         <>
                             <Form.Item
                                 label={'账号'}
@@ -196,7 +188,7 @@ const IntegrationServerPop = (props) => {
                                 name={'passWord'}
                                 rules={[{required:true,message:'密码不能为空'},]}
                             >
-                                <Input placeholder={"密码"}/>
+                                <Input placeholder={'密码'}/>
                             </Form.Item>
                         </> :
                             <Form.Item
@@ -204,7 +196,7 @@ const IntegrationServerPop = (props) => {
                                 name={'secretKey'}
                                 rules={[{required:true,message:'Access Token不能为空'},]}
                             >
-                                <TextArea rows={2} placeholder={"Access Token"}/>
+                                <Input placeholder={'Access Token'}/>
                             </Form.Item>
                     }
 

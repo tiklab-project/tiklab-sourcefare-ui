@@ -112,7 +112,7 @@ const VersionContent = props =>{
         },
     ]
 
-    return <Version {...props} bgroup={"gitpuk"}>
+    return <Version {...props} bgroup={"sourcefare"}>
         <Table
             bordered
             columns={columns}

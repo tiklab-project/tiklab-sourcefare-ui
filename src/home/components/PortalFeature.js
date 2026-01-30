@@ -139,7 +139,7 @@ const featureList = [
             {
                 "id": "a60761d7b46b",
                 "comparisonId": "5943ed320311",
-                "name": "仓库组模块",
+                "name": "项目模块",
                 "sort": 1,
                 "createTime": "2024-05-15 17:24:43.587",
             },
@@ -246,7 +246,7 @@ const featureList = [
             {
                 "id": "4de5ac3e4f82",
                 "comparisonId": "2a4627413bef",
-                "name": "仓库组模块",
+                "name": "项目模块",
                 "sort": 1,
                 "createTime": "2024-06-06 17:37:53.805",
                 "children": []

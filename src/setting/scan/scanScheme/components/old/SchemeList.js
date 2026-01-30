@@ -9,17 +9,17 @@ import React,{useState,useEffect,Fragment} from 'react';
 import "./SchemeList.scss"
 import {Col, Dropdown, Menu, Table, Modal, Tooltip} from "antd";
 import {EllipsisOutlined, ExclamationCircleOutlined, StopOutlined} from "@ant-design/icons";
-import ScanSchemeStore from "../store/ScanSchemeStore";
+import ScanSchemeStore from "../../store/ScanSchemeStore";
 const { confirm } = Modal;
 import {observer} from "mobx-react";
-import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
-import Btn from "../../../../common/btn/Btn";
-import EmptyText from "../../../../common/emptyText/EmptyText";
-import SchemeAddPop from "./SchemeAddPop";
+import Breadcrumb from "../../../../../common/breadcrumb/Breadcrumb";
+import Btn from "../../../../../common/btn/Btn";
+import EmptyText from "../../../../../common/emptyText/EmptyText";
+import SchemeAddPop from "../SchemeAddPop";
 import SchemeUpdatePop from "./SchemeUpdatePop";
 import {PrivilegeButton} from 'tiklab-privilege-ui';
 import {getVersionInfo} from "tiklab-core-ui";
-import ModalContentTip from "../../../../common/statistics/ComTip/ModalContentTip";
+import ModalContentTip from "../../../../../common/statistics/ComTip/ModalContentTip";
 const SchemeList = (props) => {
     const {findScanSchemePage,deleteScanScheme,createScanScheme,createScanSchemeRuleSet, updateScanScheme,fresh}=ScanSchemeStore
 

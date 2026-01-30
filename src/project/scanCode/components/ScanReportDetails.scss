@@ -33,9 +33,16 @@
         color: #9b9b9b;
         margin-left: 5px;
         font-size: 13px;
+        flex: 1;
       }
     }
 
+    .scan-play-style-right{
+      display: flex;
+      gap: 15px;
+      justify-content: end;
+
+    }
     .scan-play-style{
       justify-content: end;
       display: flex;
@@ -164,3 +171,14 @@
   width: 7px;
   height: 0;
 }*/
+.task-add-enhance-modal {
+  height: calc(100% - 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  top: 50px;
+
+  .ant-modal-body {
+    padding: 0 !important;
+  }
+}

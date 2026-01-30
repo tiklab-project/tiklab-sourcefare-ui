@@ -100,6 +100,19 @@ export class ProjectStore{
     }
 
     /**
+     *条件查询
+     * @param  param
+     */
+    @action
+    findProjects=async (param)=>{
+        const res = await Axios.post("/project/findProjectList",param)
+        if (res.code!==0&&!res.msg.concat("ticket")){
+            message.error("查询报错，"+res.msg)
+        }
+        return res
+    }
+
+    /**
      * 通过id查询
      * @param id
      */
@@ -238,7 +251,15 @@ export class ProjectStore{
         }
         return res
     }
-
+    /**
+     * 查询产品状态
+     * @returns {Promise<unknown>}
+     */
+    @action
+    findApplySystem = async () =>{
+        const data = await Axios.post('/system/apply/findApplySystem')
+        return data
+    }
 }
 
 export const PROJECT_STORE = "projectStore";

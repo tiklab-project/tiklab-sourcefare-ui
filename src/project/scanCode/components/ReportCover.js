@@ -10,7 +10,7 @@ import React,{useState,useEffect,Fragment} from 'react';
 import {inject, observer} from "mobx-react";
 import "./ReportCover.scss"
 import EmptyText from "../../../common/emptyText/EmptyText";
-import {Table, Tooltip} from "antd";
+import {Col, Table, Tooltip} from "antd";
 import CoverStore from "../store/CoverStore";
 import Page from "../../../common/page/Page";
 import {FileTextOutlined, FolderOutlined} from "@ant-design/icons";
@@ -263,29 +263,36 @@ const ReportCover = (props) => {
 
     return(
         <div className='cover cover-page-width'>
-            <div className='cover-bread'>
-                <div onClick={goCodeHome} className='cover-bread-icon'>
-                    <img  src={codePage}  style={{width:23,height:23}}/>
+            <Col sm={{ span: "24" }}
+                 md={{ span: "24" }}
+                 lg={{ span: "22"}}
+                 xl={{ span: "22", offset: "1" }}
+                 xxl={{ span: "20", offset: "2" }}
+            >
+                <div className='cover-bread'>
+                    <div onClick={goCodeHome} className='cover-bread-icon'>
+                        <img  src={codePage}  style={{width:23,height:23}}/>
+                    </div>
+                    <RenderBreadCover dataList={coverList}
+                                      breadJump={breadJump}
+                                      title={"覆盖率报告"}
+                    />
                 </div>
-                <RenderBreadCover dataList={coverList}
-                             breadJump={breadJump}
-                             title={"覆盖率报告"}
+                <Table
+                    columns={language==="go"?coverGoColumns:coverColumns}
+                    dataSource={projectCoverList}
+                    rowKey={record=>record.id}
+                    pagination={false}
+                    className='scan-tab-top'
+                    locale={{emptyText: <EmptyText title={"暂无数据"}/>}}
                 />
-            </div>
-            <Table
-                columns={language==="go"?coverGoColumns:coverColumns}
-                dataSource={projectCoverList}
-                rowKey={record=>record.id}
-                pagination={false}
-                className='scan-tab-top'
-                locale={{emptyText: <EmptyText title={"暂无数据"}/>}}
-            />
 
-            <Page totalPage={totalPage}
-                  pageCurrent={currentPage}
-                  totalRecord={totalRecord}
-                  changPage={handleChange}
-            />
+                <Page totalPage={totalPage}
+                      pageCurrent={currentPage}
+                      totalRecord={totalRecord}
+                      changPage={handleChange}
+                />
+            </Col>
         </div>
     )
 }

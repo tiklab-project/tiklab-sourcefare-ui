@@ -2,7 +2,7 @@
  * @name: ProjectDeletePop
  * @author: Deploy
  * @date: 2024-03-06 10:30
- * @description：租户删除
+ * @description：删除
  * @update: 2024-03-06 10:30
  */
 import React, {useState, useEffect} from "react";
@@ -55,7 +55,7 @@ const ProjectDeletePop = (props) => {
             footer={modalFooter}
             destroyOnClose={true}
             width={500}
-            title={"删除制品库"}
+            title={"删除项目"}
         >
              <div className='repository-delete'>
                  <div className='desc-border'>

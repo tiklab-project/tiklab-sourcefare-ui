@@ -67,9 +67,11 @@ const Highlighter = props => {
                                             reqDetails?.problemLevel===1&&
                                             <div className='line-error-leve-1'>严重</div>||
                                             reqDetails?.problemLevel===2&&
-                                            <div className='line-error-leve-2'>警告</div>||
+                                            <div className='line-error-leve-2'>错误</div>||
                                             reqDetails?.problemLevel===3&&
-                                            <div className='line-error-leve-2'>提示</div>
+                                            <div className='line-error-leve-3'>警告</div>||
+                                            reqDetails?.problemLevel===4&&
+                                            <div className='line-error-leve-4'>提示</div>
                                         }
                                     </div>
                                     <div className='code-line-error-lin code-line-error-top'>

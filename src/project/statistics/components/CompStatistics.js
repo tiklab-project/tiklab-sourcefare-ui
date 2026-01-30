@@ -62,6 +62,7 @@ const CompStatistics = (props) => {
                     placeholder="查询次数"
                     style={{width:150}}
                     onChange={(value)=>changeExecNum(value)}
+                    defaultValue="7"
                 >
                     {
                         dateList && dateList.map(item => {

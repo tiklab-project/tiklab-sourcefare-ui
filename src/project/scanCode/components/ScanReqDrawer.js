@@ -49,11 +49,12 @@ const ScanReqDrawer = (props) => {
     //更新状态
     const updateState = () => {
         updateScanRecordInstance({...reqDetails,state:0}).then(res=>{
+            debugger
             if (res.code===0){
 
                 createRecordInstanceCond({
                     scanRecordId:reqDetails.scanRecordId,
-                    projectId:reqDetails.project.id,
+                    projectId:reqDetails?.projectId,
                     recordInstanceId:reqDetails.id,
                     data:"重新打开了问题",
                     user:{
@@ -66,7 +67,7 @@ const ScanReqDrawer = (props) => {
         })
     }
 
-    //查询示例
+    //查询实例
     const findRecordInstance = () => {
         findScanRecordInstance(reqDetails.id).then(res=>{
             setReqData(res.data)
@@ -119,8 +120,9 @@ const ScanReqDrawer = (props) => {
                                 <div className='scan-drawer-hades-desc-nav'>
                                     <div className='scan-drawer-hades-desc-title'>问题等级</div>
                                     <div>{reqDetails.problemLevel===1&&<div className='scan-drawer-hole-red'>严重</div>||
-                                        reqDetails.problemLevel===2&&<div className='scan-drawer-hole-dired'>警告</div>||
-                                        reqDetails.problemLevel===3&&<div className='scan-drawer-hole-blue'>建议</div>
+                                        reqDetails.problemLevel===2&&<div className='scan-drawer-hole-dired'>错误</div>||
+                                        reqDetails.problemLevel===3&&<div className='scan-drawer-hole-blue'>警告</div>||
+                                        reqDetails.problemLevel===4&&<div className='scan-drawer-hole-green'>提示</div>
                                     }
                                     </div>
                                 </div>

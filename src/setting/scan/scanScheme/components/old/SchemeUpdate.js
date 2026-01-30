@@ -9,11 +9,11 @@ import React,{useState,useEffect,Fragment} from 'react';
 import {Form, Input, Select,Checkbox} from "antd";
 
 import "./SchemeEditPop.scss"
-import DeployStore from "../../store/DeployStore";
+import DeployStore from "../../../store/DeployStore";
 import {observer} from "mobx-react";
-import scanRuleSetStore from "../../scanRule/store/ScanRuleSetStore";
-import Modal from "../../../../common/modal/Modals";
-import Btn from "../../../../common/btn/Btn";
+import scanRuleSetStore from "../../../scanRule/store/ScanRuleSetStore";
+import Modal from "../../../../../common/modal/Modals";
+import Btn from "../../../../../common/btn/Btn";
 const languageList=[{key:"Java",value:"Java"},{key:"JavaScript",value:"JavaScript"},{key:"Go",value:"Go"}
     ,{key:"Python",value:"Python"}]
 const sanWay=[{key:"sonar",value:"sonar扫描"},{key:"rule",value:"规则包扫描"}]

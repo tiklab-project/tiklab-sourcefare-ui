@@ -9,19 +9,19 @@ import React,{useState,useEffect,Fragment} from 'react';
 import {inject, observer} from "mobx-react";
 import "./SchemeDetails.scss"
 import {Col, Dropdown, Table, Tooltip} from "antd";
-import scanRuleSetStore from "../../scanRule/store/ScanRuleSetStore";
-import ScanSchemeStore from "../store/ScanSchemeStore";
-import ScanSchemeRuleStore from "../store/ScanSchemeRuleStore";
+import scanRuleSetStore from "../../../scanRule/store/ScanRuleSetStore";
+import ScanSchemeStore from "../../store/ScanSchemeStore";
+import ScanSchemeRuleStore from "../../store/ScanSchemeRuleStore";
 import {EllipsisOutlined, StopOutlined} from "@ant-design/icons";
 import SchemeDetailsOption from "./SchemeDetailsOption";
 import ScanSchemePlay from "./ScanSchemePlay";
 import {PrivilegeButton} from "tiklab-privilege-ui";
 import SchemeDetailsDrawer from "./SchemeDetailsDrawer";
-import DeleteExec from "../../../../common/delete/DeleteExec";
-import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
-import Btn from "../../../../common/btn/Btn";
-import {SpinLoading} from "../../../../common/loading/Loading";
-import EmptyText from "../../../../common/emptyText/EmptyText";
+import DeleteExec from "../../../../../common/delete/DeleteExec";
+import Breadcrumb from "../../../../../common/breadcrumb/Breadcrumb";
+import Btn from "../../../../../common/btn/Btn";
+import {SpinLoading} from "../../../../../common/loading/Loading";
+import EmptyText from "../../../../../common/emptyText/EmptyText";
 import {withRouter} from "react-router";
 import {getVersionInfo} from "tiklab-core-ui";
 const SchemeDetails = (props) => {

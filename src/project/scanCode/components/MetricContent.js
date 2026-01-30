@@ -24,21 +24,22 @@ const MetricContent = (props) => {
     const {projectData,scanRecord,recordId,probNum}=props
     const [tabType,setTabType]=useState("duplicated")
 
+    const [allTabType,setAllTabType]=useState("duplicated")
+
     const clickType = (value) => {
-        setTabType(value)
+        setAllTabType(value)
+        if (value!=='cover'){
+            setTabType(value)
+        }
     }
 
-    //跳转帮助
-    const goData = () => {
-        props.history.push(`/project/${projectData.id}/statistics`)
 
 
-    }
 
     return(
         <div className='metric-content'>
             <div className='metric-content-tab'>
-                <div className='metric-content-nav'>
+            {/*    <div className='metric-content-nav'>
                     <div className='metric-content-top-tab'>
                         <div onClick={()=>clickType("duplicated")}
                              className={`content-top-tab-nav ${tabType==='duplicated'&&" content-top-tab-nav-c"}`}
@@ -46,7 +47,6 @@ const MetricContent = (props) => {
                             <div className='content-top-tab-nav-icon'>
                                 <SnippetsOutlined />
                             </div>
-
                             <div>重复率</div>
                         </div>
                         <div onClick={()=>clickType("complexity")}
@@ -67,13 +67,7 @@ const MetricContent = (props) => {
                             <div>覆盖率</div>
                         </div>
                     </div>
-                </div>
-                <div className='metric-content-help' onClick={goData}>
-                    <div className='metric-content-icon'>
-                        <PieChartOutlined/>
-                    </div>
-                    <div>统计</div>
-                </div>
+                </div>*/}
             </div>
             {/*<div className='metric-content-left-tab'>
                 <div onClick={()=>clickType("duplicated")}
@@ -109,18 +103,23 @@ const MetricContent = (props) => {
                 </div>
             </div>*/}
             <div className='metric-content-data'>
+                <div></div>
                 {
                     tabType==='duplicated'&&
                     <RecordDuplicated projectData={projectData}
                                       scanRecord={scanRecord}
+                                      allTabType={allTabType}
+                                      tabType={tabType}
+                                      setTabType={clickType}
                     />||
                     tabType==='complexity'&&
                     <ReportComplexity projectData={projectData}
                                       scanRecord={scanRecord}
+                                      allTabType={allTabType}
+                                      tabType={tabType}
+                                      setTabType={clickType}
 
-                    />||
-                    tabType==='cover'&&
-                    <ReportCover recordId={recordId} />
+                    />
 
                 }
             </div>

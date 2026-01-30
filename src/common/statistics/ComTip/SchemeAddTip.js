@@ -26,10 +26,10 @@ const SchemeAddTip = (props) => {
                         <div className='enhance-desc-text'>{data}</div>
                         <div className='enhance-button'>
                             <div className='enhance-button-contact'  onClick={()=>window.open('https://tiklab.net/contactus')}>
-                                咨询购买
+                                免费体验
                             </div>
                             <div className='enhance-button-update'   onClick={()=>applySubscription('hadess')}>
-                                立即购买
+                                升级版本
                             </div>
                         </div>
                     </div>

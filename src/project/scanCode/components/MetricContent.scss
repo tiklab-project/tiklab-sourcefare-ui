@@ -57,11 +57,6 @@
     padding: 0 20px 0 10px;
     display: flex;
     align-items: center;
-
-   /* background-color: #f6f7f9;*/
-    border-bottom: 1px solid #f0f0f0;
-
-
     .metric-content-nav{
       display: flex;
       gap: 10px;
@@ -79,22 +74,6 @@
       .nav-one-chose{
         color: var(--tiklab-blue);
         background-color: var(--tiklab-gray-400);
-      }
-    }
-
-
-    .metric-content-help{
-      display: flex;
-      gap: 5px;
-      align-items: center;
-      cursor: pointer;
-      margin-right: 7px;
-      .metric-content-icon{
-        /*   color: #7e8085;*/
-        font-size: 16px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
       }
     }
   }

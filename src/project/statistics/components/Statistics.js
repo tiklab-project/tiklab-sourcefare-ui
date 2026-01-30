@@ -48,16 +48,16 @@ const Statistics = (props) => {
                 setSecondValue("规范")
                 break
             case "duplicated":
-                setTitle("重复率")
-                setSecondValue(null)
+                setTitle("度量")
+                setSecondValue("重复率")
                 break
             case "complexity":
-                setTitle("复杂度")
-                setSecondValue(null)
+                setTitle("度量")
+                setSecondValue("复杂度")
                 break
             case "cover":
-                setSecondValue(null)
-                setTitle("覆盖率")
+                setTitle("度量")
+                setSecondValue("覆盖率")
         }
     }
 

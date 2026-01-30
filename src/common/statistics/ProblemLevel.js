@@ -40,7 +40,7 @@ const  ProblemLevel = (props) => {
             },
             yAxis: {
                 type: 'category',
-                data: ['严重问题', '错误问题','警告问题', '建议问题']
+                data: ['严重问题', '错误问题','警告问题', '提示问题']
             },
             series: [
                 {

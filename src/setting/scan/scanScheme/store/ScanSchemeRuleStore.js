@@ -21,6 +21,18 @@ export class ScanSchemeRuleStore {
         return data
     }
 
+    /**
+     * 通过id 查询扫描方案规则集
+     * @param value
+     * @returns {Promise<void>}
+     */
+    @action
+    findScanSchemeRuleSet = async (id) =>{
+        const param=new FormData()
+        param.append("id",id)
+        const data = await Axios.post('/scanSchemeRuleSet/findScanSchemeRuleSet',param)
+        return data
+    }
 
     /**
      * 条件查询扫描方案的规则集

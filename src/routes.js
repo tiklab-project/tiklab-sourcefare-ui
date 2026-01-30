@@ -24,7 +24,6 @@ const TodoPageList=AsyncComponent(()=>import('./home/components/TodoPageList'))
  * 项目
  */
 const ProjectList = AsyncComponent(() => import('./project/project/components/ProjectList'));
-const ProjectAdd = AsyncComponent(() => import('./project/project/components/ProjectAdd'));
 const ProjectAside = AsyncComponent(() => import('./project/navigator/ProjectAside'));
 
 
@@ -92,8 +91,8 @@ const ScanConfig = AsyncComponent(() => import('./project/setting/config/compone
 
 
 //扫描方案
-const ScanScheme=AsyncComponent(()=>import('./setting/scan/scanScheme/components/SchemeList'))
-const SchemeDetails=AsyncComponent(()=>import('./setting/scan/scanScheme/components/SchemeDetails'))
+const ScanScheme=AsyncComponent(()=>import('./setting/scan/scanScheme/components/Scheme'))
+const SchemeDetails=AsyncComponent(()=>import('./setting/scan/scanScheme/components/old/SchemeDetails'))
 const ScanRuleSetList=AsyncComponent(()=>import('./setting/scan/scanRule/components/ScanRuleSetList'))
 const ScanRuleList=AsyncComponent(()=>import('./setting/scan/scanRule/components/ScanRuleList'))
 
@@ -202,11 +201,6 @@ const routers = [
                 path: '/project',
                 exact:true,
                 component: ProjectList,
-            },
-            {
-                path: '/project/add',
-                exact:true,
-                component: ProjectAdd,
             },
             {
                 path:'/project/:id',
@@ -398,6 +392,7 @@ const routers = [
                         exact: true,
                         component: ScanScheme,
                     },
+
                     {
                         path:'/setting/scheme/:id',
                         exact: true,

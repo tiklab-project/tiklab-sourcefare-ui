@@ -19,8 +19,9 @@ import DuplicatedCode from "../common/DuplicatedCode";
 import CodeTree from "../common/CodeTree";
 import codePage from "../../../assets/images/img/code-home-page.png";
 import {SpinLoading} from "../../../common/loading/Loading";
+import ReportCover from "./ReportCover";
 const RecordDuplicated = (props) => {
-    const {scanRecord,projectData}=props
+    const {scanRecord,projectData,setTabType,tabType,allTabType}=props
 
     const {findCode,findCodeData,duplicatedTreeData,duplicatedOpenNav,duplicatedChoseItem,choiceFile,choiceBrad}=CodeStore
     const {findRecordDuplicatedList}=ScanRecordStore
@@ -102,7 +103,8 @@ const RecordDuplicated = (props) => {
     }
 
     //查询代码内容
-    const findCodeDetails = (filePath) => {
+    const findCodeDetails = (value) => {
+        const filePath=value.path
         findRecordDuplicatedList({path:filePath}).then(res=>{
             if (res.code===0){
                 setDuplicatedList(res.data)
@@ -114,6 +116,11 @@ const RecordDuplicated = (props) => {
                 const lines = res.data.split("\n")
                 setLines(lines)
                 setDataList(res.data)
+                setDuplicatedCode({
+                    fileCount:value?.fileNum,
+                    duplicatedClass:value?.duplicatedClass,
+                    duplicatedLine:value?.duplicatedLines
+                })
             }
         })
     }
@@ -142,6 +149,8 @@ const RecordDuplicated = (props) => {
     }
 
     const goCodeHome = () => {
+        setTabType(tabType)
+
         setFindType("folder")
         setBreadList([])
         getCodeDuplicated(projectData.id)
@@ -151,13 +160,15 @@ const RecordDuplicated = (props) => {
 
     //打开下一级
     const openDetails = (value) => {
+        setTabType(tabType)
+
         //添加右侧导航栏
         splitFilePath(value)
 
         choiceFile(value,"duplicated")
         setFindType(value.type)
         if (value.type==='file'){
-            findCodeDetails(value.path)
+            findCodeDetails(value)
         }else {
             getCodeDuplicated(value.path,"child")
         }
@@ -223,65 +234,72 @@ const RecordDuplicated = (props) => {
                       choseItem={duplicatedChoseItem}
                       goCodeHome={goCodeHome}
                       title={projectData?.name}
+                      tabType={allTabType}
+                      setTabType={setTabType}
             />
 
-            <div className="duplicated-page-width">
-                <Col sm={{ span: "24" }}
-                     md={{ span: "24" }}
-                     lg={{ span: "22"}}
-                     xl={{ span: "22", offset: "1" }}
-                     xxl={{ span: "20", offset: "2" }}
-                >
-                    <div className='duplicated-data'>
-                        <div className='duplicated-bread'>
-                            <div onClick={goCodeHome} className='duplicated-bread-icon'>
-                                <Tooltip title='回到库首页' >
-                                    <img  src={codePage}  style={{width:23,height:23}}/>
-                                </Tooltip>
-                            </div>
-                            <RenderBread dataList={breadList}
-                                         breadJump={breadJump}
-                                         title={projectData?.name}
-                            />
-                        </div>
-                        <div className='duplicated-data-info'>
-                            <div className='duplicated-data-nav'>
-                                文件数量
-                                <div className='duplicated-data-nav-num'>{duplicatedCode?.fileCount}</div>
-                            </div>
-                            <div className='duplicated-data-nav'>
-                                重复类
-                                <div className='duplicated-data-nav-num duplicated-class-num'>{duplicatedCode?.duplicatedClass}</div>
-                            </div>
-                            <div className='duplicated-data-nav'>
-                                重复行
-                                <div className='duplicated-data-nav-num duplicated-line-num'>{duplicatedCode?.duplicatedLine}</div>
-                            </div>
-                        </div>
-
-
-                        {
-                            findType==='folder'?
-                                <Table
-                                    columns={columns}
-                                    dataSource={duplicatedCode?.codeList}
-                                    rowKey={record=>record.id}
-                                    pagination={false}
-                                    className='scan-tab-top'
-                                    locale={{emptyText:load ?
-                                            <SpinLoading type="table"/>: <EmptyText title={"暂无数据"}/>}}
-                                />:
-                                <div className='duplicated-code-details'>
-                                    <DuplicatedCode code={dataList}
-                                                    data={duplicatedList}
-                                                    lines={lines}
-
+            {
+                allTabType==='duplicated'?
+                    <div className="duplicated-page-width">
+                        <Col sm={{ span: "24" }}
+                             md={{ span: "24" }}
+                             lg={{ span: "22"}}
+                             xl={{ span: "22", offset: "1" }}
+                             xxl={{ span: "20", offset: "2" }}
+                        >
+                            <div className='duplicated-data'>
+                                <div className='duplicated-bread'>
+                                    <div onClick={goCodeHome} className='duplicated-bread-icon'>
+                                        <Tooltip title='回到库首页' >
+                                            <img  src={codePage}  style={{width:23,height:23}}/>
+                                        </Tooltip>
+                                    </div>
+                                    <RenderBread dataList={breadList}
+                                                 breadJump={breadJump}
+                                                 title={projectData?.name}
                                     />
                                 </div>
-                        }
-                    </div>
-                </Col>
-            </div>
+                                <div className='duplicated-data-info'>
+                                    <div className='duplicated-data-nav'>
+                                        文件数量
+                                        <div className='duplicated-data-nav-num'>{duplicatedCode?.fileCount}</div>
+                                    </div>
+                                    <div className='duplicated-data-nav'>
+                                        重复类
+                                        <div className='duplicated-data-nav-num duplicated-class-num'>{duplicatedCode?.duplicatedClass}</div>
+                                    </div>
+                                    <div className='duplicated-data-nav'>
+                                        重复行
+                                        <div className='duplicated-data-nav-num duplicated-line-num'>{duplicatedCode?.duplicatedLine}</div>
+                                    </div>
+                                </div>
+
+
+                                {
+                                    findType==='folder'?
+                                        <Table
+                                            columns={columns}
+                                            dataSource={duplicatedCode?.codeList}
+                                            rowKey={record=>record.id}
+                                            pagination={false}
+                                            className='scan-tab-top'
+                                            locale={{emptyText:load ?
+                                                    <SpinLoading type="table"/>: <EmptyText title={"暂无数据"}/>}}
+                                        />:
+                                        <div className='duplicated-code-details'>
+                                            <DuplicatedCode code={dataList}
+                                                            data={duplicatedList}
+                                                            lines={lines}
+
+                                            />
+                                        </div>
+                                }
+                            </div>
+                        </Col>
+                    </div>:
+                    <ReportCover recordId={scanRecord?.id} />
+            }
+
         </div>
 
     )

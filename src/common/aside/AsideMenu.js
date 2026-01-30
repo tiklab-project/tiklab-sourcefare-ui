@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import {Tooltip} from "antd";
 
 /**
- * 左侧菜单切换仓库或仓库组目录
+ * 左侧菜单切换仓库或项目目录
  * @param props
  * @returns {JSX.Element}
  * @constructor
@@ -26,7 +26,7 @@ const AsideMenu = props =>{
 
 
     /**
-     * 切换仓库或仓库组
+     * 切换仓库或项目
      * @param item
      */
     const changeHouseDetails = item => {

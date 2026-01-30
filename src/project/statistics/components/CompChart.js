@@ -46,11 +46,11 @@ const  compChart = (props) => {
             xAxis: {
                 type: 'category',
                 data:complexityData?.time,
-                axisLabel: {
+               /* axisLabel: {
                     formatter: function(value) {
                         return value.length > 8 ? value.substring(0, 8) + '...' : value;
                     },
-                }
+                }*/
             },
             yAxis: {
                 type: 'value'

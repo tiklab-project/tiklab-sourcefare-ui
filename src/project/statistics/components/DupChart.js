@@ -52,16 +52,16 @@ const  DupChart = (props) => {
             },
             series: [
                 {
-                    name: '重复行',
-                    type: 'line',
-                    stack: 'Total',
-                    data: duplicatedData?.lines
-                },
-                {
                     name: '重复文件',
                     type: 'line',
                     stack: 'Total',
                     data: duplicatedData?.files
+                },
+                {
+                    name: '重复行',
+                    type: 'line',
+                    stack: 'Total',
+                    data: duplicatedData?.lines
                 },
             ]
         };

@@ -16,9 +16,11 @@ const ScanLeftNav = (props) => {
     const {setType,findType,treeNav,setTreeNav}=props
 
     const onClickNav = (value) => {
-        setTreeNav(value)
-        if (value==='issue'){
-            setType(null)
+        if (value!=="measure"){
+            setTreeNav(value)
+            if (value==='issue'){
+                setType(null)
+            }
         }
     }
 
@@ -49,20 +51,28 @@ const ScanLeftNav = (props) => {
             ]
         },
         {
-            title:"重复率",
-            key:"duplicated",
+            title:"度量",
+            key:"measure",
             icon:<FileSyncOutlined />,
+            childList:[
+                {
+                    title:"重复率",
+                    key:"duplicated",
+                    icon:<FileSyncOutlined />,
+                },
+                {
+                    title:"复杂度",
+                    key:"complexity",
+                    icon:<RadarChartOutlined />,
+                },
+                {
+                    title:"覆盖率",
+                    key:"cover",
+                    icon:<PieChartOutlined />,
+                }
+            ]
         },
-        {
-            title:"复杂度",
-            key:"complexity",
-            icon:<RadarChartOutlined />,
-        },
-        {
-            title:"覆盖率",
-            key:"cover",
-            icon:<PieChartOutlined />,
-        }
+
     ]
 
     return(
@@ -85,7 +95,7 @@ const ScanLeftNav = (props) => {
                                     findType==='statistics'&&item.key==='cover'?
                                        null:
                                         <>
-                                            <div className={`left-tree-nav ${treeNav===item.key&&" left-tree-nav-opt"}`}
+                                            <div className={` ${item.key==="measure"?"left-tree-nav-cursor":treeNav===item.key&&" left-tree-nav-opt" } left-tree-nav `}
                                                  onClick={()=>onClickNav(item.key)}
                                             >
                                                 <div className='left-tree-nav-icon'>

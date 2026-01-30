@@ -44,7 +44,8 @@ const IntegrationServerDetails = (props) => {
 
     //条件查询主机信息列表
     const findHostInfo = (currentPage) => {
-        findRepositoryServerPage({ pageParam:{currentPage:currentPage,pageSize:pageSize}
+        findRepositoryServerPage({ pageParam:{currentPage:currentPage,pageSize:pageSize},
+            serverType:params.type
         }).then(res=>{
             if (res.code===0){
                 setHostList(res.data?.dataList)
@@ -88,16 +89,6 @@ const IntegrationServerDetails = (props) => {
             key: 'address',
             width:'15%',
             ellipsis:true,
-        },
-        {
-            title: '类型',
-            dataIndex: 'serverType',
-            key: 'serverType',
-            width:'10%',
-            ellipsis:true,
-            render:(text,record)=><div className=''>
-                {text==='priGitlab'?"自建gitlab":text}
-            </div>
         },
         {
             title: '创建人',
@@ -176,6 +167,7 @@ const IntegrationServerDetails = (props) => {
                                   setVisible={setAddVisible}
                                   serverData={serverData}
                                   setServerData={setServerData}
+                                  serverType={params.type}
             />
 
         </div>

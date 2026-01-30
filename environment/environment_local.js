@@ -1,4 +1,6 @@
-const api =  "http://192.168.10.31:8010";
+//const api =  "http://192.168.10.14:8010";
+const api =  "http://192.168.10.6:8010";
+
 const base_url = JSON.stringify(api);
 const webpackGlobal = {
     // 判断是否是用户环境， 如果是用户环境收到切换为true， 如果是内部公司手动切换为false

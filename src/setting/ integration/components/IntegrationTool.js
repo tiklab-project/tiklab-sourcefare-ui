@@ -26,9 +26,9 @@ const IntegrationTool = (props) => {
                 sm={{ span: 24 }}
                 xs={{ span: 24 }}
                 md={{ span: 24 }}
-                lg={{ span: "18", offset: "2" }}
-                xl={{ span: "16", offset: "3" }}
-                xxl={{ span: "14", offset: "4" }}
+                lg={{ span: "20", offset: "2" }}
+                xl={{ span: "16", offset: "4" }}
+                xxl={{ span: "16", offset: "4" }}
             >
                 <Breadcrumb firstItem={'工具集成'}/>
                 <div className='integration'>

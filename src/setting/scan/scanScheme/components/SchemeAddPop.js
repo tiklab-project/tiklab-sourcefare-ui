@@ -8,22 +8,24 @@
 import React,{useState,useEffect,Fragment} from 'react';
 import {Form, Input, Select,Checkbox} from "antd";
 
-import "./SchemeEditPop.scss"
+import "./old/SchemeEditPop.scss"
 import DeployStore from "../../store/DeployStore";
 import {observer} from "mobx-react";
 import scanRuleSetStore from "../../scanRule/store/ScanRuleSetStore";
 import Btn from "../../../../common/btn/Btn";
 import Modal from "../../../../common/modal/Modals";
+import ScanSchemeStore from "../store/ScanSchemeStore";
 const languageList=[{key:"Java",value:"Java"},{key:"JavaScript",value:"JavaScript"},{key:"Go",value:"Go"}
-    ,{key:"Python",value:"Python"}]
+    ,{key:"Python",value:"Python"},{key:"C++",value:"C++"},{key:"c#",value:"c#"}]
 const SchemeAddPop = (props) => {
     const [form] = Form.useForm()
-    const {visible,setVisible,createScanScheme,createScanSchemeRuleSet,setSchemeDate,scanSchemeList}=props
+    const {visible,setVisible,setSchemeDate,scanSchemeList}=props
+    const {createScanScheme,createScanSchemeRuleSet}=ScanSchemeStore
 
     const {findDeployServerList,deployServerList}=DeployStore
     const {findScanRuleSetList}=scanRuleSetStore
 
-    const [language,setLanguage]=useState()
+    const [language,setLanguage]=useState(null)
     const [scanWay,setScanWay]=useState('')  //扫描方式
     const [ruleSetList,setRuleSetList]=useState([])
 
@@ -46,12 +48,10 @@ const SchemeAddPop = (props) => {
                 schemeName:values.schemeName,
                 scanWay:scanWay,
                 language:language,
-                describe:values.describe
+                describe:values.describe,
+                ruleSetIdList:choiceRuleSetList
             }).then(res=>{
                 if (res.code===0){
-                    choiceRuleSetList.map(item=>{
-                        createScanSchemeRuleSet({scanSchemeId:res.data,scanRuleSet:{id:item}})
-                    })
                     cancel()
                 }
             })
@@ -65,6 +65,7 @@ const SchemeAddPop = (props) => {
         setVisible(false)
         setLanguage(null)
         setSchemeDate(null)
+        setChoiceRuleSetList([])
     }
 
 
@@ -72,37 +73,28 @@ const SchemeAddPop = (props) => {
     //选择语言
     const languageType = (value) => {
         setLanguage(value)
+        setChoiceRuleSetList([])
+        form.setFieldsValue({
+            ruleSet:[]
+        })
     };
 
     //选择 规则集
     const choiceRuleSet = (value) => {
-        if (choiceRuleSetList&&choiceRuleSetList.length>0){
-            setChoiceRuleSetList(choiceRuleSetList.concat(value))
-        }else {
-            setChoiceRuleSetList([value])
-        }
-    }
-
-
-    //选择扫描方式
-    const choiceSanWay = (value) => {
-        setScanWay(value)
-        if (value==='sonar'){
-
-            findDeployServerList("sonar")
-        }
+        setChoiceRuleSetList(value)
     }
 
 
 
     //获取扫描规则list
     const getScanRuleSetList = () => {
-        findScanRuleSetList({language:language}).then(res=>{
-            if (res.code===0){
-                setRuleSetList(res.data)
-            }
-        })
-
+        if (language){
+            findScanRuleSetList({language:language}).then(res=>{
+                if (res.code===0){
+                    setRuleSetList(res.data)
+                }
+            })
+        }
     }
 
     const modalFooter = (
@@ -151,7 +143,10 @@ const SchemeAddPop = (props) => {
                     name={'language'}
                     rules={[{required:true,message:'扫描语言不能为空'}]}
                 >
-                    <Select   allowClear onChange={languageType} placeholder={"请选择扫描语言"}>
+                    <Select   allowClear
+                              onChange={languageType}
+                              placeholder={"请选择扫描语言"}
+                    >
                         {
                             languageList.map(item=>{
                                     return(
@@ -167,7 +162,11 @@ const SchemeAddPop = (props) => {
                     name={'ruleSet'}
                     rules={[{required:true,message:'规则集不能为空'}]}
                 >
-                    <Select   allowClear onChange={choiceRuleSet} onClick={()=>getScanRuleSetList()}  placeholder={"请选择扫描方式"} >
+                    <Select   allowClear
+                              mode="multiple"
+                              onChange={choiceRuleSet}
+                              onFocus={getScanRuleSetList}
+                              placeholder={"规则集"} >
                         {
                             ruleSetList.map(item=>{
                                     return(

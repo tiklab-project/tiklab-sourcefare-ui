@@ -13,24 +13,7 @@ module.exports = {
             "style": "css"
         }],
 
-        ["import", {
-            "libraryName": "thoughtware-plugin-manager-ui",
-            "libraryDirectory": "es",
-            "style": true,
-            "customName": (name) => {
-                let split = name.split('-');
-                const fullName = split.reduce((total, currentValue, currentIndex, arr) => {
-                    if(currentIndex=== 0) {
-                        return total += currentValue;
-                    }
-                    const UpBit = currentValue.slice(0,1).toUpperCase();
-                    const lowBit = currentValue.slice(1,currentValue.length);
-                    const name = UpBit + lowBit
-                    return total += name;
-                },'');
-                return `thoughtware-plugin-manager-ui/es/${fullName}`;
-            }
-        }, "thoughtware-plugin-manager-ui"],
+
         ["import", {
             "libraryName": "tiklab-eam-ui",
             "libraryDirectory": "es",
@@ -51,7 +34,7 @@ module.exports = {
         },"tiklab-eam-ui"],
 
         ["import", {
-            "libraryName": "thoughtware-integration-ui",
+            "libraryName": "tikalb-integration-ui",
             "libraryDirectory": "es",
             "style": true,
             "customName": (name) => {
@@ -65,9 +48,9 @@ module.exports = {
                     const name = UpBit + lowBit
                     return total += name;
                 },'');
-                return `thoughtware-integration-ui/es/${fullName}`;
+                return `tikalb-integration-ui/es/${fullName}`;
             }
-        }, "thoughtware-integration-ui"],
+        }, "tikalb-integration-ui"],
 
         ["import", {
             "libraryName": "tiklab-message-ui",
@@ -89,7 +72,7 @@ module.exports = {
         }, "tiklab-message-ui"],
 
         ["import", {
-            "libraryName": "thoughtware-todotask-ui",
+            "libraryName": "tikalb-todotask-ui",
             "libraryDirectory": "es",
             "style": true,
             "customName": (name) => {
@@ -103,9 +86,9 @@ module.exports = {
                     const name = UpBit + lowBit
                     return total += name;
                 },'');
-                return `thoughtware-todotask-ui/es/${fullName}`;
+                return `tikalb-todotask-ui/es/${fullName}`;
             }
-        }, "thoughtware-todotask-ui"],
+        }, "tikalb-todotask-ui"],
 
         ["import", {
             "libraryName": "tiklab-security-ui",
