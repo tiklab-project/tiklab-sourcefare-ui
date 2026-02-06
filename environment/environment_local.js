@@ -1,5 +1,5 @@
-//const api =  "http://192.168.10.14:8010";
-const api =  "http://192.168.10.6:8010";
+const api =  "http://192.168.10.23:8010";
+//const api =  "http://192.168.10.6:8010";
 
 const base_url = JSON.stringify(api);
 const webpackGlobal = {

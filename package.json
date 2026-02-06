@@ -66,11 +66,9 @@
         "tiklab-message-ui": "^1.0.3",
         "tiklab-openapi-ui": "^1.0.0",
         "tiklab-postin-client-ui": "^1.0.0",
-        "tiklab-privilege-extension-ui": "^1.0.0",
         "tiklab-privilege-ui": "^1.0.3",
         "tiklab-security-ui": "^1.0.3",
         "tiklab-slate-ui": "^1.0.3",
-        "tiklab-user-extension-ui": "^1.0.3",
         "tiklab-user-ui": "^1.0.3"
     },
     "devDependencies": {

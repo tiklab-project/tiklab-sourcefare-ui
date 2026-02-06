@@ -119,7 +119,9 @@ const IntegrationServer = (props) => {
                             <div>
                                 {"请添加--sdk-path,如果全局安装了.net,通过命令查询--sdk-path： dotnet --list-sdks"}
                             </div>
-                        </div>
+                        </div>||
+                        params?.type==='node'&&
+                        <div className='tool-details-border-dec'>{"node 版本需要 >18"}</div>
                     }
 
                     {

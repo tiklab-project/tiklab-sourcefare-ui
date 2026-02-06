@@ -124,8 +124,8 @@ const ScanIssueList = (props) => {
             key:"problemLevel",
             width:'10%',
             ellipsis:true,
-            render:(text)=>text===1&&<div className='scanDetails-hole-red'>严重</div>|| text===2&&<div className='scanDetails-hole-dired'>警告</div>
-                ||text===3&&<div className='scanDetails-hole-blue'>建议</div>
+            render:(text)=>text===1&&<div className='scanDetails-hole-red'>严重</div>|| text===2&&<div className='scanDetails-hole-dired'>错误</div>
+                ||text===3&&<div className='scanDetails-hole-blue'>警告</div>||text===4&&<div className='scanDetails-hole-green'>提示</div>
         },
 
 
@@ -147,7 +147,7 @@ const ScanIssueList = (props) => {
 
     }
     const refreshFind = () => {
-        setCurrentPage(1)
+        getIssueList(1,{problemLevel:issueLeve,ruleType:type,problemState:issueState})
     }
 
     //通过问题等级查询
@@ -207,8 +207,9 @@ const ScanIssueList = (props) => {
                         </Select>
                         <Select  allowClear onChange={value=>changLeve(value)} style={{minWidth:140}} placeholder="问题等级">
                             <Select.Option value={1}>{"严重"}</Select.Option>
-                            <Select.Option value={2}>{"警告"}</Select.Option>
-                            <Select.Option value={3}>{"建议"}</Select.Option>
+                            <Select.Option value={2}>{"错误"}</Select.Option>
+                            <Select.Option value={3}>{"警告"}</Select.Option>
+                            <Select.Option value={4}>{"提示"}</Select.Option>
                         </Select>
                     </div>
                 </div>

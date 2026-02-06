@@ -94,6 +94,12 @@ export const Validation = (name,type) =>{
             message: `请输入正确地址`,
         }
     }
+    if(type==='http'){
+        return {
+            pattern: /^(https?:\/\/).*[^\/]$/,
+            message: `请输入正确地址`,
+        }
+    }
     return {
         pattern: /^[\u4e00-\u9fa5a-zA-Z0-9_-]{0,}$/,
         message: `${name}不能包含非法字符，如&,%，&，#……等`,

@@ -80,7 +80,7 @@ const SchemeRuleList = (props) => {
 
     //刷新
     const refreshFind = () => {
-        getScanRulePage(currentPage)
+        getScanRulePage(1)
     }
 
     //返回上页

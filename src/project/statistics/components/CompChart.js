@@ -17,7 +17,7 @@ const  compChart = (props) => {
     useEffect(() => {
         const dom = levelBar.current;
         setStatisticsData(dom)
-    }, [levelBar.current])
+    }, [levelBar.current,complexityData])
 
 
     /**

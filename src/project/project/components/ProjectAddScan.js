@@ -64,7 +64,7 @@ const projectAddScan = (props) => {
     //添加服务状态
     const [serverVisible,setServerVisible]=useState(false)
 
-    const [branchName,setBranchName]=useState("master")
+    const [branchName]=useState("master")
 
     useEffect(()=>{
         if (step===1){
@@ -180,7 +180,6 @@ const projectAddScan = (props) => {
 
     //切换扫描方式
     const choiceScanType = (value) => {
-        debugger
         setScanType(value)
         form.setFieldsValue({
             scanSchemeId:null,
@@ -378,8 +377,9 @@ const projectAddScan = (props) => {
                                 <Form.Item
                                     label={'分支'}
                                     name={'branch'}
+                                    rules={[{required:true,message:'分支名称'}]}
                                 >
-                                    <Input placeholder={"分支,默认为master分支"} defaultValue={branchName} value={branchName} onChange={inputBranch}/>
+                                    <Input placeholder={"分支"}  onChange={inputBranch}/>
                                 </Form.Item>:
                                 <>
                                     <Form.Item

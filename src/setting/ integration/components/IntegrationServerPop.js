@@ -12,6 +12,7 @@ import Modal from "../../../common/modal/Modals";
 import Btn from "../../../common/btn/Btn";
 import {getUser} from "tiklab-core-ui";
 import repositoryServerStore from "../store/RepositoryServerStore";
+import {Validation} from "../../../common/client/Client";
 const { TextArea } = Input;
 const typeList=[{desc:"GitPuk",value:"gitPuk"},{desc:"Gitee",value:"gitee"},{desc:"自建GitLab",value:"priGitlab"}]
 const IntegrationServerPop = (props) => {
@@ -34,9 +35,10 @@ const IntegrationServerPop = (props) => {
             })
             setAuthType(serverData.authType?serverData.authType:"password")
         }
-
-        (serverType==='gitpuk'||serverType==='url')?setAuthType("password"):setAuthType("key")
-    },[serverData])
+        if(visible){
+            (serverType==='gitpuk'||serverType==='url')?setAuthType("password"):setAuthType("key")
+        }
+    },[serverData,visible])
 
     /**
      * 添加
@@ -150,6 +152,7 @@ const IntegrationServerPop = (props) => {
                             name={'address'}
                             rules={[
                                 {required:true,message:'服务地址不能为空'},
+                                Validation('名称','http'),
                             ]}
                         >
                             <Input  placeholder={serverType==="url"?

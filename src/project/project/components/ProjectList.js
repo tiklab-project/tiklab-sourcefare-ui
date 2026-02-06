@@ -117,7 +117,7 @@ const ProjectList = (props) => {
 
     //刷新查询
     const refreshFind = (data) => {
-        findProject(currentPage,{findType:projectType})
+        findProject(1,{findType:projectType})
     }
 
     //分页查询

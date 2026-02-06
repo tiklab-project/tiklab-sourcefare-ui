@@ -93,7 +93,7 @@ const scanReportList = (props) => {
         findScanRecordPage({
             pageParam:{currentPage:currentPage, pageSize:pageSize},
             projectId:params.id,
-            scanResult:scanResult
+            issueResult:scanResult
 
         }).then(res=>{
             if (res.code===0){

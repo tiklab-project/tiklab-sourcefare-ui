@@ -163,7 +163,7 @@ const schemeDetailsDrawer = (props) => {
     }
     //刷新查询
     const refreshFind = () => {
-        getScanRulePage(currentPage)
+        getScanRulePage(1)
     }
 
 

@@ -491,6 +491,7 @@ const ScanConfig = (props) => {
                                 >
                                     <Select onChange={choiceRepServer}
                                             placeholder={"请选择仓库服务"}
+                                            disabled={true}
                                     >
                                         {
                                             (repServerList&&repServerList.length)&&repServerList.map(item=>{
@@ -502,47 +503,66 @@ const ScanConfig = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item
-                                    label={'仓库'}
-                                    name={'repository'}
-                                    rules={[{required:true,message:'仓库'}]}
-                                >
-                                    <Select
-                                        showSearch
-                                        placeholder={"请选择仓库"}
-                                        onChange={choiceRepository}
-                                        onSearch={onSearchRepository}
-                                        onFocus={onFocusRepository}
-                                        value={repository?.id}
-                                    >
-                                        {
-                                            (repositoryList&&repositoryList.length)&&repositoryList.map(item=>{
-                                                    return(
-                                                        <Select.Option key={item.id} value={item.id}>{item.pathWithSpace}</Select.Option>
-                                                    )
-                                                }
-                                            )
-                                        }
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item
-                                    label={'分支名称'}
-                                    name={'branch'}
-                                    rules={[{required:true,message:'分支名称'}]}
-                                >
-                                    <Select   placeholder={"请选择分支"}
-                                              onFocus={onFocusBranch}
-                                    >
-                                        {
-                                            (branchList&&branchList.length)&&branchList.map(item=>{
-                                                    return(
-                                                        <Select.Option key={item.name} value={item.name}>{item.name}</Select.Option>
-                                                    )
-                                                }
-                                            )
-                                        }
-                                    </Select>
-                                </Form.Item>
+
+                                {
+                                    repServer?.serverType==="url"?
+                                        <Form.Item
+                                            label={'分支'}
+                                            name={'branch'}
+                                            rules={[{required:true,message:'分支'}]}
+                                        >
+                                            <Input placeholder={"分支,默认为master分支"}   disabled={true}/>
+                                        </Form.Item>:
+                                        <>
+                                            <Form.Item
+                                                label={'仓库'}
+                                                name={'repository'}
+                                                rules={[{required:true,message:'仓库'}]}
+                                            >
+                                                <Select
+                                                    showSearch
+                                                    placeholder={"请选择仓库"}
+                                                    onChange={choiceRepository}
+                                                    onSearch={onSearchRepository}
+                                                    onFocus={onFocusRepository}
+                                                    value={repository?.id}
+                                                    disabled={true}
+                                                >
+                                                    {
+                                                        (repositoryList&&repositoryList.length)&&repositoryList.map(item=>{
+                                                                return(
+                                                                    <Select.Option key={item.id} value={item.id}>{item.pathWithSpace}</Select.Option>
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+                                                </Select>
+                                            </Form.Item>
+
+                                            <Form.Item
+                                                label={'分支名称'}
+                                                name={'branch'}
+                                                rules={[{required:true,message:'分支名称'}]}
+                                            >
+                                                <Select   placeholder={"请选择分支"}
+                                                          onFocus={onFocusBranch}
+                                                          disabled={true}
+                                                >
+                                                    {
+                                                        (branchList&&branchList.length)&&branchList.map(item=>{
+                                                                return(
+                                                                    <Select.Option key={item.name} value={item.name}>{item.name}</Select.Option>
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+                                                </Select>
+                                            </Form.Item>
+                                        </>
+
+                                }
+
+
                             </>
                         }
 

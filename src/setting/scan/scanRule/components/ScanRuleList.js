@@ -191,7 +191,7 @@ const ScanRuleList = (props) => {
     }
     //刷新查询
     const refreshFind = (data) => {
-        getScanRulePage(currentPage,problemLevel,scanType,ruleName)
+        getScanRulePage(1,problemLevel,scanType,ruleName)
     }
 
     return(

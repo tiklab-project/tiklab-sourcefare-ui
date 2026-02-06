@@ -170,7 +170,7 @@ const integrationToolPop = (props) => {
             closable={false}
             footer={modalFooter}
             destroyOnClose={true}
-            title={"添加"}
+            title={`${serverData?"编辑":"添加"}`}
         >
             <div className='host-info-add-modal'>
                 <Form form={form} layout='vertical' autoComplete='off'

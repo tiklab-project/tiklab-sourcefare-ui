@@ -48,7 +48,7 @@ const TodoPageList = (props) => {
     }
 
     const refreshFind = () => {
-        getTodoPage(todoTaskStatus,currentPage)
+        getTodoPage(todoTaskStatus,1)
     }
 
     return(

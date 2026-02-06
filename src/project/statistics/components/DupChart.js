@@ -16,8 +16,7 @@ const  DupChart = (props) => {
     useEffect(() => {
         const dom = levelBar.current;
         setStatisticsData(dom)
-    }, [levelBar.current])
-
+    }, [levelBar.current,duplicatedData])
 
     /**
      * 处理统计数据

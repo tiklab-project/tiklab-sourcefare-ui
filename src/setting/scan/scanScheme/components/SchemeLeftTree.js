@@ -82,11 +82,7 @@ const SchemeLeftTree = (props) => {
 
     //打开扫描方案
     const openScheme = () => {
-        if (getVersionInfo().expired){
-            setStaticVisible(true)
-        }else {
-            setAddVisible(true)
-        }
+        setAddVisible(true)
     }
 
     const closeVisible = () => {

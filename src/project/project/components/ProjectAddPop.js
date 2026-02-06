@@ -98,6 +98,7 @@ const ProjectAddPop = (props) => {
 
     const onclickCreate = () => {
         form.validateFields().then((values) => {
+            const data=values.branch?values.branch:branch
             setCreateState(true)
             createProject({
                 ...addProjectData,
@@ -107,7 +108,7 @@ const ProjectAddPop = (props) => {
                 },
                 repositoryServerId:values.repositoryPath,
                 repositoryName:repository?.name,
-                branch:values.branch,
+                branch:data,
                 repositoryAddress:repository?.houseWebUrl,
                 repositoryCode:repository?.id,
                 cover:values.cover,
@@ -128,20 +129,6 @@ const ProjectAddPop = (props) => {
     }
 
 
-    //选择扫描方式
-    const choiceSanWay = (value) => {
-        setScanWay(value)
-        form.setFieldsValue({
-            repositoryPath:null,
-            repository:null,
-            scanSchemeId:null,
-            scanType:null,
-            excEnv:null,
-            python:null,
-            cover:null,
-            jdkEnv:null,
-        })
-    }
 
     //跳转步骤
     const jumpSteps = (value) => {
@@ -194,7 +181,7 @@ const ProjectAddPop = (props) => {
             <div>
                 <div style={{marginBottom:15}}>
                     <Steps size="small" current={step}>
-                        <Step title="仓库信息" />
+                        <Step title="项目信息" />
                         <Step title="配置扫描" />
                     </Steps>
                 </div>
